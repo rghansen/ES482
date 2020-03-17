@@ -227,3 +227,35 @@ Potential issues with response variable
 Candidate distributions for variable
 - Family of probability distributions we're likely to use
 
+#Section 3: The Explanatory Variables (150 words)
+##A)
+```{r, echo = TRUE}
+#Multipanel of dotcharts for continuous explanatory variables
+
+#Multipanel of histograms for continuous explanatory variables
+
+#Multipanel of dotcharts for categorical explanatory variables
+
+#Tables for categorical explanatory variables
+
+```
+
+##B)
+- Outliers
+- Transformations why or why not?
+
+#Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
+##A)
+```{r, echo = TRUE}
+#Pairwise scatterplot of explanatory variables
+
+#Pairwise correlation coefficients for explanatory variables
+
+#Variance Inflation Factors
+
+#Balance of dataset (if appropriate)
+```
+Comment on pairwise scatterplots
+Comment on strength of correlations
+Comment on VIFs
+Comment on potential difficulties from correlations and benefits
