@@ -200,3 +200,30 @@ OR list of alternative hypotheses, in words or as model formulae that correspond
 Model selection:
 - Why or why not use it?
 - What type to use?
+
+#Section 2: The Response Variable (150 words)
+##A)
+```{r, echo = TRUE}
+#Dotchart of response variable
+
+#Histogram of response variable with rugmarks
+```
+
+##B) 
+Qualitative description of response variable:
+- Continuous 
+- Bounded by 0, can't take negative values
+
+##C)
+Potential issues with response variable
+- Outliers
+- Missing values
+- Zeroes
+- Non-independence from repeated measurements within experimental units
+- Non-idependence from temporal autocorrelation
+- Non-independence from spatial autocorrelation
+
+##D)
+Candidate distributions for variable
+- Family of probability distributions we're likely to use
+
