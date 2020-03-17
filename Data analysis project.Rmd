@@ -277,16 +277,26 @@ Statistical methods
 ```
 
 #Section 6: Model Checking 
-Check the assumptions of at least one model
--  plotting and interpreting the residuals of the model
--  check for correlation in the residuals due to grouping variables
 
 ```{r, echo = TRUE}
-#Residuals vs. fitted
-
-#Residuals vs. other explanatory
+#Check the assumptions of at least one model
+#-  plotting and interpreting the residuals of the model
+#-  check for correlation in the residuals due to grouping variables
 
 ```
 
 Summary of the plausibility of the model
 - Potential outliers
+
+#Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
+
+```{r, echo = TRUE}
+#Model comparison and/or model selection and/or hypothesis testing
+#- AIC (or AICc) values
+#- AIC (or AICc) weights
+#- R-squared (or adjusted R-squared) values
+#- p-values. 
+#Summary for at least one ﬁtted model
+#- coeﬃcient estimates and their standard errors
+#- conﬁdence intervals for coeﬃcient estimate
+``
