@@ -4,6 +4,9 @@ author: "Jess Qualley and Rebecca Hansen"
 date: "March 27, 2020"
 output: word_document
 ---
+
+Jess: github test.
+
 ##Clear code (**delete before submitting***)
 ```{r}
 rm(list = ls(all = TRUE))
