@@ -124,8 +124,24 @@ with(herring_data, table(coll.year, digestion))
 
 ##Example 4 (***delete before submitting)
 ```{r, echo = TRUE}
-#Make a table of 0 values and NAs
-table(herring_data > 0, useNA = "always")
+#Make a table of 0 values and NAs for oto.width
+table(herring_data$oto.width > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for sal.length
+table(herring_data$sal.length > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for sal.weight
+table(herring_data$sal.weight > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for lat
+table(herring_data$lat > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for long
+table(herring_data$long > 0, useNA = "always")
+
+#Proportion of measured oto-width values that are zero:
+sum(herring_data$oto.width == 0, na.rm = TRUE) / length(na.omit(herring_data))
+
 ```
 
 ##Cleaning data
