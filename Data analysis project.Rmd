@@ -5,7 +5,6 @@ date: "March 27, 2020"
 output: word_document
 ---
 
-Jess: github test.
 
 ##Clear code (**delete before submitting***)
 ```{r}
@@ -164,3 +163,40 @@ sum(herring_data$long == 0, na.rm = TRUE) / length(na.omit(herring_data$long))
 #filter only chinook and data from 2018 with na removed
 herring_data_2018 <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018") %>% na.omit()
 ```
+
+#Section 1: Introduction, Question, Goals and Hypotheses (400 words)
+##A)
+Introduce relevant concepts: 
+- State of salmon in BC
+- Salmon diet
+- Herring as a prey item for salmon
+- Gape size theory? Gape size and body size? Prey selection strategies?
+
+How the dataset was collected:
+- Salmon stomachs donated to Juanes lab by anglers
+- Salmon stomach contents sorted and classfied based on digestion
+- Otoliths collected and measured
+
+ Background needed to understand the dataset:
+- Otolith width as the best proxy for herring length
+
+At least two scientiﬁc papers that are related to your topic:
+
+##B)
+Research question:
+- Relationship between salmon size and size of their herring prey
+
+##C)
+Goal of research: 
+- Inference, we want to test if the size of the salmon determines the size of its herring prey, 
+
+##D)
+Hypothesis:
+-  hypothesis for how you expect the response variable to change with each predictor variable and interactions: linear or non-linear and what shape? positive or negative? interaction terms? Why?
+OR list of alternative hypotheses, in words or as model formulae that correspond to diﬀerent scenarios related to your question
+- any null hypotheses
+
+##E)
+Model selection:
+- Why or why not use it?
+- What type to use?
