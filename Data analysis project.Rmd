@@ -115,17 +115,48 @@ print(vif(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat"
 
 ##Example 3 (***delete before submitting)
 ```{r, echo = TRUE}
-#Make a table of salmon ID versus digestion state
-with(herring_data, table(sal, digestion))
+#Make a table of salmon sex versus year
+with(herring_data, table(sal.sex, coll.year))
 
-#Make a table of salmon ID versus sex
-with(herring_data, table(sal.id, sal.sex))
+#Make a table of salmon sex versus digestion
+with(herring_data, table(sal.sex, digestion))
+
+#Make a table of salmon year versus digestion
+with(herring_data, table(coll.year, digestion))
 ```
 
 ##Example 4 (***delete before submitting)
 ```{r, echo = TRUE}
-#Make a table of 0 values and NAs
-table(herring_data_2018 > 0, useNA = "always")
+#Make a table of 0 values and NAs for oto.width
+table(herring_data$oto.width > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for sal.length
+table(herring_data$sal.length > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for sal.weight
+table(herring_data$sal.weight > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for lat
+table(herring_data$lat > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for long
+table(herring_data$long > 0, useNA = "always")
+
+#Proportion of measured oto-width values that are zero:
+sum(herring_data$oto.width == 0, na.rm = TRUE) / length(na.omit(herring_data$oto.width))
+
+#Proportion of measured sal.length values that are zero:
+sum(herring_data$sal.length == 0, na.rm = TRUE) / length(na.omit(herring_data$sal.length))
+
+#Proportion of measured sal.weight values that are zero:
+sum(herring_data$sal.weight == 0, na.rm = TRUE) / length(na.omit(herring_data$sal.weight))
+
+#Proportion of measured lat values that are zero:
+sum(herring_data$lat == 0, na.rm = TRUE) / length(na.omit(herring_data$lat))
+
+#Proportion of measured long values that are zero:
+sum(herring_data$long == 0, na.rm = TRUE) / length(na.omit(herring_data$long))
+
 ```
 
 ##Cleaning data
