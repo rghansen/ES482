@@ -259,3 +259,18 @@ Comment on pairwise scatterplots
 Comment on strength of correlations
 Comment on VIFs
 Comment on potential difficulties from correlations and benefits
+
+#Section 5: Statistical Methods and Model Fitting (200 words)
+Statistical methods
+- Which you will use and why
+- Cite packages used for modelling
+- What family of probability distributions (what link function)
+- Which explantory variables are we including
+- If and why data points are excluded
+- If transformations are used and why
+- If random-effects are used and why
+
+
+```{r, echo = TRUE}
+#Fit the model
+```
