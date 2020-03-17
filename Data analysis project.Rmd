@@ -140,7 +140,19 @@ table(herring_data$lat > 0, useNA = "always")
 table(herring_data$long > 0, useNA = "always")
 
 #Proportion of measured oto-width values that are zero:
-sum(herring_data$oto.width == 0, na.rm = TRUE) / length(na.omit(herring_data))
+sum(herring_data$oto.width == 0, na.rm = TRUE) / length(na.omit(herring_data$oto.width))
+
+#Proportion of measured sal.length values that are zero:
+sum(herring_data$sal.length == 0, na.rm = TRUE) / length(na.omit(herring_data$sal.length))
+
+#Proportion of measured sal.weight values that are zero:
+sum(herring_data$sal.weight == 0, na.rm = TRUE) / length(na.omit(herring_data$sal.weight))
+
+#Proportion of measured lat values that are zero:
+sum(herring_data$lat == 0, na.rm = TRUE) / length(na.omit(herring_data$lat))
+
+#Proportion of measured long values that are zero:
+sum(herring_data$long == 0, na.rm = TRUE) / length(na.omit(herring_data$long))
 
 ```
 
