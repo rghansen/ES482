@@ -45,89 +45,88 @@ herring_data <- data.frame(sal.id = herring$FishCode,
                            coll.doy =   herring$CollectionDayofYear,
                            lat = herring$Latitude,
                            long = herring$Longitude)
-
-#filter only chinook and data from 2018
-herring_data_2018 <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018")
 ```
 
 ##Checking our work (***delete before submitting***)
 ```{r, echo = TRUE}
 #plot lat/long as continuous variable
-plot(herring_data_2018$long, herring_data_2018$lat, xlim = c(-122, -128), ylim = c(48, 50.5))
+plot(herring_data$long, herring_data$lat, xlim = c(-122, -128), ylim = c(48, 50.5))
 ```
 
 ##Example 1 (***delete before submitting)
 ```{r, echo = TRUE}
 #add column for number of rows
-n <- nrow(herring_data_2018)
-herring_data_2018$row <- 1:n
+n <- nrow(herring_data)
+herring_data$row <- 1:n
 
 par(mfrow = c(3, 2))
 
 #otolith width
-with(herring_data_2018, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
+with(herring_data, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data_2018, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
+with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #actual salmon length - all salmon that ate herring - note that some numbers are ranges and have weird symbols...
 #where lengths were not recorded, they were calculated using length-weight relationship
-with(herring_data_2018, plot(sal.length, row, las = 1, type = "n", xlab = "Actual Salmon Length [mm]", ylab = "Row Number"))
+with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Actual Salmon Length [mm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data_2018, points(sal.length, row, las = 1, type = "p", pch = 19, cex = 0.5))
+with(herring_data, points(sal.length, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #actual salmon weight - raw salmon weights no back calculations
-with(herring_data_2018, plot(sal.weight, row, las = 1, type = "n", xlab = "Actual Salmon Weight [lbs]", ylab = "Row Number"))
+with(herring_data, plot(sal.weight, row, las = 1, type = "n", xlab = "Actual Salmon Weight [lbs]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data_2018, points(sal.weight, row, las = 1, type = "p", pch = 19, cex = 0.5))
+with(herring_data, points(sal.weight, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #day of year
-with(herring_data_2018, plot(coll.doy, row, las = 1, type = "n", xlab = "Day of Year in 2018", ylab = "Row Number"))
+with(herring_data, plot(coll.doy, row, las = 1, type = "n", xlab = "Day of Year in 2018", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data_2018, points(coll.doy, row, las = 1, type = "p", pch = 19, cex = 0.5))
+with(herring_data, points(coll.doy, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #lat
-with(herring_data_2018, plot(lat, row, las = 1, type = "n", xlab = "Latitude", ylab = "Row Number"))
+with(herring_data, plot(lat, row, las = 1, type = "n", xlab = "Latitude", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data_2018, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
+with(herring_data, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #long
-with(herring_data_2018, plot(long, row, las = 1, type = "n", xlab = "Longitude", ylab = "Row Number"))
+with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data_2018, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
+with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 ```
 
 
 ##Example 2 (***delete before submitting)
 ```{r, echo = TRUE}
 #create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight and collection day of year
-herring_collinearity <- data.frame("sal.length" = herring_data_2018$sal.length, "sal.weight" = herring_data_2018$sal.weight, "coll.doy" = herring_data_2018$coll.doy, "lat" = herring_data_2018$lat, "long" = herring_data_2018$long)
+herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "sal.weight" = herring_data$sal.weight, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
 
 #create pairwise scatterplot with salmon length, weight and day of year
 plot(herring_collinearity[1:5], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
                    labels = c("Chinook\nLength [mm]", "Chinook\nWeight [lbs]", "Collection\nDay in 2018", "Latitude", "Longitude"))
 
-#convert sal.length to numeric
-as.numeric(herring_data_2018$sal.length)
-
 #pairwise correlation coefficients for multiple variables
-print(cor(na.omit(herring_data_2018[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])), digits = 2)
+print(cor(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])), digits = 2)
 
 #variance inflation factors
-print(vif(na.omit(herring_data_2018[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])))
+print(vif(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])))
 ```
 
 ##Example 3 (***delete before submitting)
 ```{r, echo = TRUE}
 #Make a table of salmon ID versus digestion state
-with(herring_data_2018, table(sal.id, digestion))
+with(herring_data, table(sal, digestion))
 
 #Make a table of salmon ID versus sex
-with(herring_data_2018, table(sal.id, sal.sex))
+with(herring_data, table(sal.id, sal.sex))
 ```
 
 ##Example 4 (***delete before submitting)
 ```{r, echo = TRUE}
 #Make a table of 0 values and NAs
 table(herring_data_2018 > 0, useNA = "always")
+```
 
+##Cleaning data
+```{r, echo = TRUE}
+#filter only chinook and data from 2018 with na removed
+herring_data_2018 <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018") %>% na.omit()
 ```
