@@ -98,7 +98,7 @@ with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 ##Example 2 (***delete before submitting)
 ```{r, echo = TRUE}
-#create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight and collection day of year
+#create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
 herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "sal.weight" = herring_data$sal.weight, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
 
 #create pairwise scatterplot with salmon length, weight and day of year
@@ -344,13 +344,21 @@ with(herring_data, table(coll.year, digestion))
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
 ```{r, echo = TRUE}
-#Pairwise scatterplot of explanatory variables
+#create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
+herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "sal.weight" = herring_data$sal.weight, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
+
+#Pairwise scatterplot of explanatory variables (salmon length, weight, day of year, latitude and longitude)
+plot(herring_collinearity[1:5], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
+                   labels = c("Chinook\nLength [mm]", "Chinook\nWeight [lbs]", "Collection\nDay in 2018", "Latitude", "Longitude"))
 
 #Pairwise correlation coefficients for explanatory variables
+print(cor(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])), digits = 2)
 
 #Variance Inflation Factors
+print(vif(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])))
 
 #Balance of dataset (if appropriate)
+
 ```
 Comment on pairwise scatterplots
 Comment on strength of correlations
