@@ -204,9 +204,18 @@ Model selection:
 #Section 2: The Response Variable (150 words)
 ##A)
 ```{r, echo = TRUE}
-#Dotchart of response variable
+#Add column for number of rows
+n <- nrow(herring_data)
+herring_data$row <- 1:n
+
+par(mfrow = c(3, 2))
+#Dotchart of  otolith width (response variable)
+with(herring_data, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Histogram of response variable with rugmarks
+
 ```
 
 ##B) 
@@ -229,12 +238,64 @@ Candidate distributions for variable
 
 #Section 3: The Explanatory Variables (150 words)
 ##A)
+###Continuous explanatory variables
 ```{r, echo = TRUE}
 #Multipanel of dotcharts for continuous explanatory variables
+par(mfrow = c(3, 2))
+
+#Salmon length
+with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Actual Salmon Length [mm]", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.length, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Salmon weight
+with(herring_data, plot(sal.weight, row, las = 1, type = "n", xlab = "Actual Salmon Weight [lbs]", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.weight, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Collection date of year
+with(herring_data, plot(coll.doy, row, las = 1, type = "n", xlab = "Day of Year in 2018", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(coll.doy, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Latitude
+with(herring_data, plot(lat, row, las = 1, type = "n", xlab = "Latitude", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Longitude
+with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Multipanel of histograms for continuous explanatory variables
 
+```
+
+###Categorical explanatory variables
+```{r, echo = TRUE}
 #Multipanel of dotcharts for categorical explanatory variables
+par(mfrow = c(2, 2))
+
+#Salmon id
+with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Digestion
+with(herring_data, plot(digestion, row, las = 1, type = "n", xlab = "Digestion state", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(digestion, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Salmon species
+with(herring_data, plot(sal.sp, row, las = 1, type = "n", xlab = "Salmon species", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.sp, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Salmon sex
+with(herring_data, plot(sal.sex, row, las = 1, type = "n", xlab = "Salmon sex", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.sex, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Tables for categorical explanatory variables
 
