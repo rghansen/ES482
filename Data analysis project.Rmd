@@ -36,7 +36,6 @@ herring <- read.csv("HerringOtolithDatabase 15 Jan 2020_JQ.csv", header=TRUE, fi
 
 #Create a data frame
 herring_data <- data.frame(sal.id = herring$FishCode,
-                           her.id = herring$PreyID,
                            oto.width = herring$AverageWidth,
                            digestion = herring$Digestion,
                            sal.sp = herring$SalmonSpecies,
@@ -47,6 +46,9 @@ herring_data <- data.frame(sal.id = herring$FishCode,
                            coll.doy =   herring$CollectionDayofYear,
                            lat = herring$Latitude,
                            long = herring$Longitude)
+
+#Filter only data from Strait of Georgia region
+herring_data <- herring_data %>% filter(lat <= 50)
 ```
 
 ##Checking our work (***delete before submitting***)
