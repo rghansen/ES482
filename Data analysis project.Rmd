@@ -46,13 +46,13 @@ herring_data <- data.frame(sal.id = herring$FishCode,
                            coll.doy =   herring$CollectionDayofYear,
                            lat = herring$Latitude,
                            long = herring$Longitude,
-                           stat_area = herring$StatArea)
+                           stat.area = as.factor(herring$StatArea))
 
-#Look at what fishing areas are in dataset
-sort(unique(herring_data$stat_area))
+#figure out which stat areas to remove
+levels(as.factor(herring$StatArea))
 
-#Filter only data from Vancouver Island region
-herring_data <- herring_data %>% filter(stat_area != 1 | stat_area != 23 | stat_area != 25 | stat_area != 101 | stat_area != 125)
+#filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island
+herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25") %>% na.omit()
 ```
 
 ##Checking our work (***delete before submitting***)
