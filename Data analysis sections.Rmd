@@ -1,0 +1,435 @@
+---
+title: "Data analysis project"
+author: "Jess Qualley and Rebecca Hansen"
+date: "March 27, 2020"
+output: word_document
+---
+
+
+##Clear code (**delete before submitting***)
+```{r}
+rm(list = ls(all = TRUE))
+```
+
+#Preparation
+##Loading and citing packages
+```{r, echo = TRUE}
+#Load faraway package
+library(faraway)
+
+#Load plyr package
+library(plyr)
+
+#Load tidyverse package
+library(tidyverse)
+
+#Cite packages
+citation("faraway")
+citation("plyr")
+citation("tidyverse")
+```
+
+##Read in and organize data
+```{r, echo = TRUE}
+#Read from csv file
+herring <- read.csv("HerringOtolithDatabase 15 Jan 2020_JQ.csv", header=TRUE, fileEncoding="UTF-8-BOM")
+
+#Create a data frame
+herring_data <- data.frame(sal.id = herring$FishCode,
+                           oto.width = herring$AverageWidth,
+                           digestion = herring$Digestion,
+                           sal.sp = herring$SalmonSpecies,
+                           sal.sex = herring$SalmonSex,
+                           sal.length = as.numeric(herring$SalmonLength),
+                           sal.weight = herring$SalmonWeight,
+                           coll.year = herring$CollectionYear,
+                           coll.doy =   herring$CollectionDayofYear,
+                           lat = herring$Latitude,
+                           long = herring$Longitude,
+                           stat.area = as.factor(herring$StatArea))
+
+#figure out which stat areas to remove
+levels(as.factor(herring$StatArea))
+
+#filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island
+herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25") %>% na.omit()
+```
+
+##Checking our work (***delete before submitting***)
+```{r, echo = TRUE}
+#plot lat/long as continuous variable
+plot(herring_data$long, herring_data$lat, xlim = c(-122, -128), ylim = c(48, 50.5))
+```
+
+##Example 1 (***delete before submitting)
+```{r, echo = TRUE}
+#add column for number of rows
+n <- nrow(herring_data)
+herring_data$row <- 1:n
+
+par(mfrow = c(3, 2))
+
+#otolith width
+with(herring_data, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#actual salmon length - all salmon that ate herring - note that some numbers are ranges and have weird symbols...
+#where lengths were not recorded, they were calculated using length-weight relationship
+with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Actual Salmon Length [mm]", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.length, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#actual salmon weight - raw salmon weights no back calculations
+with(herring_data, plot(sal.weight, row, las = 1, type = "n", xlab = "Actual Salmon Weight [lbs]", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.weight, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#day of year
+with(herring_data, plot(coll.doy, row, las = 1, type = "n", xlab = "Day of Year in 2018", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(coll.doy, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#lat
+with(herring_data, plot(lat, row, las = 1, type = "n", xlab = "Latitude", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#long
+with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
+```
+
+
+##Example 2 (***delete before submitting)
+```{r, echo = TRUE}
+#create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
+herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "sal.weight" = herring_data$sal.weight, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
+
+#create pairwise scatterplot with salmon length, weight and day of year
+plot(herring_collinearity[1:5], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
+                   labels = c("Chinook\nLength [mm]", "Chinook\nWeight [lbs]", "Collection\nDay in 2018", "Latitude", "Longitude"))
+
+#pairwise correlation coefficients for multiple variables
+print(cor(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])), digits = 2)
+
+#variance inflation factors
+print(vif(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])))
+```
+
+##Example 3 (***delete before submitting)
+```{r, echo = TRUE}
+#Make a table of salmon sex versus year
+with(herring_data, table(sal.sex, coll.year))
+
+#Make a table of salmon sex versus digestion
+with(herring_data, table(sal.sex, digestion))
+
+#Make a table of salmon year versus digestion
+with(herring_data, table(coll.year, digestion))
+```
+
+##Example 4 (***delete before submitting)
+```{r, echo = TRUE}
+#Make a table of 0 values and NAs for oto.width
+table(herring_data$oto.width > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for sal.length
+table(herring_data$sal.length > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for sal.weight
+table(herring_data$sal.weight > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for lat
+table(herring_data$lat > 0, useNA = "always")
+
+#Make a table of 0 values and NAs for long
+table(herring_data$long > 0, useNA = "always")
+
+#Proportion of measured oto-width values that are zero:
+sum(herring_data$oto.width == 0, na.rm = TRUE) / length(na.omit(herring_data$oto.width))
+
+#Proportion of measured sal.length values that are zero:
+sum(herring_data$sal.length == 0, na.rm = TRUE) / length(na.omit(herring_data$sal.length))
+
+#Proportion of measured sal.weight values that are zero:
+sum(herring_data$sal.weight == 0, na.rm = TRUE) / length(na.omit(herring_data$sal.weight))
+
+#Proportion of measured lat values that are zero:
+sum(herring_data$lat == 0, na.rm = TRUE) / length(na.omit(herring_data$lat))
+
+#Proportion of measured long values that are zero:
+sum(herring_data$long == 0, na.rm = TRUE) / length(na.omit(herring_data$long))
+
+```
+
+##Cleaning data
+```{r, echo = TRUE}
+#filter only chinook and data from 2018 with na removed
+herring_data_2018 <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018") %>% na.omit()
+```
+
+#Section 1: Introduction, Question, Goals and Hypotheses (400 words)
+##A)
+Introduce relevant concepts: 
+- State of salmon in BC
+- Salmon diet
+- Herring as a prey item for salmon
+- Gape size theory? Gape size and body size? Prey selection strategies?
+
+How the dataset was collected:
+- Salmon stomachs donated to Juanes lab by anglers
+- Salmon stomach contents sorted and classfied based on digestion
+- Otoliths collected and measured
+
+ Background needed to understand the dataset:
+- Otolith width as the best proxy for herring length
+
+At least two scientiﬁc papers that are related to your topic:
+
+##B)
+Research question:
+- Relationship between salmon size and size of their herring prey
+
+##C)
+Goal of research: 
+- Inference, we want to test if the size of the salmon determines the size of its herring prey, 
+
+##D)
+Hypothesis:
+-  hypothesis for how you expect the response variable to change with each predictor variable and interactions: linear or non-linear and what shape? positive or negative? interaction terms? Why?
+OR list of alternative hypotheses, in words or as model formulae that correspond to diﬀerent scenarios related to your question
+- any null hypotheses
+
+##E)
+Model selection:
+- Why or why not use it?
+- What type to use?
+
+#Section 2: The Response Variable (150 words)
+##A)
+```{r, echo = TRUE}
+#Add column for number of rows
+n <- nrow(herring_data)
+herring_data$row <- 1:n
+
+#Dotchart of  otolith width (response variable)
+with(herring_data, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Histogram of response variable with rugmarks
+hist(herring_data$oto.width, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of herring otolith width", xlab = "Herring otolith width")
+rug(herring_data$oto.width)
+```
+
+##B) 
+Qualitative description of response variable:
+- Continuous 
+- Bounded by 0, can't take negative values
+
+##C)
+Potential issues with response variable
+- Outliers
+- Missing values
+- Zeroes
+- Non-independence from repeated measurements within experimental units
+- Non-idependence from temporal autocorrelation
+- Non-independence from spatial autocorrelation
+
+##D)
+Candidate distributions for variable
+- Family of probability distributions we're likely to use
+
+#Section 3: The Explanatory Variables (150 words)
+##A)
+###Continuous explanatory variables
+```{r, echo = TRUE}
+#Multipanel of dotcharts for continuous explanatory variables
+par(mfrow = c(3, 2))
+
+#Salmon length
+with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Actual Salmon Length [mm]", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.length, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Salmon weight
+with(herring_data, plot(sal.weight, row, las = 1, type = "n", xlab = "Actual Salmon Weight [lbs]", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.weight, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Collection date of year
+with(herring_data, plot(coll.doy, row, las = 1, type = "n", xlab = "Day of Year in 2018", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(coll.doy, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Latitude
+with(herring_data, plot(lat, row, las = 1, type = "n", xlab = "Latitude", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Longitude
+with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Multipanel of histograms for continuous explanatory variables
+par(mfrow = c(3, 2))
+
+#Salmon length
+hist(herring_data$sal.length, col = grey(0.9), main = "Histogram of salmon length", xlab = "Salmon length")
+rug(herring_data$sal.length)
+
+#Salmon weight
+hist(herring_data$sal.weight, col = grey(0.9), main = "Histogram of salmon weight", xlab = "Salmon weight")
+rug(herring_data$sal.weight)
+
+#Collection date of year
+hist(herring_data$coll.doy, col = grey(0.9), main = "Histogram of date of year", xlab = "Collection date of year")
+rug(herring_data$coll.doy)
+
+#Latitude
+hist(herring_data$lat, col = grey(0.9), main = "Histogram of latitude", xlab = "Latitude")
+rug(herring_data$lat)
+
+#Longitude
+hist(herring_data$long, col = grey(0.9), main = "Histogram of longitude", xlab = "Longitude")
+rug(herring_data$long)
+
+```
+
+###Categorical explanatory variables
+```{r, echo = TRUE}
+#Multipanel of dotcharts for categorical explanatory variables
+par(mfrow = c(2, 2))
+
+#Salmon id
+with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Digestion
+with(herring_data, plot(digestion, row, las = 1, type = "n", xlab = "Digestion state", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(digestion, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Salmon species
+with(herring_data, plot(sal.sp, row, las = 1, type = "n", xlab = "Salmon species", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.sp, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Salmon sex
+with(herring_data, plot(sal.sex, row, las = 1, type = "n", xlab = "Salmon sex", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.sex, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Tables for categorical explanatory variables
+#Make a table of salmon sex versus year
+with(herring_data, table(sal.sex, coll.year))
+
+#Make a table of salmon sex versus digestion
+with(herring_data, table(sal.sex, digestion))
+
+#Make a table of salmon year versus digestion
+with(herring_data, table(coll.year, digestion))
+
+```
+
+##B)
+- Outliers
+- Transformations why or why not?
+
+#Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
+##A)
+```{r, echo = TRUE}
+#create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
+herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "sal.weight" = herring_data$sal.weight, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
+
+#Pairwise scatterplot of explanatory variables (salmon length, weight, day of year, latitude and longitude)
+plot(herring_collinearity[1:5], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
+                   labels = c("Chinook\nLength [mm]", "Chinook\nWeight [lbs]", "Collection\nDay in 2018", "Latitude", "Longitude"))
+
+#Pairwise correlation coefficients for explanatory variables
+print(cor(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])), digits = 2)
+
+#Variance Inflation Factors
+print(vif(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])))
+
+#Balance of dataset (if appropriate)
+
+```
+Comment on pairwise scatterplots
+Comment on strength of correlations
+Comment on VIFs
+Comment on potential difficulties from correlations and benefits
+
+#Section 5: Statistical Methods and Model Fitting (200 words)
+Statistical methods
+- Which you will use and why
+- Cite packages used for modelling
+- What family of probability distributions (what link function)
+- Which explantory variables are we including
+- If and why data points are excluded
+- If transformations are used and why
+- If random-effects are used and why
+
+
+```{r, echo = TRUE}
+#Fit the model or models
+
+```
+
+#Section 6: Model Checking 
+
+```{r, echo = TRUE}
+#Check the assumptions of at least one model
+#-  plotting and interpreting the residuals of the model
+#-  check for correlation in the residuals due to grouping variables
+
+```
+
+Summary of the plausibility of the model
+- Potential outliers
+
+#Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
+
+```{r, echo = TRUE}
+#Model comparison and/or model selection and/or hypothesis testing
+#- AIC (or AICc) values
+#- AIC (or AICc) weights
+#- R-squared (or adjusted R-squared) values
+#- p-values. 
+#Summary for at least one ﬁtted model
+#- coeﬃcient estimates and their standard errors
+#- conﬁdence intervals for coeﬃcient estimate
+```
+
+#Section 8: Plotting a Model with the Data
+
+```{r, echo = TRUE}
+#Plot at least one model with data
+#- use method that shows strengths and weaknesses
+#- include measurement of uncertainty
+```
+
+#Section 9: Discussion (400 words)
+##A)
+Assessment of how well the model seems to ﬁt the data
+- model checking
+- visualization of the model with the data
+- 
+##B)
+Qualitative interpretation of the model
+- interpretation of results in relation to your research questions and hypotheses
+- general interpretation of conﬁdence intervals or standard errors for coeﬃcient estimates
+-
+##C)
+Limitations of the model(s) that you have ﬁt
+- Limitations
+- Possible options for improvement
+- Possible approaches for further data analysis
+
+##D)
+Results into context
+- citie at least two relevant scientiﬁc papers
