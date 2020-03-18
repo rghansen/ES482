@@ -299,4 +299,33 @@ Summary of the plausibility of the model
 #Summary for at least one ﬁtted model
 #- coeﬃcient estimates and their standard errors
 #- conﬁdence intervals for coeﬃcient estimate
-``
+```
+
+#Section 8: Plotting a Model with the Data
+
+```{r, echo = TRUE}
+#Plot at least one model with data
+#- use method that shows strengths and weaknesses
+#- include measurement of uncertainty
+```
+
+#Section 9: Discussion (400 words)
+##A)
+Assessment of how well the model seems to ﬁt the data
+- model checking
+- visualization of the model with the data
+- 
+##B)
+Qualitative interpretation of the model
+- interpretation of results in relation to your research questions and hypotheses
+- general interpretation of conﬁdence intervals or standard errors for coeﬃcient estimates
+-
+##C)
+Limitations of the model(s) that you have ﬁt
+- Limitations
+- Possible options for improvement
+- Possible approaches for further data analysis
+
+##D)
+Results into context
+- citie at least two relevant scientiﬁc papers
