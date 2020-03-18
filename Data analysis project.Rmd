@@ -334,13 +334,6 @@ with(herring_data, table(coll.year, digestion))
 - Outliers
 - Transformations why or why not?
 
-##Subsetting data
-```{r, echo = TRUE}
-#Select salmon sampled from Strait of Georgia only
-
-#Select salmon from 2018 only
-```
-
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
 ```{r, echo = TRUE}
