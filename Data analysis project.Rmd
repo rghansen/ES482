@@ -208,14 +208,14 @@ Model selection:
 n <- nrow(herring_data)
 herring_data$row <- 1:n
 
-par(mfrow = c(3, 2))
 #Dotchart of  otolith width (response variable)
 with(herring_data, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Histogram of response variable with rugmarks
-
+hist(herring_data$oto.width, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of herring otolith width", xlab = "Herring otolith width")
+rug(herring_data$oto.width)
 ```
 
 ##B) 
@@ -269,6 +269,27 @@ abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Multipanel of histograms for continuous explanatory variables
+par(mfrow = c(3, 2))
+
+#Salmon length
+hist(herring_data$sal.length, col = grey(0.9), main = "Histogram of salmon length", xlab = "Salmon length")
+rug(herring_data$sal.length)
+
+#Salmon weight
+hist(herring_data$sal.weight, col = grey(0.9), main = "Histogram of salmon weight", xlab = "Salmon weight")
+rug(herring_data$sal.weight)
+
+#Collection date of year
+hist(herring_data$coll.doy, col = grey(0.9), main = "Histogram of date of year", xlab = "Collection date of year")
+rug(herring_data$coll.doy)
+
+#Latitude
+hist(herring_data$lat, col = grey(0.9), main = "Histogram of latitude", xlab = "Latitude")
+rug(herring_data$lat)
+
+#Longitude
+hist(herring_data$long, col = grey(0.9), main = "Histogram of longitude", xlab = "Longitude")
+rug(herring_data$long)
 
 ```
 
@@ -298,12 +319,27 @@ abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.sex, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Tables for categorical explanatory variables
+#Make a table of salmon sex versus year
+with(herring_data, table(sal.sex, coll.year))
+
+#Make a table of salmon sex versus digestion
+with(herring_data, table(sal.sex, digestion))
+
+#Make a table of salmon year versus digestion
+with(herring_data, table(coll.year, digestion))
 
 ```
 
 ##B)
 - Outliers
 - Transformations why or why not?
+
+##Subsetting data
+```{r, echo = TRUE}
+#Select salmon sampled from Strait of Georgia only
+
+#Select salmon from 2018 only
+```
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
