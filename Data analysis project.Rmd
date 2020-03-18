@@ -45,10 +45,14 @@ herring_data <- data.frame(sal.id = herring$FishCode,
                            coll.year = herring$CollectionYear,
                            coll.doy =   herring$CollectionDayofYear,
                            lat = herring$Latitude,
-                           long = herring$Longitude)
+                           long = herring$Longitude,
+                           stat_area = herring$StatArea)
 
-#Filter only data from Strait of Georgia region
-herring_data <- herring_data %>% filter(lat <= 50)
+#Look at what fishing areas are in dataset
+sort(unique(herring_data$stat_area))
+
+#Filter only data from Vancouver Island region
+herring_data <- herring_data %>% filter(stat_area != 1 | stat_area != 23 | stat_area != 25 | stat_area != 101 | stat_area != 125)
 ```
 
 ##Checking our work (***delete before submitting***)
