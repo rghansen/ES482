@@ -41,8 +41,10 @@ herring_data <- data.frame(sal.id = herring$FishCode,
                            sal.sex = herring$SalmonSex,
                            sal.length = as.numeric(herring$SalmonLength),
                            sal.weight = herring$SalmonWeight,
+                           coll.month = herring$CollectionMonth,
                            coll.year = herring$CollectionYear,
                            coll.doy =   herring$CollectionDayofYear,
+                           coll.season = herring$Season,
                            lat = herring$Latitude,
                            long = herring$Longitude,
                            stat.area = as.factor(herring$StatArea))
@@ -127,6 +129,7 @@ with(herring_data, table(sal.sex, digestion))
 
 #Make a table of salmon year versus digestion
 with(herring_data, table(coll.year, digestion))
+
 ```
 
 ##Example 4 (***delete before submitting)
