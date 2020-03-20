@@ -178,7 +178,9 @@ Introduce relevant concepts:
 - State of salmon in BC
 - Salmon diet
 - Herring as a prey item for salmon
-- Gape size theory? Gape size and body size? Prey selection strategies?
+- Gape size theory
+- Yearly availbaility of herring of different sizes
+- Regional differences
 
 How the dataset was collected:
 - Salmon stomachs donated to Juanes lab by anglers
@@ -192,17 +194,22 @@ At least two scientiﬁc papers that are related to your topic:
 
 ##B)
 Research question:
-- Relationship between salmon size and size of their herring prey
+- What physiological, environmental and temporal factors determine the size of herring eaten by Chinook salmon in the Salish Sea
 
 ##C)
 Goal of research: 
-- Inference, we want to test if the size of the salmon determines the size of its herring prey, 
+- Description, because we want to know what variables best explain the patterns in the size of herring eaten by Chinook salmon 
 
 ##D)
 Hypothesis:
--  hypothesis for how you expect the response variable to change with each predictor variable and interactions: linear or non-linear and what shape? positive or negative? interaction terms? Why?
-OR list of alternative hypotheses, in words or as model formulae that correspond to diﬀerent scenarios related to your question
-- any null hypotheses
+- Salmon Length: 
+- Salmon Weight
+- Collection day of year
+- Season
+- Latitude
+- Longitude
+hypothesis for how you expect the response variable to change with each predictor variable and interactions: linear or non-linear and what shape? positive or negative? interaction terms? Why?
+
 
 ##E)
 Model selection:
