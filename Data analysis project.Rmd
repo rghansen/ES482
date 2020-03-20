@@ -53,6 +53,9 @@ herring_data <- data.frame(sal.id = herring$FishCode,
 levels(as.factor(herring$StatArea))
 
 #filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island
+herring_data_raw <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
+
+#filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island, excluding rows with NAs for continuous variables
 herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25") %>% na.omit()
 ```
 
@@ -104,6 +107,9 @@ Model selection:
 #Section 2: The Response Variable (150 words)
 ##A)
 ```{r, echo = TRUE}
+#Checking for zeroes and NAs in otilith width
+table(herring_data_raw$oto.width > 0, useNA = "always")
+
 #Add column for number of rows
 n <- nrow(herring_data)
 herring_data$row <- 1:n
@@ -116,6 +122,8 @@ with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0
 #Histogram of response variable with rugmarks
 hist(herring_data$oto.width, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of herring otolith width", xlab = "Herring otolith width")
 rug(herring_data$oto.width)
+
+
 ```
 
 ##B) 
@@ -125,9 +133,10 @@ Qualitative description of response variable:
 
 ##C)
 Potential issues with response variable
-- Outliers
-- Missing values
-- Zeroes
+- Intially no zeroes and one missing value
+- We removed the NA value for all subsequent analyses
+- Outliers at > 2.2 mm and < 0.6 mm, bu they're biologically reasonable and could represent a few individuals at extreme age classes
+- 
 - Non-independence from repeated measurements within experimental units
 - Non-idependence from temporal autocorrelation
 - Non-independence from spatial autocorrelation
