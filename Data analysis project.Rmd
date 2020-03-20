@@ -202,19 +202,19 @@ Goal of research:
 
 ##D)
 Hypothesis:
-- Salmon Length: 
-- Salmon Weight
-- Collection day of year
-- Season
-- Latitude
-- Longitude
-hypothesis for how you expect the response variable to change with each predictor variable and interactions: linear or non-linear and what shape? positive or negative? interaction terms? Why?
+- Salmon Length: Positive non-linear relationship, logarithmic curve where asymptote is maximum herring size
+- Salmon Weight: Positive non-linear relationship, logarithmic curve where asymptote is maximum herring size
+- Collection day of year: Non-linear, positive quadratic function where vertex is midway through the year
+- Month: Greater otilith width for October-May greater, September to be greater than August which is greater than July which is greater than June
 
 
 ##E)
 Model selection:
-- Why or why not use it?
-- What type to use?
+- We want to determine what factors explain patterns in the size of herring eaten by salmon 
+- So we want to choose a model which best describes this pattern
+- Our possible models are not nested, we aren't testing a null model
+- We have a fairly small sample size
+- Use the AICc
 
 #Section 2: The Response Variable (150 words)
 ##A)
