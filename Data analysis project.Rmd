@@ -282,6 +282,25 @@ Statistical methods
 - If transformations are used and why
 - If random-effects are used and why
 
+Models
+
+1. sal.id + doy + long + length + digestion
+2. sal.id + doy + long + length
+3. sal.id + doy + long + weight + digestion
+4. sal.id + doy + long + weight
+5. sal.id + doy + lat + length + digestion
+6. sal.id + doy + lat + length
+7. sal.id + doy + lat + weight + digestion
+8. sal.id + doy + lat + weight
+
+9. sal.id + month + long + length + digestion
+10. sal.id + month + long + length
+11. sal.id + month + long + weight + digestion
+12. sal.id + month + long + weight
+13. sal.id + month + lat + length + digestion
+14. sal.id + month + lat + length
+15. sal.id + month + lat + weight + digestion
+16. sal.id + month + lat + weight
 
 ```{r, echo = TRUE}
 #Fit the model or model
