@@ -31,7 +31,7 @@ citation("tidyverse")
 ##Read in and organize data
 ```{r, echo = TRUE}
 #Read from csv file
-herring <- read.csv("HerringOtolithDatabase 15 Jan 2020_JQ.csv", header=TRUE, fileEncoding="UTF-8-BOM")
+herring <- read.csv("HerringOtolithDatabase 15 Jan 2020_JQ.csv", header=TRUE, fileEncoding="UTF-8-BOM", stringsAsFactors = FALSE)
 
 #Create a data frame
 herring_data <- data.frame(sal.id = herring$FishCode,
@@ -56,7 +56,7 @@ levels(as.factor(herring$StatArea))
 herring_data_raw <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
 
 #filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island, excluding rows with NAs for continuous variables
-herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
+herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25") %>% na.omit()
 ```
 
 
@@ -181,7 +181,7 @@ with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 par(mfrow = c(3, 2))
 
 #Salmon length
-hist(herring_data$sal.length, col = grey(0.9), breaks = seq(0, 100, by = 2), main = "Histogram of salmon length", xlab = "Salmon length")
+hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length")
 rug(herring_data$sal.length)
 
 #Salmon weight
@@ -242,8 +242,8 @@ with(herring_data, table(coll.month, digestion))
 ```
 
 ##B)
-- Outliers - no outliers observed in the explanatory variables plotted above.
-- Transformations why or why not? 
+- Outliers - For the continuous explanatory variable salmon length, there is one outlier at 45cm and three outliers between 90-100cm; however, these are reasonable sizes for recreationally caught chinook salmon. While not considered outliers, there are few larger salmon that have large weights. 
+- Transformations why or why not? We may want to transform weight and length as they appear slightly right-skewed. **note: we must decide this later.
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
