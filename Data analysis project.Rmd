@@ -56,7 +56,7 @@ levels(as.factor(herring$StatArea))
 herring_data_raw <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
 
 #filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island, excluding rows with NAs for continuous variables
-herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25") %>% na.omit()
+herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
 ```
 
 
@@ -181,23 +181,23 @@ with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 par(mfrow = c(3, 2))
 
 #Salmon length
-hist(herring_data$sal.length, col = grey(0.9), main = "Histogram of salmon length", xlab = "Salmon length")
+hist(herring_data$sal.length, col = grey(0.9), breaks = seq(0, 100, by = 2), main = "Histogram of salmon length", xlab = "Salmon length")
 rug(herring_data$sal.length)
 
 #Salmon weight
-hist(herring_data$sal.weight, col = grey(0.9), main = "Histogram of salmon weight", xlab = "Salmon weight")
+hist(herring_data$sal.weight, col = grey(0.9), breaks = seq(0, 30, by = 0.5), main = "Histogram of salmon weight", xlab = "Salmon weight")
 rug(herring_data$sal.weight)
 
 #Collection day of year
-hist(herring_data$coll.doy, col = grey(0.9), main = "Histogram of day of year", xlab = "Collection day of year")
+hist(herring_data$coll.doy, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of day of year", xlab = "Collection day of year")
 rug(herring_data$coll.doy)
 
 #Latitude
-hist(herring_data$lat, col = grey(0.9), main = "Histogram of latitude", xlab = "Latitude")
+hist(herring_data$lat, col = grey(0.9), breaks = seq(48, 52, by = 10), main = "Histogram of latitude", xlab = "Latitude")
 rug(herring_data$lat)
 
 #Longitude
-hist(herring_data$long, col = grey(0.9), main = "Histogram of longitude", xlab = "Longitude")
+hist(herring_data$long, col = grey(0.9), breaks = seq(-125.5, -123, by = 0.05), main = "Histogram of longitude", xlab = "Longitude")
 rug(herring_data$long)
 
 ```
@@ -242,8 +242,8 @@ with(herring_data, table(coll.month, digestion))
 ```
 
 ##B)
-- Outliers
-- Transformations why or why not?
+- Outliers - no outliers observed in the explanatory variables plotted above.
+- Transformations why or why not? 
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
