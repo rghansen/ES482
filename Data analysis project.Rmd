@@ -48,7 +48,7 @@ herring_data <- data.frame(sal.id = herring$FishCode,
                            lat = herring$Latitude,
                            long = herring$Longitude,
                            stat.area = as.factor(herring$StatArea))
-str(herring_data_raw)
+
 #figure out which stat areas to remove
 levels(as.factor(herring$StatArea))
 
@@ -137,13 +137,13 @@ Potential issues with response variable
 - We removed the single NA value for all subsequent analyses
 - Outliers at > 2.2 mm and < 0.6 mm, bu they're biologically reasonable and could represent a few individuals at extreme age classes
 - 
-- Non-independence from repeated measurements of multiple herring that occurred within the same salmon stomach/experimental unit. It is likely that similar sized herring will occur in the same school targeted by a salmon.
-- Non-idependence from temporal autocorrelation
-- Non-independence from spatial autocorrelation
+- Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach/experimental unit. It is likely that similar sized herring will occur in the same school targeted by a salmon.
+
+- We expect non-idependence of herring size both from temporal and spatial autocorrelation. Sources of temporal autocorrelation could be that herring consumed by salmon at the same time of year have similar growth trajectories. Sources of spatial autocorrelation of herring size may include the fact that herring in a similar area have similar feeding resources and grow rates in addition to smaller fish that occur closer to subtidal habitats compared to larger fish that occur in deeper, pelagic habitats which may contribute to spatial autocorrelation.
 
 ##D)
 Candidate distributions for variable
-- Family of probability distributions we're likely to use
+- We are most likely to use the normal distribution. While the distribution is bound by 0 we have continuous data values (non-integer) and it is mostly symmetrical around the mean.
 
 #Section 3: The Explanatory Variables (150 words)
 ##A)
