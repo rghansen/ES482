@@ -48,7 +48,7 @@ herring_data <- data.frame(sal.id = herring$FishCode,
                            lat = herring$Latitude,
                            long = herring$Longitude,
                            stat.area = as.factor(herring$StatArea))
-
+str(herring_data_raw)
 #figure out which stat areas to remove
 levels(as.factor(herring$StatArea))
 
@@ -134,10 +134,10 @@ Qualitative description of response variable:
 ##C)
 Potential issues with response variable
 - Intially no zeroes and one missing value
-- We removed the NA value for all subsequent analyses
+- We removed the single NA value for all subsequent analyses
 - Outliers at > 2.2 mm and < 0.6 mm, bu they're biologically reasonable and could represent a few individuals at extreme age classes
 - 
-- Non-independence from repeated measurements within experimental units
+- Non-independence from repeated measurements of multiple herring that occurred within the same salmon stomach/experimental unit. It is likely that similar sized herring will occur in the same school targeted by a salmon.
 - Non-idependence from temporal autocorrelation
 - Non-independence from spatial autocorrelation
 
