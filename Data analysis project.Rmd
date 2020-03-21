@@ -264,10 +264,13 @@ print(vif(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat"
 #Balance of dataset (if appropriate)
 
 ```
-Comment on pairwise scatterplots
-Comment on strength of correlations
-Comment on VIFs
-Comment on potential difficulties from correlations and benefits
+Comment on balance - Referring to tables in section 3: we observe more salmon samples collected between March(3) to July(7) compared to other months and there are more females than males, although there is a high number of unsexed fish in this dataset. There is a higher number of herring categorized as digestion level 2, 3 and 4 compared to level 1. The difficulties we may encounter is to include sex if only 2/3 of the fish are sexed, therefore, it will be harder to evaluate whether sex is a useful predictor or not. The unbalanced nature of temporal sampling, it will be harder to evaluate the relationship during winter months. There isn't simultaneous unbalancing across multiple variables, we only see holes, so this is less likely to be confounding but rather limiting in making any generalized conclusions about how sex and the winter period relates to herring size consumed by salmon.
+
+Comment on pairwise scatterplots - there is a strong positive relationship between Chinook length and weight (0.91) in addition to a strong negative relationship between latitude and longitude (-0.83). While there isn't an obvious linear relationship between salmon length and weigth vs collection day, there is evidence for a concave up relationship between collection day of year and length and weight perhaps due to seasonality of salmon caught during the spring and summer months.
+
+Comment on VIFs - The VIF values of salmon length (6.818335), weight (6.932405), latitude (3.954376) and longitude (3.823013) are greater than 3 and therefore strongly colinear.
+
+Comment on potential difficulties from correlations and benefits - the difficulty will be including both length and weight or both latitude and longitute in our statistical models. We would want to include either length or weight and either latitude or longitude so that they don't confound each other. Seasonality in salmon size (length and weigth) may confound the relationship between these two variables.
 
 #Section 5: Statistical Methods and Model Fitting (200 words)
 Statistical methods
@@ -281,10 +284,9 @@ Statistical methods
 
 
 ```{r, echo = TRUE}
-#Fit the model or models
+#Fit the model or model
 
 ```
-
 #Section 6: Model Checking 
 
 ```{r, echo = TRUE}
