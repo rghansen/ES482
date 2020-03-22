@@ -154,7 +154,7 @@ Candidate distributions for variable
 #Section 3: The Explanatory Variables (150 words)
 ##A)
 ###Continuous explanatory variables
-```{r, fig.width = 8,fig.height = 8}
+```{r, fig.width = 6,fig.height = 6}
 #Multipanel of dotcharts for continuous explanatory variables
 par(mfrow = c(3, 2))
 
@@ -209,7 +209,7 @@ rug(herring_data$long)
 ```
 
 ###Categorical explanatory variables
-```{r, echo = TRUE}
+```{r, fig.width = 6,fig.height = 4}
 #Make a histogram of salmon id vs digestion
 hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 
