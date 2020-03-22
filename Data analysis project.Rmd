@@ -154,7 +154,7 @@ Candidate distributions for variable
 #Section 3: The Explanatory Variables (150 words)
 ##A)
 ###Continuous explanatory variables
-```{r, echo = TRUE}
+```{r, fig.width = 8,fig.height = 8}
 #Multipanel of dotcharts for continuous explanatory variables
 par(mfrow = c(3, 2))
 
