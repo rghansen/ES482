@@ -44,7 +44,7 @@ herring_data <- data.frame(sal.id = herring$FishCode,
                            sal.sex = herring$SalmonSex,
                            sal.length = (herring$SalmonLength),
                            sal.weight = herring$SalmonWeight,
-                           coll.month = herring$CollectionMonth,
+                           coll.month = as.factor(herring$CollectionMonth),
                            coll.year = herring$CollectionYear,
                            coll.doy =   herring$CollectionDayofYear,
                            coll.season = herring$Season,
@@ -309,8 +309,43 @@ Models
 15. sal.id + month + lat + weight + digestion
 16. sal.id + month + lat + weight
 
+##Exploratory plotting
+```{r, echo = TRUE}
+#Sal.ID
+plot(oto.width ~ sal.id, data = herring_data)
+
+#Sal.length
+plot(oto.width ~ sal.length, data = herring_data)
+
+#Sal.weight
+plot(oto.width ~ sal.weight, data = herring_data)
+
+#Sal.length.trans
+plot(oto.width ~ sal.length.trans, data = herring_data)
+
+#Sal.weight.trans
+plot(oto.width ~ sal.weight.trans, data = herring_data)
+
+#Coll.month
+plot(oto.width ~ coll.month, data = herring_data)
+
+#Coll.doy
+plot(oto.width ~ coll.doy, data = herring_data)
+
+#Lat
+plot(oto.width ~ lat, data = herring_data)
+
+#Long
+plot(oto.width ~ long, data = herring_data)
+
+
+
+
+```
 ##Untransformed models
 ```{r, echo = TRUE}
+herring_data <- herring_data %>% filter(coll.month == "3" | coll.month == "4" | coll.month == "5" | coll.month == "6" | coll.month == "7")
+
 #Fit model 1
 model_1 <- lmer(oto.width ~ coll.month + long + sal.length + digestion + (1|sal.id), data = herring_data)
 
