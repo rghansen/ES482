@@ -411,7 +411,6 @@ summary_16 <- summary(model_16)$coef
 
 ##All models plotted against data (delete before submitting?)
 ```{r, echo = TRUE}
-par(mfrow = c(2, 2))
 #Plot model 1 residuals
 plot(model_1, which = 1)
 
@@ -423,10 +422,7 @@ plot(model_3, which = 1)
 
 #Plot model 4 residuals
 plot(model_4, which = 1)
-```
-```{r, echo = TRUE}
 
-par(mfrow = c(2, 2))
 #Plot model 5 residuals
 plot(model_5, which = 1)
 
@@ -439,7 +435,6 @@ plot(model_7, which = 1)
 #Plot model 8 residuals
 plot(model_8, which = 1)
 
-par(mfrow = c(2, 2))
 #Plot model 9 residuals
 plot(model_9, which = 1)
 
@@ -452,7 +447,6 @@ plot(model_11, which = 1)
 #Plot model 12 residuals
 plot(model_12, which = 1)
 
-par(mfrow = c(2, 2))
 #Plot model 13 residuals
 plot(model_13, which = 1)
 
