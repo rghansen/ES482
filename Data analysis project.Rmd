@@ -22,6 +22,9 @@ library(plyr)
 #Load tidyverse package
 library(tidyverse)
 
+#Load lmer package
+library(lme4)
+
 #Cite packages
 citation("faraway")
 citation("plyr")
@@ -303,11 +306,167 @@ Models
 16. sal.id + month + lat + weight
 
 ```{r, echo = TRUE}
-#Fit the model or model
+#Fit model 1
+model_1 <- lmer(oto.width ~ coll.month + long + sal.length + digestion + (1|sal.id), data = herring_data)
+
+#Fit model 2
+model_2 <- lmer(oto.width ~ coll.month + long + sal.length + (1|sal.id), data = herring_data)
+
+#Fit model 3
+model_3 <- lmer(oto.width ~ coll.month + long + sal.weight + digestion + (1|sal.id), data = herring_data)
+
+#Fit model 4
+model_4 <- lmer(oto.width ~ coll.month + long + sal.weight + (1|sal.id), data = herring_data)
+
+#Fit model 5
+model_5 <- lmer(oto.width ~ coll.month + lat + sal.length + digestion + (1|sal.id), data = herring_data)
+
+#Fit model 6
+model_6 <- lmer(oto.width ~ coll.month + lat + sal.length + (1|sal.id), data = herring_data)
+
+#Fit model 7
+model_7 <- lmer(oto.width ~ coll.month + lat + sal.weight + digestion + (1|sal.id), data = herring_data)
+
+#Fit model 8
+model_8 <- lmer(oto.width ~ coll.month + lat + sal.weight + (1|sal.id), data = herring_data)
+
+#Fit model 9
+model_9 <- lmer(oto.width ~ coll.doy + long + sal.length + digestion + (1|sal.id), data = herring_data)
+
+#Fit model 10
+model_10 <- lmer(oto.width ~ coll.doy + long + sal.length + (1|sal.id), data = herring_data)
+
+#Fit model 11
+model_11 <- lmer(oto.width ~ coll.doy + long + sal.weight + digestion + (1|sal.id), data = herring_data)
+
+#Fit model 12
+model_12 <- lmer(oto.width ~ coll.doy + long + sal.weight + (1|sal.id), data = herring_data)
+
+#Fit model 13
+model_13 <- lmer(oto.width ~ coll.doy + lat + sal.length + digestion + (1|sal.id), data = herring_data)
+
+#Fit model 14
+model_14 <- lmer(oto.width ~ coll.doy + lat + sal.length + (1|sal.id), data = herring_data)
+
+#Fit model 15
+model_15 <- lmer(oto.width ~ coll.doy + lat + sal.weight + digestion + (1|sal.id), data = herring_data)
+
+#Fit model 16
+model_16 <- lmer(oto.width ~ coll.doy + lat + sal.weight + (1|sal.id), data = herring_data)
+```
+
+#Section 6: Model Checking 
+##All models summarized (delete before submitting?)
+```{r, echo = TRUE}
+#Summary of model 1
+summary_1 <- summary(model_1)$coef
+
+#Summary of model 2
+summary_2 <- summary(model_2)$coef
+
+#Summary of model 3
+summary_3 <- summary(model_3)$coef
+
+#Summary of model 4
+summary_4 <- summary(model_4)$coef
+
+#Summary of model 5
+summary_5 <- summary(model_5)$coef
+
+#Summary of model 6
+summary_6 <- summary(model_6)$coef
+
+#Summary of model 7
+summary_7 <- summary(model_7)$coef
+
+#Summary of model 8
+summary_8 <- summary(model_8)$coef
+
+#Summary of model 9
+summary_9 <- summary(model_9)$coef
+
+#Summary of model 10
+summary_10 <- summary(model_10)$coef
+
+#Summary of model 11
+summary_11 <- summary(model_11)$coef
+
+#Summary of model 12
+summary_12 <- summary(model_12)$coef
+
+#Summary of model 13
+summary_13 <- summary(model_13)$coef
+
+#Summary of model 14
+summary_14 <- summary(model_14)$coef
+
+#Summary of model 15
+summary_15 <- summary(model_15)$coef
+
+#Summary of model 16
+summary_16 <- summary(model_16)$coef
 
 ```
-#Section 6: Model Checking 
 
+
+##All models plotted against data (delete before submitting?)
+```{r, echo = TRUE}
+par(mfrow = c(2, 2))
+#Plot model 1 residuals
+plot(model_1, which = 1)
+
+#Plot model 2 residuals
+plot(model_2, which = 1)
+
+#Plot model 3 residuals
+plot(model_3, which = 1)
+
+#Plot model 4 residuals
+plot(model_4, which = 1)
+```
+```{r, echo = TRUE}
+
+par(mfrow = c(2, 2))
+#Plot model 5 residuals
+plot(model_5, which = 1)
+
+#Plot model 6 residuals
+plot(model_6, which = 1)
+
+#Plot model 7 residuals
+plot(model_7, which = 1)
+
+#Plot model 8 residuals
+plot(model_8, which = 1)
+
+par(mfrow = c(2, 2))
+#Plot model 9 residuals
+plot(model_9, which = 1)
+
+#Plot model 10 residuals
+plot(model_10, which = 1)
+
+#Plot model 11 residuals
+plot(model_11, which = 1)
+
+#Plot model 12 residuals
+plot(model_12, which = 1)
+
+par(mfrow = c(2, 2))
+#Plot model 13 residuals
+plot(model_13, which = 1)
+
+#Plot model 14 residuals
+plot(model_14, which = 1)
+
+#Plot model 15 residuals
+plot(model_15, which = 1)
+
+#Plot model 16 residuals
+plot(model_16, which = 1)
+```
+
+##Chosen models
 ```{r, echo = TRUE}
 #Check the assumptions of at least one model
 #-  plotting and interpreting the residuals of the model
