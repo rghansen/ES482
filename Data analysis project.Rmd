@@ -276,7 +276,7 @@ Comment on pairwise scatterplots - there is a strong positive relationship betwe
 
 Comment on VIFs - The VIF values of salmon length (6.818335), weight (6.932405), latitude (3.954376) and longitude (3.823013) are greater than 3 and therefore strongly colinear.
 
-Comment on potential difficulties from correlations and benefits - the difficulty will be including both length and weight or both latitude and longitute in our statistical models. We would want to include either length or weight and either latitude or longitude so that they don't confound each other. Seasonality in salmon size (length and weigth) may confound the relationship between these two variables.
+Comment on potential difficulties from correlations and benefits - the difficulty will be including both length and weight, both latitude and longitute and both month and day of year in our statistical models. We would want to include either length or weight, either latitude or longitude and either month or day of year, so that they don't confound each other. Seasonality in salmon size (length and weigth) may confound the relationship between these two variables.
 
 #Section 5: Statistical Methods and Model Fitting (200 words)
 Statistical methods
