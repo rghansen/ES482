@@ -255,11 +255,11 @@ with(herring_data, table(coll.month, digestion))
 ##A)
 ```{r, echo = TRUE}
 #create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
-herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "sal.weight" = herring_data$sal.weight, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
+herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "sal.weight" = herring_data$sal.weight, "coll.doy" = herring_data$coll.doy, "coll.month" = herring_data$coll.month, "lat" = herring_data$lat, "long" = herring_data$long)
 
 #Pairwise scatterplot of explanatory variables (salmon length, weight, day of year, latitude and longitude)
-plot(herring_collinearity[1:5], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
-                   labels = c("Chinook\nLength [mm]", "Chinook\nWeight [lbs]", "Collection\nDay in 2018", "Latitude", "Longitude"))
+plot(herring_collinearity[1:6], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
+                   labels = c("Chinook\nLength [mm]", "Chinook\nWeight [lbs]", "Collection\nDay in 2018", "Collection\nMonth in 2018", "Latitude", "Longitude"))
 
 #Pairwise correlation coefficients for explanatory variables
 print(cor(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])), digits = 2)
@@ -272,7 +272,7 @@ print(vif(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat"
 ```
 Comment on balance - Referring to tables in section 3: we observe more salmon samples collected between March(3) to July(7) compared to other months and there are more females than males, although there is a high number of unsexed fish in this dataset. There is a higher number of herring categorized as digestion level 2, 3 and 4 compared to level 1. The difficulties we may encounter is to include sex if only 2/3 of the fish are sexed, therefore, it will be harder to evaluate whether sex is a useful predictor or not. The unbalanced nature of temporal sampling, it will be harder to evaluate the relationship during winter months. There isn't simultaneous unbalancing across multiple variables, we only see holes, so this is less likely to be confounding but rather limiting in making any generalized conclusions about how sex and the winter period relates to herring size consumed by salmon.
 
-Comment on pairwise scatterplots - there is a strong positive relationship between Chinook length and weight (0.91) in addition to a strong negative relationship between latitude and longitude (-0.83). While there isn't an obvious linear relationship between salmon length and weigth vs collection day, there is evidence for a concave up relationship between collection day of year and length and weight perhaps due to seasonality of salmon caught during the spring and summer months.
+Comment on pairwise scatterplots - there is a strong positive relationship between Chinook length and weight (0.91) in addition to a strong positive relationship between collection day in 2018 and collection month in 2018. While there isn't an obvious linear relationship between salmon length and weigth vs collection day and collection month, there is evidence for a concave up relationship between collection day of year and collection day of month with length and weight, perhaps due to seasonality of salmon caught during the spring and summer months. There is a strong positive relationship between collection day and collection month which is expected since collection month is pooled data of collection day. There is a strong negative relationship between latitude and longitude (-0.83).
 
 Comment on VIFs - The VIF values of salmon length (6.818335), weight (6.932405), latitude (3.954376) and longitude (3.823013) are greater than 3 and therefore strongly colinear.
 
