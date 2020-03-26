@@ -156,11 +156,6 @@ with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Actual Sal
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.length, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Salmon weight
-with(herring_data, plot(sal.weight, row, las = 1, type = "n", xlab = "Actual Salmon Weight [lbs]", ylab = "Row Number"))
-abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data, points(sal.weight, row, las = 1, type = "p", pch = 19, cex = 0.5))
-
 #Collection day of year
 with(herring_data, plot(coll.doy, row, las = 1, type = "n", xlab = "Day of Year in 2018", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
@@ -183,16 +178,12 @@ par(mfrow = c(3, 2))
 hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length")
 rug(herring_data$sal.length)
 
-#Salmon weight
-hist(herring_data$sal.weight, col = grey(0.9), breaks = seq(0, 30, by = 0.5), main = "Histogram of salmon weight", xlab = "Salmon weight")
-rug(herring_data$sal.weight)
-
 #Collection day of year
 hist(herring_data$coll.doy, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of day of year", xlab = "Collection day of year")
 rug(herring_data$coll.doy)
 
 #Latitude
-hist(herring_data$lat, col = grey(0.9), breaks = seq(48, 52, by = 10), main = "Histogram of latitude", xlab = "Latitude")
+hist(herring_data$lat, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude")
 rug(herring_data$lat)
 
 #Longitude
