@@ -209,7 +209,6 @@ hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), m
 
 #Make a table of salmon sex versus digestion
 with(herring_data, table(sal.sex, digestion))
-
 ```
 
 ##B)
@@ -231,9 +230,6 @@ print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), 
 
 #Variance Inflation Factors
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
-
-#Balance of dataset (if appropriate)
-
 ```
 Comment on balance - Referring to tables in section 3: we observe more salmon samples collected between March(3) to July(7) compared to other months and there are more females than males, although there is a high number of unsexed fish in this dataset. There is a higher number of herring categorized as digestion level 2, 3 and 4 compared to level 1. The difficulties we may encounter is to include sex if only 2/3 of the fish are sexed, therefore, it will be harder to evaluate whether sex is a useful predictor or not. The unbalanced nature of temporal sampling, it will be harder to evaluate the relationship during winter months. There isn't simultaneous unbalancing across multiple variables, we only see holes, so this is less likely to be confounding but rather limiting in making any generalized conclusions about how sex and the winter period relates to herring size consumed by salmon.
 
