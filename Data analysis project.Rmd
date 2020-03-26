@@ -193,47 +193,22 @@ rug(herring_data$long)
 ```
 
 ###Categorical explanatory variables
-```{r, fig.width = 6,fig.height = 4}
-#Make a histogram of salmon id vs digestion
-hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
-
+```{r, fig.width = 6,fig.height = 3}
 #Multipanel of dotcharts for categorical explanatory variables
-par(mfrow = c(2, 2))
+par(mfrow = c(1, 2))
 
 #Salmon id
 with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Digestion
-with(herring_data, plot(digestion, row, las = 1, type = "n", xlab = "Digestion state", ylab = "Row Number"))
-abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data, points(digestion, row, las = 1, type = "p", pch = 19, cex = 0.5))
-
-#Collection Month
-with(herring_data, plot(coll.month, row, las = 1, type = "n", xlab = "Collection Month", ylab = "Row Number"))
-abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data, points(coll.month, row, las = 1, type = "p", pch = 19, cex = 0.5))
-
-#Salmon sex (note - label the first categorical NA variable)
-with(herring_data, plot(sal.sex, row, las = 1, type = "n", xlab = "Salmon sex", ylab = "Row Number"))
-abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data, points(sal.sex, row, las = 1, type = "p", pch = 19, cex = 0.5))
-
-#Tables for categorical explanatory variables
-#Make a table of salmon sex versus collection month
-with(herring_data, table(sal.sex, coll.month))
-
-#Make a table of salmon sex versus digestion
-with(herring_data, table(sal.sex, digestion))
-
-#Make a table of collection month versus digestion
-with(herring_data, table(coll.month, digestion))
+#Make a histogram of salmon id vs digestion
+hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 ```
 
 ##B)
 - Outliers - For the continuous explanatory variable salmon length, there is one outlier at 45cm and three outliers between 90-100cm; however, these are reasonable sizes for recreationally caught chinook salmon. While not considered outliers, there are few larger salmon that have large weights. 
-- Transformations why or why not? We may want to transform weight and length as they appear slightly right-skewed. **note: we must decide this later.
+- Transformations why or why not? No transformations are necessary as no obvious skewedness is observed.
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
