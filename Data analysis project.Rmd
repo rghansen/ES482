@@ -39,15 +39,10 @@ herring <- read.csv("HerringOtolithDatabase 15 Jan 2020_JQ.csv", header=TRUE, fi
 #Create a data frame
 herring_data <- data.frame(sal.id = herring$FishCode,
                            oto.width = herring$AverageWidth,
-                           digestion = herring$Digestion,
                            sal.sp = herring$SalmonSpecies,
-                           sal.sex = herring$SalmonSex,
                            sal.length = (herring$SalmonLength),
-                           sal.weight = herring$SalmonWeight,
-                           coll.month = as.factor(herring$CollectionMonth),
                            coll.year = herring$CollectionYear,
                            coll.doy =   herring$CollectionDayofYear,
-                           coll.season = herring$Season,
                            lat = herring$Latitude,
                            long = herring$Longitude,
                            stat.area = as.factor(herring$StatArea))
