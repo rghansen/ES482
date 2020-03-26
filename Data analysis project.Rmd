@@ -182,7 +182,7 @@ rug(herring_data$sal.length)
 hist(herring_data$coll.doy, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of day of year", xlab = "Collection day of year")
 rug(herring_data$coll.doy)
 
-#Latitude
+#Latitude *something is up with this y axis
 hist(herring_data$lat, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude")
 rug(herring_data$lat)
 
