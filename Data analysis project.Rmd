@@ -57,10 +57,6 @@ levels(as.factor(herring$StatArea))
 
 #filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island
 herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
-
-#Add transformed length and weight columns
-herring_data$sal.length.trans <- log(herring_data$sal.length)
-herring_data$sal.weight.trans <- log(herring_data$sal.weight)
 ```
 
 
@@ -308,21 +304,6 @@ Models
 15. sal.id + month + lat + weight + digestion
 16. sal.id + month + lat + weight
 
-JQ modelling - *erase before submission
-```{r}
-
-model_9  <- lmer(oto.width ~ coll.doy + long + sal.length + digestion + (1|sal.id), data = herring_data, )
-model_10 <- lmer(oto.width ~ coll.doy + long + sal.length + (1|sal.id), data = herring_data)
-model_11 <- lmer(oto.width ~ coll.doy + long + sal.weight + digestion + (1|sal.id), data = herring_data)
-model_12 <- lmer(oto.width ~ coll.doy + long + sal.weight + (1|sal.id), data = herring_data)
-model_13 <- lmer(oto.width ~ coll.doy + lat + sal.length + digestion + (1|sal.id), data = herring_data)
-model_14 <- lmer(oto.width ~ coll.doy + lat + sal.length + (1|sal.id), data = herring_data)
-model_15 <- lmer(oto.width ~ coll.doy + lat + sal.weight + digestion + (1|sal.id), data = herring_data)
-model_16 <- lmer(oto.width ~ coll.doy + lat + sal.weight + (1|sal.id), data = herring_data)
-
-```
-
-
 ##Exploratory plotting
 ```{r, echo = TRUE}
 #Sal.ID
@@ -407,57 +388,6 @@ model_15 <- lmer(oto.width ~ coll.doy + lat + sal.weight + digestion + (1|sal.id
 
 #Fit model 16
 model_16 <- lmer(oto.width ~ coll.doy + lat + sal.weight + (1|sal.id), data = herring_data)
-```
-
-##Transformed models
-```{r, echo = TRUE}
-#Fit model 1t
-model_1t <- lmer(oto.width ~ coll.month + long + sal.length.trans + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 2t
-model_2t <- lmer(oto.width ~ coll.month + long + sal.length.trans + (1|sal.id), data = herring_data)
-
-#Fit model 3t
-model_3t <- lmer(oto.width ~ coll.month + long + sal.weight.trans + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 4t
-model_4t <- lmer(oto.width ~ coll.month + long + sal.weight.trans + (1|sal.id), data = herring_data)
-
-#Fit model 5t
-model_5t <- lmer(oto.width ~ coll.month + lat + sal.length.trans + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 6t
-model_6t <- lmer(oto.width ~ coll.month + lat + sal.length.trans + (1|sal.id), data = herring_data)
-
-#Fit model 7t
-model_7t <- lmer(oto.width ~ coll.month + lat + sal.weight.trans + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 8t
-model_8t <- lmer(oto.width ~ coll.month + lat + sal.weight.trans + (1|sal.id), data = herring_data)
-
-#Fit model 9t
-model_9t <- lmer(oto.width ~ coll.doy + long + sal.length.trans + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 10t
-model_10t <- lmer(oto.width ~ coll.doy + long + sal.length.trans + (1|sal.id), data = herring_data)
-
-#Fit model 11t
-model_11t <- lmer(oto.width ~ coll.doy + long + sal.weight.trans + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 12t
-model_12t <- lmer(oto.width ~ coll.doy + long + sal.weight.trans + (1|sal.id), data = herring_data)
-
-#Fit model 13t
-model_13t <- lmer(oto.width ~ coll.doy + lat + sal.length.trans + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 14t
-model_14t <- lmer(oto.width ~ coll.doy + lat + sal.length.trans + (1|sal.id), data = herring_data)
-
-#Fit model 15t
-model_15t <- lmer(oto.width ~ coll.doy + lat + sal.weight.trans + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 16t
-model_16t <- lmer(oto.width ~ coll.doy + lat + sal.weight.trans + (1|sal.id), data = herring_data)
 ```
 
 #Section 6: Model Checking 
