@@ -214,17 +214,17 @@ hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), m
 ##A)
 ```{r, echo = TRUE}
 #create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
-herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "sal.weight" = herring_data$sal.weight, "coll.doy" = herring_data$coll.doy, "coll.month" = herring_data$coll.month, "lat" = herring_data$lat, "long" = herring_data$long)
+herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
 
 #Pairwise scatterplot of explanatory variables (salmon length, weight, day of year, latitude and longitude)
-plot(herring_collinearity[1:6], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
-                   labels = c("Chinook\nLength [mm]", "Chinook\nWeight [lbs]", "Collection\nDay in 2018", "Collection\nMonth in 2018", "Latitude", "Longitude"))
+plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
+                   labels = c("Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
 
 #Pairwise correlation coefficients for explanatory variables
-print(cor(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])), digits = 2)
+print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), digits = 2)
 
 #Variance Inflation Factors
-print(vif(na.omit(herring_data[ ,c("sal.length", "sal.weight", "coll.doy", "lat", "long")])))
+print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 
 #Balance of dataset (if appropriate)
 
