@@ -109,7 +109,7 @@ Model selection:
 n <- nrow(herring_data)
 herring_data$row <- 1:n
 
-#Dotchart of  otolith width (response variable)
+#Dotchart of otolith width (response variable)
 with(herring_data, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
@@ -134,9 +134,8 @@ Qualitative description of response variable:
 ##C)
 Potential issues with response variable
 - Intially no zeroes and one missing value
-- We removed the single NA value for all subsequent analyses
-- Outliers at > 2.2 mm and < 0.6 mm, bu they're biologically reasonable and could represent a few individuals at extreme age classes
-- 
+- We removed the single NA value for all subsequent analyses - this was a vial with a missing/lost otolith pair - expect no difficulties omitting this NA value (say something about salmon length?)
+- Outliers at > 2.2 mm and < 0.6 mm, but they're biologically reasonable and could represent a few individuals at extreme age classes
 - Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach/experimental unit. It is likely that similar sized herring will occur in the same school targeted by a salmon.
 
 - We expect non-idependence of herring size both from temporal and spatial autocorrelation. Sources of temporal autocorrelation could be that herring consumed by salmon at the same time of year have similar growth trajectories. Sources of spatial autocorrelation of herring size may include the fact that herring in a similar area have similar feeding resources and grow rates in addition to smaller fish that occur closer to subtidal habitats compared to larger fish that occur in deeper, pelagic habitats which may contribute to spatial autocorrelation.
