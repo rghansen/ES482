@@ -308,6 +308,21 @@ Models
 15. sal.id + month + lat + weight + digestion
 16. sal.id + month + lat + weight
 
+JQ modelling - *erase before submission
+```{r}
+
+model_9  <- lmer(oto.width ~ coll.doy + long + sal.length + digestion + (1|sal.id), data = herring_data, )
+model_10 <- lmer(oto.width ~ coll.doy + long + sal.length + (1|sal.id), data = herring_data)
+model_11 <- lmer(oto.width ~ coll.doy + long + sal.weight + digestion + (1|sal.id), data = herring_data)
+model_12 <- lmer(oto.width ~ coll.doy + long + sal.weight + (1|sal.id), data = herring_data)
+model_13 <- lmer(oto.width ~ coll.doy + lat + sal.length + digestion + (1|sal.id), data = herring_data)
+model_14 <- lmer(oto.width ~ coll.doy + lat + sal.length + (1|sal.id), data = herring_data)
+model_15 <- lmer(oto.width ~ coll.doy + lat + sal.weight + digestion + (1|sal.id), data = herring_data)
+model_16 <- lmer(oto.width ~ coll.doy + lat + sal.weight + (1|sal.id), data = herring_data)
+
+```
+
+
 ##Exploratory plotting
 ```{r, echo = TRUE}
 #Sal.ID
