@@ -44,6 +44,7 @@ herring_data <- data.frame(sal.id = herring$FishCode,
                            sal.sex = herring$SalmonSex,
                            sal.length = (herring$SalmonLength),
                            coll.year = herring$CollectionYear,
+                           coll.month = herring$CollectionMonth,
                            coll.doy =   herring$CollectionDayofYear,
                            lat = herring$Latitude,
                            long = herring$Longitude,
@@ -204,11 +205,13 @@ with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", yl
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Make a histogram of salmon id
-hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
+#Make a histogram of herring frequency per salmon
+hist(herring_data$sal.id, col = grey(0.9), bin = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 
-#Make a table of salmon sex versus digestion
+#Make a table of salmon sex, digestion, collection month
 with(herring_data, table(sal.sex, digestion))
+with(herring_data, table(digestion, coll.month))
+with(herring_data, table(sal.sex, coll.month))
 ```
 
 ##B)
@@ -231,13 +234,13 @@ print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), 
 #Variance Inflation Factors
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
-Comment on balance - Referring to tables in section 3: we observe more salmon samples collected between March(3) to July(7) compared to other months and there are more females than males, although there is a high number of unsexed fish in this dataset. There is a higher number of herring categorized as digestion level 2, 3 and 4 compared to level 1. The difficulties we may encounter is to include sex if only 2/3 of the fish are sexed, therefore, it will be harder to evaluate whether sex is a useful predictor or not. The unbalanced nature of temporal sampling, it will be harder to evaluate the relationship during winter months. There isn't simultaneous unbalancing across multiple variables, we only see holes, so this is less likely to be confounding but rather limiting in making any generalized conclusions about how sex and the winter period relates to herring size consumed by salmon.
+Comment on balance - tables of collection month, sex and digestion score - observe more salmon samples collected between March(3) to July(7) compared to other months and there are more females than males, although there is a high number of unsexed fish in this dataset. There is a higher number of herring categorized as digestion level 2, 3 and 4 compared to level 1. The difficulties we may encounter is to include sex if only 2/3 (?) of the fish are sexed, therefore, it will be harder to evaluate whether sex is a useful predictor or not. The unbalanced nature of temporal sampling, it will be harder to evaluate the relationship during winter months. There isn't simultaneous unbalancing across multiple variables, we only see holes, so this is less likely to be confounding but rather limiting in making any generalized conclusions about how sex and the winter period relates to herring size consumed by salmon.
 
-Comment on pairwise scatterplots - there is a strong positive relationship between Chinook length and weight (0.91) in addition to a strong positive relationship between collection day in 2018 and collection month in 2018. While there isn't an obvious linear relationship between salmon length and weigth vs collection day and collection month, there is evidence for a concave up relationship between collection day of year and collection day of month with length and weight, perhaps due to seasonality of salmon caught during the spring and summer months. There is a strong positive relationship between collection day and collection month which is expected since collection month is pooled data of collection day. There is a strong negative relationship between latitude and longitude (-0.83).
+Comment on pairwise scatterplots - there is evidence for a concave up relationship between salmon length and collection day of year with a weak correlation coefficient of -0.062, perhaps due to seasonality of salmon caught during the spring and summer months. Salmon length is moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There is a weak, slightly negative correlation (-0.1284) between collection day of year and latitude but a strong, negative correlation (-0.8721) between latitude and longitude.
 
-Comment on VIFs - The VIF values of salmon length (6.818335), weight (6.932405), latitude (3.954376) and longitude (3.823013) are greater than 3 and therefore strongly colinear.
+Comment on VIFs - The VIF values of latitude (4.721313) and longitude (4.428887) are greater than 3 and strongly colinear.
 
-Comment on potential difficulties from correlations and benefits - the difficulty will be including both length and weight, both latitude and longitute and both month and day of year in our statistical models. We would want to include either length or weight, either latitude or longitude and either month or day of year, so that they don't confound each other. Seasonality in salmon size (length and weigth) may confound the relationship between these two variables.
+Comment on potential difficulties from correlations and benefits - including both latitude and longitute in one statistical model will contribute to confounding effects, therefore we will run two models with either latitude or longitude. Seasonality in salmon length may also confound the relationship between these two variables (?).
 
 #Section 5: Statistical Methods and Model Fitting (200 words)
 Statistical methods
