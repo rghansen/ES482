@@ -37,18 +37,20 @@ citation("tidyverse")
 herring <- read.csv("HerringOtolithDatabase 15 Jan 2020_JQ.csv", header=TRUE, fileEncoding="UTF-8-BOM", stringsAsFactors = FALSE)
 
 #Create a data frame
-herring_data <- data.frame(sal.id = herring$FishCode,
-                           oto.width = herring$AverageWidth,
-                           digestion = herring$Digestion,
-                           sal.sp = herring$SalmonSpecies,
-                           sal.sex = herring$SalmonSex,
-                           sal.length = (herring$SalmonLength),
-                           coll.year = herring$CollectionYear,
-                           coll.month = herring$CollectionMonth,
-                           coll.doy =   herring$CollectionDayofYear,
+herring_data <- data.frame(oto.width = herring$AverageWidth,
+                           sal.id = herring$FishCode,
+                           sal.length = herring$SalmonLength,
+                           coll.doy = herring$CollectionDayofYear,
                            lat = herring$Latitude,
                            long = herring$Longitude,
-                           stat.area = as.factor(herring$StatArea))
+                           
+                           sal.sp = herring$SalmonSpecies,
+                           coll.year = herring$CollectionYear,
+                           stat.area = as.factor(herring$StatArea),
+                           
+                           digestion = herring$Digestion,
+                           sal.sex = herring$SalmonSex,
+                           coll.month = herring$CollectionMonth)
 
 #figure out which stat areas to remove
 levels(as.factor(herring$StatArea))
