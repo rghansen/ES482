@@ -57,55 +57,29 @@ levels(as.factor(herring$StatArea))
 
 #filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island
 herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
-
 ```
 
 
 #Section 1: Introduction, Question, Goals and Hypotheses (400 words)
+
 ##A)
-Introduce relevant concepts: 
-- State of salmon in BC
-- Salmon diet
-- Herring as a prey item for salmon
-- Gape size theory
-- Yearly availbaility of herring of different sizes
-- Regional differences
+Pacific Salmon in British Columbia are valued for their social, cultural and economic benefits to many communities on our coast. Despite their important role in the coastal marine ecosystem (Schindler et al. 2003), diet studies from this region are outdated and limited to summer sampling. The adult Chinook and Coho Salmon Diet Program (Juanes Lab) seeks to address these knowledge gaps by sourcing stomach samples from the recreational fishing community to gather regional, seasonal and interannual diet data to monitor ecosystem response to environmental change.
 
-How the dataset was collected:
-- Salmon stomachs donated to Juanes lab by anglers
-- Salmon stomach contents sorted and classfied based on digestion
-- Otoliths collected and measured
-
- Background needed to understand the dataset:
-- Otolith width as the best proxy for herring length
-
-At least two scientiﬁc papers that are related to your topic:
+We have found Pacific Herring are the dominant fish consumed throughout regions of the Salish Sea, year-round. For this project we will investigate factors that may be important to the size of herring consumed by Chinook Salmon. Previous work suggests a positive, linear relationship between otolith width (mm) and length (mm) of herring from this dataset. Otolith width (mm) measurements averaged from left and right otoliths will be used as a proxy for herring size (Stevenson and Campana, 1992) in this analysis. We will also use salmon catch data recorded by each angler and submitted with the associated stomach sample.
 
 ##B)
-Research question:
-- What physiological, environmental and temporal factors determine the size of herring eaten by Chinook salmon in the Salish Sea
+How does Chinook size, catch location and time of year in the Salish Sea affect the size of herring prey consumed?
 
 ##C)
-Goal of research: 
-- Description, because we want to know what variables best explain the patterns in the size of herring eaten by Chinook salmon 
+This analysis is inferential with the goal of understanding factors that explain variation in herring size consumed by Chinook in the Salish Sea.
 
 ##D)
-Hypothesis:
-- Salmon Length: Positive non-linear relationship, logarithmic curve where asymptote is maximum herring size
-- Collection day of year: Non-linear, positive quadratic function where vertex is midway through the year
-- latitude: linear, positive relationship with increasing latitude
-- longitude: non-linear, positive quadratic function where the vertex occurs at mid-channel points longitudinally through the Strait of Georgia Channel...
-- salmon id: no relationship
--interactions: ? 
-
+We hypothesize that otolith width will be positively linear then asymptotic at maximum herring size as salmon length increases. Otolith width and day of year will show a quadratic, s-shaped relationship with the vertex midway through the calendar year. We expect a moderately positive, linear relationship with increasing latitude and a quadratic, concave up relationship with longitude with maximum herring size occurring in mid-channel waters. We expect that collinearity between latitude and longitude will cause in interaction effect on otolith width. An interaction may also exist between salmon length and latitude and between salmon length and day of year.
 
 ##E)
-Model selection:
-- We want to determine what factors explain patterns in the size of herring eaten by salmon 
-- So we want to choose a model which best describes this pattern
-- Our possible models are not nested, we aren't testing a null model
-- We have a fairly small sample size
-- Use the AICc
+We will use AIC fit with maximum likelihood estimation because it is flexible when comparing complex, non-nested models with parameters estimated from ecological field studies. AIC is commonly used in ecosystem studies where parameter estimates are relatively imprecise and we accept that the optimal model may be selected over the true, given the current sample size and our ecological understanding of the system.
+
+(395)
 
 #Section 2: The Response Variable (150 words)
 ##A)
@@ -567,3 +541,9 @@ Limitations of the model(s) that you have ﬁt
 ##D)
 Results into context
 - citie at least two relevant scientiﬁc papers
+
+## References
+
+Schindler, D. E., M. D. Scheuerell, J. W. Moore, S. M. Gende, T. B. Francis, and W. J. Palen. 2003. Pacific Salmon and the Ecology of Coastal Ecosystems. Frontiers in Ecology and the Environment 1:31.
+
+Stevenson, D. K., and S. E. Campana. 1992. Otolith microstructure examination and analysis. Can. Spec. Publ. Fish. Aquat. Sci. 117: 126 p. 1. Page Otolith Microstructure Examination and Analysis.
