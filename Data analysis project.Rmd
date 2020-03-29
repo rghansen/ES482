@@ -106,22 +106,15 @@ herring_data <- herring_data %>% na.omit()
 ```
 
 ##B) 
-Qualitative description of response variable:
-- Continuous 
-- Bounded by 0, can't take negative values
+The response variable (otolith width) is continuous and cannot take on zero or negative values. The range of possible response values in this dataset is 0.007 mm to 2.68 mm. 
 
 ##C)
-Potential issues with response variable
-- Intially no zeroes and one missing value
-- We removed the single NA value for all subsequent analyses - this was a vial with a missing/lost otolith pair - expect no difficulties omitting this NA value (say something about salmon length?)
-- Outliers at > 2.2 mm and < 0.6 mm, but they're biologically reasonable and could represent a few individuals at extreme age classes
-- Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach/experimental unit. It is likely that similar sized herring will occur in the same school targeted by a salmon.
-
-- We expect non-idependence of herring size both from temporal and spatial autocorrelation. Sources of temporal autocorrelation could be that herring consumed by salmon at the same time of year have similar growth trajectories. Sources of spatial autocorrelation of herring size may include the fact that herring in a similar area have similar feeding resources and grow rates in addition to smaller fish that occur closer to subtidal habitats compared to larger fish that occur in deeper, pelagic habitats which may contribute to spatial autocorrelation.
+Outliers at < 0.6 mm and > 2.2 mm are reasonable measurements representing a few individuals in the extreme age classes. There are no zero values and one missing otolith measurement making up 0.11 % of the data. We anticipate no difficulties in removing the single NA value from subsequent analyses. Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach. Herring consumed at similar times of year may have similar growth trajectories that contribute to temporal autocorrelation. Spatial autocorrelation may occur if herring consumed in similar areas have similar prey fields and grow rates.
 
 ##D)
-Candidate distributions for variable
-- We are most likely to use the normal distribution. While the distribution is bound by 0 we have continuous data values (non-integer) and it is mostly symmetrical around the mean.
+We will consider the normal distribution for modelling.  
+
+(140)
 
 #Section 3: The Explanatory Variables (150 words)
 ##A)
