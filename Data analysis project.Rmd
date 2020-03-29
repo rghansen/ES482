@@ -182,10 +182,9 @@ with(herring_data, table(sal.sex, digestion))
 with(herring_data, table(digestion, coll.month))
 with(herring_data, table(sal.sex, coll.month))
 ```
+## B)
+One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no obvious skewedness is observed.
 
-##B)
-- Outliers - For the continuous explanatory variable salmon length, there is one outlier at 45cm and three outliers between 90-100cm; however, these are reasonable sizes for recreationally caught chinook salmon. While not considered outliers, there are few larger salmon that have large weights. 
-- Transformations why or why not? No transformations are necessary as no obvious skewedness is observed.
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
