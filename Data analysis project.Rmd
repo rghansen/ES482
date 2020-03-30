@@ -169,12 +169,12 @@ rug(herring_data$long)
 #Multipanel of dotcharts for categorical explanatory variables
 par(mfrow = c(1, 2))
 
-#Salmon id
+#Salmon id *(can we omit?)
 with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Make a histogram of herring frequency per salmon
+#Make a histogram of herring frequency per salmon *this can be shown in a better way
 hist(herring_data$sal.id, col = grey(0.9), bin = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 
 #Make a table of salmon sex, digestion, collection month
