@@ -169,18 +169,18 @@ rug(herring_data$long)
 #Multipanel of dotcharts for categorical explanatory variables
 par(mfrow = c(1, 2))
 
-#Salmon id *(can we omit?)
+#Salmon id *is this useful? Shows that ID increases as we would expect.
 with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Make a histogram of herring frequency per salmon *this can be shown in a better way
+#Make a histogram of herring frequency per salmon *bins are off unsure why
 hist(herring_data$sal.id, col = grey(0.9), bin = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 
 #Make a table of salmon sex, digestion, collection month
-with(herring_data, table(sal.sex, digestion))
-with(herring_data, table(digestion, coll.month))
-with(herring_data, table(sal.sex, coll.month))
+with(herring_data, table(sal.sex, digestion)) #is this useful? Just shows digestion of herring vs. sex of salmon - perhaps omit. How important is it to reference digestion at all if we are not including it in our model?
+with(herring_data, table(digestion, coll.month)) #useful to show herring per month
+with(herring_data, table(sal.sex, coll.month)) #useful to show salmon per month
 ```
 ## B)
 One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no obvious skewedness is observed.
@@ -203,13 +203,13 @@ print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), 
 #Variance Inflation Factors
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
-Comment on balance - tables of collection month, sex and digestion score - observe more salmon samples collected between March(3) to July(7) compared to other months and there are more females than males, although there is a high number of unsexed fish in this dataset. There is a higher number of herring categorized as digestion level 2, 3 and 4 compared to level 1. The difficulties we may encounter is to include sex if only 2/3 (?) of the fish are sexed, therefore, it will be harder to evaluate whether sex is a useful predictor or not. The unbalanced nature of temporal sampling, it will be harder to evaluate the relationship during winter months. There isn't simultaneous unbalancing across multiple variables, we only see holes, so this is less likely to be confounding but rather limiting in making any generalized conclusions about how sex and the winter period relates to herring size consumed by salmon.
+Tables in section 3 indicate more herring and salmon were collected between March and July (316) compared to other months (124). More females (218) were caught compared to males (139) and 83 fish were left unsexed. We should be cautious about drawing conclusions from models that include sex or collection month as any estimates may be driven by unbalanced variables.
 
-Comment on pairwise scatterplots - there is evidence for a concave up relationship between salmon length and collection day of year with a weak correlation coefficient of -0.062, perhaps due to seasonality of salmon caught during the spring and summer months. Salmon length is moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There is a weak, slightly negative correlation (-0.1284) between collection day of year and latitude but a strong, negative correlation (-0.8721) between latitude and longitude.
+Pairwise scatterplots suggest a concave up relationship between salmon length and collection day of year with a weak correlation coefficient of -0.062, perhaps due to seasonality of salmon caught during the spring and summer months. Salmon length is moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There is a weak, slightly negative correlation (-0.1284) between collection day of year and latitude but a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) are greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model. 
 
-Comment on VIFs - The VIF values of latitude (4.721313) and longitude (4.428887) are greater than 3 and strongly colinear.
+(196)
 
-Comment on potential difficulties from correlations and benefits - including both latitude and longitute in one statistical model will contribute to confounding effects, therefore we will run two models with either latitude or longitude. Seasonality in salmon length may also confound the relationship between these two variables (?).
+*address doy issue in discussion
 
 #Section 5: Statistical Methods and Model Fitting (200 words)
 Statistical methods
