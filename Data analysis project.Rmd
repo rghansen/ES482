@@ -344,7 +344,6 @@ theme(axis.text = element_text(size = 14, colour = "black"))
 #- use method that shows strengths and weaknesses
 #- include measurement of uncertainty
 
-plot(model1)
 ```
 
 #Section 9: Discussion (400 words)
