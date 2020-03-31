@@ -217,9 +217,9 @@ Pairwise scatterplots suggest a concave up relationship between salmon length an
 
 #Section 5: Statistical Methods and Model Fitting (200 words)
 
-We will be using linear mixed-effects models using the R Package lme4 (Bates et al., 2015). We are considering the normal distribution of otolith width (mm) modelled as function of salmon length (mm), day of year in 2018, latitude and longitude. We will include a random effect of multiple herring that occurred within individual salmon because similar sized fish are likely to travel in schools targeted by an individual and there are > 10 levels associated with this variable. We are excluding salmon sex and collection month due to unbalancing effects and excluding digestion level, which is the degree of herring degradation on a scale of 1 to 4, as it is not relevant to our research question. In our first round of modelling fitting all salmon lengths will be included followed by a second round of model fitting to salmon 62 cm and above as this is the regulation size restrictions for recreationally caught salmon in the Strait of Georgia. This will check the influence of removing under size regulation fish from the dataset.
+We will be using linear mixed-effects models using the R Package lme4 (Bates et al., 2015). We are considering the normal distribution of otolith width (mm) modelled as function of salmon length (mm), day of year in 2018, latitude and longitude. We will include a random intercept corresponding to individual salmon because there are > 10 levels (ref.). Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual. We are excluding salmon sex and collection month due to unbalancing effects and excluding digestion level, which is the degree of herring degradation on a scale of 1 to 4, as it is not relevant to our research question. In our first round of modelling fitting all salmon lengths will be included followed by a second round of model fitting to salmon 62 cm and above as this is the regulation size restrictions for recreationally caught salmon in the Strait of Georgia. This will check the influence of removing under size regulation fish from the dataset.
 
-(175)
+(178)
 
 ## Exploratory plotting
 ```{r}
@@ -250,13 +250,6 @@ oto.width ~ long + sal.length + long*sal.length + (1 | sal.id)
 
 model1 <- lmer(oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id), data = herring_data, REML = FALSE)
 
-#get information on fitted model
-model1
-summary(model1)$coef
-confint(model1)
-
-#cannot compute pvalues because the number of herring per salmon is unbalanced - chapter 5, page 9
-
 #what we had previously...
 #herring_data <- herring_data %>% filter(coll.month == "3" | coll.month == "4" | coll.month == "5" | coll.month == "6" | coll.month == "7")
 #Fit model 1
@@ -265,7 +258,7 @@ confint(model1)
 ```
 
 #Section 6: Model Checking 
-##All models summarized (delete before submitting?)
+##plotting residuals of at least 1 model (delete before submitting?)
 ```{r}
 par(mfrow = c(2, 2))
 
@@ -284,25 +277,11 @@ qqnorm(resid(model1))
 qqline(resid(model1), col = "red")
 
 ```
+1. Written summary (200 words)
+-assessment of plausibility of model assumptions (LINE)
+-check for correlation in the residuals due to grouping variables (e.g., repeated measurements on individuals or within study sites), spatial autocorrelation and/or temporal autocorrelation
+-comment on potential outliers, as relevant
 
-
-##All models plotted against data (delete before submitting?)
-```{r, echo = TRUE}
-#Plot model 1 residuals
-#plot(model_1, which = 1)
-
-```
-
-##Chosen models
-```{r, echo = TRUE}
-#Check the assumptions of at least one model
-#-  plotting and interpreting the residuals of the model
-#-  check for correlation in the residuals due to grouping variables
-
-```
-
-Summary of the plausibility of the model
-- Potential outliers
 
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
 
@@ -312,9 +291,16 @@ Summary of the plausibility of the model
 #- AIC (or AICc) weights
 #- R-squared (or adjusted R-squared) values
 #- p-values. 
+
 #Summary for at least one ﬁtted model
-#- coeﬃcient estimates and their standard errors
-#- conﬁdence intervals for coeﬃcient estimate
+#coeﬃcient estimates and their standard errors
+model1
+summary(model1)$coef
+
+#conﬁdence intervals for coeﬃcient estimate
+#note: cannot compute pvalues because the number of herring per salmon is unbalanced - chapter 5, page 9
+confint(model1)
+
 ```
 
 #Section 8: Plotting a Model with the Data
