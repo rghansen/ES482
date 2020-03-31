@@ -220,23 +220,17 @@ We will be using linear mixed-effects models using the R Package lme4 (Bates et 
 
 Models
 
-1. sal.id + doy + long + length + digestion
-2. sal.id + doy + long + length
-3. sal.id + doy + long + weight + digestion
-4. sal.id + doy + long + weight
-5. sal.id + doy + lat + length + digestion
-6. sal.id + doy + lat + length
-7. sal.id + doy + lat + weight + digestion
-8. sal.id + doy + lat + weight
+1. oto width ~ doy + lat + length + (1 | sal.id)  + interaction terms
 
-9. sal.id + month + long + length + digestion
-10. sal.id + month + long + length
-11. sal.id + month + long + weight + digestion
-12. sal.id + month + long + weight
-13. sal.id + month + lat + length + digestion
-14. sal.id + month + lat + length
-15. sal.id + month + lat + weight + digestion
-16. sal.id + month + lat + weight
+2. oto width ~ doy + long + length + (1 | sal.id) + interaction terms
+
+
+oto width ~ length + (1 | sal.id)  + doy*lat
+oto width ~ length + (1 | sal.id)  + doy*long
+oto width ~ long + (1 | sal.id)  + doy*length
+oto width ~ doy + (1 | sal.id)  + lat*length
+oto width ~ doy + (1 | sal.id)  + long*length
+
 
 ##Exploratory plotting
 ```{r, echo = TRUE}
