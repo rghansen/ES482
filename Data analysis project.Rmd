@@ -259,17 +259,12 @@ model3 <- lmer(oto.width ~ lat + sal.length + lat*sal.length + (1 | sal.id), dat
 model4 <- lmer(oto.width ~ coll.doy + long + coll.doy*long + (1 | sal.id), data = herring_data, REML = FALSE)
 model5 <- lmer(oto.width ~ long + sal.length + long*sal.length + (1 | sal.id), data = herring_data, REML = FALSE)
 
-#what we had previously...
-#herring_data <- herring_data %>% filter(coll.month == "3" | coll.month == "4" | coll.month == "5" | coll.month == "6" | coll.month == "7")
-#Fit model 1
-#model_1 <- lmer(oto.width ~ coll.month + long + sal.length + digestion + (1|sal.id), data = herring_data)
-#etc. model_2, model_3
 ```
 
 #Section 6: Model Checking 
 ##plotting residuals of at least 1 model (delete before submitting?)
 ```{r}
-#try checking assumptions of model 4 (retroactively, since AIC showed this was the best model)
+#try checking assumptions of model 4 (retroactively, since AIC showed this model has a relatively good goodness-of-fit compared to the other candidate models)
 par(mfrow = c(2, 2))
 
 #plot residuals versus fitted values
@@ -339,9 +334,9 @@ confint_fixed$estimate <- fixef(model4_scaled)
 ggplot(confint_fixed) + theme_bw() +
 geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
 geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
-scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Latitude", "Collection Day of Year : Latitude")) +
+scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude", "Collection Day of Year : Longitude")) +
 xlab("") +
-ylab("") + ggtitle("Coefficient Estimates for model1_scaled") +
+ylab("") + ggtitle("Coefficient Estimates for model4_scaled") +
 theme(axis.text = element_text(size = 14, colour = "black"))
 
 ```
