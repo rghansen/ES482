@@ -429,56 +429,6 @@ plot(model_15, which = 1)
 plot(model_16, which = 1)
 ```
 
-##All transformed models plotted against data (delete before submitting?)
-```{r, echo = TRUE}
-#Plot model 1t residuals
-plot(model_1t, which = 1)
-
-#Plot model 2t residuals
-plot(model_2t, which = 1)
-
-#Plot model 3t residuals
-plot(model_3t, which = 1)
-
-#Plot model 4t residuals
-plot(model_4t, which = 1)
-
-#Plot model 5t residuals
-plot(model_5t, which = 1)
-
-#Plot model 6t residuals
-plot(model_6t, which = 1)
-
-#Plot model 7t residuals
-plot(model_7t, which = 1)
-
-#Plot model 8t residuals
-plot(model_8t, which = 1)
-
-#Plot model 9t residuals
-plot(model_9t, which = 1)
-
-#Plot model 10t residuals
-plot(model_10t, which = 1)
-
-#Plot model 11t residuals
-plot(model_11t, which = 1)
-
-#Plot model 12t residuals
-plot(model_12, which = 1)
-
-#Plot model 13t residuals
-plot(model_13t, which = 1)
-
-#Plot model 14t residuals
-plot(model_14t, which = 1)
-
-#Plot model 15t residuals
-plot(model_15t, which = 1)
-
-#Plot model 16t residuals
-plot(model_16t, which = 1)
-```
 ##Chosen models
 ```{r, echo = TRUE}
 #Check the assumptions of at least one model
