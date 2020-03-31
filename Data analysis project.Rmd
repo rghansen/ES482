@@ -310,6 +310,7 @@ model1
 summary(model1)
 
 #standardize/scale the coefficients
+#what this does: "standardisation by subtracting the mean and dividing by two standard deviations"
 model1_scaled <- arm::standardize(model1)
 
 #conﬁdence intervals for coeﬃcient estimate
@@ -332,7 +333,7 @@ geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
 geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
 scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Latitude", "Collection Day of Year : Latitude")) +
 xlab("") +
-ylab("") + ggtitle("Coefficient Estimates for model1") +
+ylab("") + ggtitle("Coefficient Estimates for model1_scaled") +
 theme(axis.text = element_text(size = 14, colour = "black"))
 
 ```
