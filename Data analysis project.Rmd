@@ -244,31 +244,44 @@ oto.width ~ long + sal.length + long*sal.length + (1 | sal.id)
 
 
 
-## JQ modelling
+## Fit Statistical Models
 ```{r}
 #scale data into new data frame
 
 model1 <- lmer(oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id), data = herring_data, REML = FALSE)
+
+#get information on fitted model
 model1
+summary(model1)$coef
+confint(model1)
 
+#cannot compute pvalues because the number of herring per salmon is unbalanced - chapter 5, page 9
 
-
-```
-
-##Untransformed models
-```{r, echo = TRUE}
+#what we had previously...
 #herring_data <- herring_data %>% filter(coll.month == "3" | coll.month == "4" | coll.month == "5" | coll.month == "6" | coll.month == "7")
-
 #Fit model 1
 #model_1 <- lmer(oto.width ~ coll.month + long + sal.length + digestion + (1|sal.id), data = herring_data)
-
+#etc. model_2, model_3
 ```
 
 #Section 6: Model Checking 
 ##All models summarized (delete before submitting?)
-```{r, echo = TRUE}
-#Summary of model 1
-#summary_1 <- summary(model_1)$coef
+```{r}
+par(mfrow = c(2, 2))
+
+#plot residuals versus fitted values
+plot(resid(model1) ~ predict(model1))
+abline(h = 0, lty = "dashed")
+
+#plot residual as probability density then add rug marks and a reference curve
+hist(resid(model1), prob = TRUE, col = "lightgrey")
+rug(resid(model1))
+sd_hat <- sd(resid(model1))
+curve(dnorm(x, sd = sd_hat), add = TRUE)
+
+#make quantile-quantile plot and add reference line
+qqnorm(resid(model1))
+qqline(resid(model1), col = "red")
 
 ```
 
