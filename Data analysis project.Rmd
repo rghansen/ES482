@@ -249,7 +249,7 @@ oto.width ~ long + sal.length + long*sal.length + (1 | sal.id)
 #scale data into new data frame
 
 model1 <- lmer(oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id), data = herring_data, REML = FALSE)
-
+summary(model1)
 #what we had previously...
 #herring_data <- herring_data %>% filter(coll.month == "3" | coll.month == "4" | coll.month == "5" | coll.month == "6" | coll.month == "7")
 #Fit model 1
@@ -276,6 +276,9 @@ curve(dnorm(x, sd = sd_hat), add = TRUE)
 qqnorm(resid(model1))
 qqline(resid(model1), col = "red")
 
+#quantile-quantile plot for linear mixed-effects model additional assumption - does the random intercept have a norml distribution?
+qqnorm(ranef(model1)$sal.id[, "(Intercept)"])
+qqline(ranef(model1)$sal.id[, "(Intercept)"])
 ```
 1. Written summary (200 words)
 -assessment of plausibility of model assumptions (LINE)
@@ -292,14 +295,33 @@ qqline(resid(model1), col = "red")
 #- R-squared (or adjusted R-squared) values
 #- p-values. 
 
-#Summary for at least one ﬁtted model
-#coeﬃcient estimates and their standard errors
+#Summary for at least one ﬁtted model - see chapter 5, page 19
+#coeﬃcient estimates for fixed and random  effects (random effects correspond to  2 sources of variation = variation between individuals and residual variation between observations)
 model1
-summary(model1)$coef
+summary(model1)
 
 #conﬁdence intervals for coeﬃcient estimate
 #note: cannot compute pvalues because the number of herring per salmon is unbalanced - chapter 5, page 9
 confint(model1)
+
+#rearranging data to make coefficient plots to show standard errors:
+
+#data frame for coefficient plot
+confint_fixed <- as.data.frame(confint(model1, parm = c("(Intercept)", "coll.doy", "lat", "coll.doy:lat")))
+
+#compute profile confidence intervals
+confint_fixed <- as.data.frame(confint_fixed)
+confint_fixed$term <- rownames(confint_fixed)
+confint_fixed$estimate <- fixef(model1)
+
+#ggplot
+ggplot(confint_fixed) + theme_bw() +
+geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
+geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
+scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Latitude", "Collection Day of Year : Latitude")) +
+xlab("") +
+ylab("") + ggtitle("Coefficient Estimates for model1") +
+theme(axis.text = element_text(size = 14, colour = "black"))
 
 ```
 
