@@ -221,6 +221,16 @@ We will be using linear mixed-effects models using the R Package lme4 (Bates et 
 
 (175)
 
+## Exploratory plotting
+```{r}
+#create data frame for pairwise scatter with all variables
+herring_collinearity <- data.frame("oto.width" = herring_data$oto.width, "sal.length" = herring_data$sal.length, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
+
+plot(herring_collinearity[1:5], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
+                   labels = c("Otolith Width (mm)", "Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
+```
+
+
 Models
 
 oto.width ~ coll.doy + lat + sal.length + (1 | sal.id)
@@ -249,40 +259,6 @@ summary(model1_int)
 
 ```
 
-
-##Exploratory plotting
-```{r, echo = TRUE}
-#Sal.ID
-plot(oto.width ~ sal.id, data = herring_data)
-
-#Sal.length
-plot(oto.width ~ sal.length, data = herring_data)
-
-#Sal.weight
-plot(oto.width ~ sal.weight, data = herring_data)
-
-#Sal.length.trans
-plot(oto.width ~ sal.length.trans, data = herring_data)
-
-#Sal.weight.trans
-plot(oto.width ~ sal.weight.trans, data = herring_data)
-
-#Coll.month
-plot(oto.width ~ coll.month, data = herring_data)
-
-#Coll.doy
-plot(oto.width ~ coll.doy, data = herring_data)
-
-#Lat
-plot(oto.width ~ lat, data = herring_data)
-
-#Long
-plot(oto.width ~ long, data = herring_data)
-
-
-
-
-```
 ##Untransformed models
 ```{r, echo = TRUE}
 herring_data <- herring_data %>% filter(coll.month == "3" | coll.month == "4" | coll.month == "5" | coll.month == "6" | coll.month == "7")
@@ -342,51 +318,6 @@ model_16 <- lmer(oto.width ~ coll.doy + lat + sal.weight + (1|sal.id), data = he
 #Summary of model 1
 summary_1 <- summary(model_1)$coef
 
-#Summary of model 2
-summary_2 <- summary(model_2)$coef
-
-#Summary of model 3
-summary_3 <- summary(model_3)$coef
-
-#Summary of model 4
-summary_4 <- summary(model_4)$coef
-
-#Summary of model 5
-summary_5 <- summary(model_5)$coef
-
-#Summary of model 6
-summary_6 <- summary(model_6)$coef
-
-#Summary of model 7
-summary_7 <- summary(model_7)$coef
-
-#Summary of model 8
-summary_8 <- summary(model_8)$coef
-
-#Summary of model 9
-summary_9 <- summary(model_9)$coef
-
-#Summary of model 10
-summary_10 <- summary(model_10)$coef
-
-#Summary of model 11
-summary_11 <- summary(model_11)$coef
-
-#Summary of model 12
-summary_12 <- summary(model_12)$coef
-
-#Summary of model 13
-summary_13 <- summary(model_13)$coef
-
-#Summary of model 14
-summary_14 <- summary(model_14)$coef
-
-#Summary of model 15
-summary_15 <- summary(model_15)$coef
-
-#Summary of model 16
-summary_16 <- summary(model_16)$coef
-
 ```
 
 
@@ -395,50 +326,6 @@ summary_16 <- summary(model_16)$coef
 #Plot model 1 residuals
 plot(model_1, which = 1)
 
-#Plot model 2 residuals
-plot(model_2, which = 1)
-
-#Plot model 3 residuals
-plot(model_3, which = 1)
-
-#Plot model 4 residuals
-plot(model_4, which = 1)
-
-#Plot model 5 residuals
-plot(model_5, which = 1)
-
-#Plot model 6 residuals
-plot(model_6, which = 1)
-
-#Plot model 7 residuals
-plot(model_7, which = 1)
-
-#Plot model 8 residuals
-plot(model_8, which = 1)
-
-#Plot model 9 residuals
-plot(model_9, which = 1)
-
-#Plot model 10 residuals
-plot(model_10, which = 1)
-
-#Plot model 11 residuals
-plot(model_11, which = 1)
-
-#Plot model 12 residuals
-plot(model_12, which = 1)
-
-#Plot model 13 residuals
-plot(model_13, which = 1)
-
-#Plot model 14 residuals
-plot(model_14, which = 1)
-
-#Plot model 15 residuals
-plot(model_15, which = 1)
-
-#Plot model 16 residuals
-plot(model_16, which = 1)
 ```
 
 ##Chosen models
