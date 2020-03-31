@@ -231,12 +231,12 @@ plot(herring_collinearity[1:5], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5),
 ```
 
 
-Models
+## Model Structure
 
 oto.width ~ coll.doy + lat + sal.length + (1 | sal.id)
 oto.width ~ coll.doy + long + sal.length + (1 | sal.id)
 
-oto.width ~ coll.doy + lat + doy*lat + (1 | sal.id)
+oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id)
 oto.width ~ coll.doy + sal.length + coll.doy*sal.length + (1 | sal.id)
 oto.width ~ lat + sal.length + lat*sal.length + (1 | sal.id)
 oto.width ~ coll.doy + long + coll.doy*long + (1 | sal.id)
@@ -246,77 +246,29 @@ oto.width ~ long + sal.length + long*sal.length + (1 | sal.id)
 
 ## JQ modelling
 ```{r}
-
-str(herring_data)
 #scale data into new data frame
 
+model1 <- lmer(oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id), data = herring_data, REML = FALSE)
+model1
 
-model1 <- lmer(oto.width ~ coll.doy + sal.length + coll.doy*sal.length + (1 | sal.id), data = herring_data, REML = FALSE)
-summary(model1)
 
-model1_int <- lmer(oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id), data = herring_data, REML = FALSE)
-summary(model1_int)
 
 ```
 
 ##Untransformed models
 ```{r, echo = TRUE}
-herring_data <- herring_data %>% filter(coll.month == "3" | coll.month == "4" | coll.month == "5" | coll.month == "6" | coll.month == "7")
+#herring_data <- herring_data %>% filter(coll.month == "3" | coll.month == "4" | coll.month == "5" | coll.month == "6" | coll.month == "7")
 
 #Fit model 1
-model_1 <- lmer(oto.width ~ coll.month + long + sal.length + digestion + (1|sal.id), data = herring_data)
+#model_1 <- lmer(oto.width ~ coll.month + long + sal.length + digestion + (1|sal.id), data = herring_data)
 
-#Fit model 2
-model_2 <- lmer(oto.width ~ coll.month + long + sal.length + (1|sal.id), data = herring_data)
-
-#Fit model 3
-model_3 <- lmer(oto.width ~ coll.month + long + sal.weight + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 4
-model_4 <- lmer(oto.width ~ coll.month + long + sal.weight + (1|sal.id), data = herring_data)
-
-#Fit model 5
-model_5 <- lmer(oto.width ~ coll.month + lat + sal.length + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 6
-model_6 <- lmer(oto.width ~ coll.month + lat + sal.length + (1|sal.id), data = herring_data)
-
-#Fit model 7
-model_7 <- lmer(oto.width ~ coll.month + lat + sal.weight + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 8
-model_8 <- lmer(oto.width ~ coll.month + lat + sal.weight + (1|sal.id), data = herring_data)
-
-#Fit model 9
-model_9 <- lmer(oto.width ~ coll.doy + long + sal.length + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 10
-model_10 <- lmer(oto.width ~ coll.doy + long + sal.length + (1|sal.id), data = herring_data)
-
-#Fit model 11
-model_11 <- lmer(oto.width ~ coll.doy + long + sal.weight + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 12
-model_12 <- lmer(oto.width ~ coll.doy + long + sal.weight + (1|sal.id), data = herring_data)
-
-#Fit model 13
-model_13 <- lmer(oto.width ~ coll.doy + lat + sal.length + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 14
-model_14 <- lmer(oto.width ~ coll.doy + lat + sal.length + (1|sal.id), data = herring_data)
-
-#Fit model 15
-model_15 <- lmer(oto.width ~ coll.doy + lat + sal.weight + digestion + (1|sal.id), data = herring_data)
-
-#Fit model 16
-model_16 <- lmer(oto.width ~ coll.doy + lat + sal.weight + (1|sal.id), data = herring_data)
 ```
 
 #Section 6: Model Checking 
 ##All models summarized (delete before submitting?)
 ```{r, echo = TRUE}
 #Summary of model 1
-summary_1 <- summary(model_1)$coef
+#summary_1 <- summary(model_1)$coef
 
 ```
 
@@ -324,7 +276,7 @@ summary_1 <- summary(model_1)$coef
 ##All models plotted against data (delete before submitting?)
 ```{r, echo = TRUE}
 #Plot model 1 residuals
-plot(model_1, which = 1)
+#plot(model_1, which = 1)
 
 ```
 
