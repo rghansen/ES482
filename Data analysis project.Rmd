@@ -25,10 +25,16 @@ library(tidyverse)
 #Load lmer package
 library(lme4)
 
+#load arm package
+library(MASS)
+library(arm)
+
 #Cite packages
 citation("faraway")
 citation("plyr")
 citation("tidyverse")
+citation("MASS")
+citation("arm")
 ```
 
 ##Read in and organize data
@@ -246,8 +252,6 @@ oto.width ~ coll.doy + long + sal.length + (1 | sal.id)
 
 ## Fit Statistical Models
 ```{r}
-#scale data into new data frame??
-herring_data2 <- 
 
 model1 <- lmer(oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id), data = herring_data, REML = FALSE)
 model2 <- lmer(oto.width ~ coll.doy + sal.length + coll.doy*sal.length + (1 | sal.id), data = herring_data, REML = FALSE)
