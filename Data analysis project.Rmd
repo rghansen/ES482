@@ -309,19 +309,22 @@ qqline(ranef(model1)$sal.id[, "(Intercept)"])
 model1
 summary(model1)
 
+#standardize/scale the coefficients
+model1_scaled <- arm::standardize(model1)
+
 #conﬁdence intervals for coeﬃcient estimate
 #note: cannot compute pvalues because the number of herring per salmon is unbalanced - chapter 5, page 9
-confint(model1)
+confint(model1_scaled)
 
 #rearranging data to make coefficient plots to show standard errors:
 
 #data frame for coefficient plot
-confint_fixed <- as.data.frame(confint(model1, parm = c("(Intercept)", "coll.doy", "lat", "coll.doy:lat")))
+confint_fixed <- as.data.frame(confint(model1_scaled, parm = c("(Intercept)", "z.coll.doy", "z.lat", "z.coll.doy:z.lat")))
 
 #compute profile confidence intervals
 confint_fixed <- as.data.frame(confint_fixed)
 confint_fixed$term <- rownames(confint_fixed)
-confint_fixed$estimate <- fixef(model1)
+confint_fixed$estimate <- fixef(model1_scaled)
 
 #ggplot
 ggplot(confint_fixed) + theme_bw() +
