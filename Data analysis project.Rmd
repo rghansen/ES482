@@ -52,6 +52,9 @@ herring_data <- data.frame(oto.width = herring$AverageWidth,
                            sal.sex = herring$SalmonSex,
                            coll.month = herring$CollectionMonth)
 
+#check data frame structure* do we need to change data types for any variables? i.e. coll.doy, sal.id?
+str(herring_data)
+
 #figure out which stat areas to remove
 levels(as.factor(herring$StatArea))
 
@@ -220,16 +223,31 @@ We will be using linear mixed-effects models using the R Package lme4 (Bates et 
 
 Models
 
-1. oto width ~ doy + lat + length + (1 | sal.id)  + interaction terms
+oto.width ~ coll.doy + lat + sal.length + (1 | sal.id)
+oto.width ~ coll.doy + long + sal.length + (1 | sal.id)
 
-2. oto width ~ doy + long + length + (1 | sal.id) + interaction terms
+oto.width ~ coll.doy + lat + doy*lat + (1 | sal.id)
+oto.width ~ coll.doy + sal.length + coll.doy*sal.length + (1 | sal.id)
+oto.width ~ lat + sal.length + lat*sal.length + (1 | sal.id)
+oto.width ~ coll.doy + long + coll.doy*long + (1 | sal.id)
+oto.width ~ long + sal.length + long*sal.length + (1 | sal.id)
 
 
-oto width ~ length + (1 | sal.id)  + doy*lat
-oto width ~ length + (1 | sal.id)  + doy*long
-oto width ~ long + (1 | sal.id)  + doy*length
-oto width ~ doy + (1 | sal.id)  + lat*length
-oto width ~ doy + (1 | sal.id)  + long*length
+
+## JQ modelling
+```{r}
+
+str(herring_data)
+#scale data into new data frame
+
+
+model1 <- lmer(oto.width ~ coll.doy + sal.length + coll.doy*sal.length + (1 | sal.id), data = herring_data, REML = FALSE)
+summary(model1)
+
+model1_int <- lmer(oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id), data = herring_data, REML = FALSE)
+summary(model1_int)
+
+```
 
 
 ##Exploratory plotting
