@@ -46,10 +46,7 @@ herring_data <- data.frame(oto.width = herring$AverageWidth,
                            
                            sal.sp = herring$SalmonSpecies,
                            coll.year = herring$CollectionYear,
-                           stat.area = as.factor(herring$StatArea),
-                           
-                           sal.sex = herring$SalmonSex,
-                           coll.month = herring$CollectionMonth)
+                           stat.area = as.factor(herring$StatArea))
 
 #check data frame structure
 str(herring_data)
@@ -168,14 +165,17 @@ rug(herring_data$long)
 ```
 
 ###Categorical explanatory variables
-```{r}
-#Make a histogram of herring frequency per salmon *bins are off unsure why
-hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
+```{r, fig.width = 6,fig.height = 3}
+#Multipanel of dotcharts for categorical explanatory variables
+par(mfrow = c(1, 2))
 
-#Make a table of salmon sex, digestion, collection month
-with(herring_data, table(sal.sex, digestion)) #is this useful? Just shows digestion of herring vs. sex of salmon - perhaps omit. How important is it to reference digestion at all if we are not including it in our model?
-with(herring_data, table(digestion, coll.month)) #useful to show herring per month
-with(herring_data, table(sal.sex, coll.month)) #useful to show salmon per month
+#Salmon id
+with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
+abline (h = seq(1, n, by = 5), col = "lightgrey")
+with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
+
+#Make a histogram of herring frequency per salmon
+hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 ```
 ## B)
 One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no obvious skewedness is observed.
