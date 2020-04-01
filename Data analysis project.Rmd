@@ -257,7 +257,7 @@ oto.width ~ coll.doy + long + sal.length + (1 | sal.id)
 
 
 
-## Fit Statistical Models
+## Fit Statistical Models *I think these are wrong - must go from complex to simple...
 ```{r}
 model1 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + coll.doy_standardized:lat_standardized + (1 | sal.id), data = herring_data, REML = FALSE)
 model2 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + coll.doy_standardized:sal.length_standardized + (1 | sal.id), data = herring_data, REML = FALSE)
@@ -350,7 +350,13 @@ theme(axis.text = element_text(size = 14, colour = "black"))
 #Plot at least one model with data
 #- use method that shows strengths and weaknesses
 #- include measurement of uncertainty
-plot(model4)
+
+par(mfrow = c(2, 2))
+plot(resid(model4) ~ herring_data$sal.length, xlab = "Salmon Length [cm]", ylab = "Residuals(model4)", main = "", font.main = 1)
+plot(resid(model4) ~ herring_data$coll.doy, xlab = "Collection Day of Year", ylab = "Residuals(model4)", main = "", font.main = 1)
+plot(resid(model4) ~ herring_data$lat, xlab = "Latitude", ylab = "Residuals(model4)", main = "", font.main = 1)
+plot(resid(model4) ~ herring_data$long, xlab = "Longitude", ylab = "Residuals(model4)", main = "", font.main = 1)
+
 ```
 
 #Section 9: Discussion (400 words)
