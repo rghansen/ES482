@@ -339,18 +339,18 @@ theme(axis.text = element_text(size = 14, colour = "black"))
 #- use method that shows strengths and weaknesses
 #- include measurement of uncertainty
 
-par(mfrow = c(2, 2))
-plot(resid(model4) ~ herring_data$sal.length, xlab = "Salmon Length [cm]", ylab = "Residuals(model4)", main = "", font.main = 1)
-plot(resid(model4) ~ herring_data$coll.doy, xlab = "Collection Day of Year", ylab = "Residuals(model4)", main = "", font.main = 1)
-plot(resid(model4) ~ herring_data$lat, xlab = "Latitude", ylab = "Residuals(model4)", main = "", font.main = 1)
-plot(resid(model4) ~ herring_data$long, xlab = "Longitude", ylab = "Residuals(model4)", main = "", font.main = 1)
-
-#Generate 95% prediction intervals for the fitted mean of the quadratic model
-newdata <- data.frame(temp = seq(10, 100, by = 1))
-newdata$fit1 <- predict(model4, newdata = newdata)
-newdata$upr1 <- predict(model4, newdata = newdata, interval = "prediction")[, "upr"]
-newdata$lwr1 <- predict(model4, newdata = newdata, interval = "prediction")[, "lwr"]
-
+##par(mfrow = c(2, 2))
+#plot(resid(model4) ~ herring_data$sal.length, xlab = "Salmon Length [cm]", ylab = "Residuals(model4)", main = "", font.main = 1)
+#plot(resid(model4) ~ herring_data$coll.doy, xlab = "Collection Day of Year", ylab = "Residuals(model4)", main = "", font.main = 1)
+#plot(resid(model4) ~ herring_data$lat, xlab = "Latitude", ylab = "Residuals(model4)", main = "", font.main = 1)
+#plot(resid(model4) ~ herring_data$long, xlab = "Longitude", ylab = "Residuals(model4)", main = "", font.main = 1)
+#
+##Generate 95% prediction intervals for the fitted mean of the quadratic model
+#newdata <- data.frame(temp = seq(10, 100, by = 1))
+#newdata$fit1 <- predict(model4, newdata = newdata)
+#newdata$upr1 <- predict(model4, newdata = newdata, interval = "prediction")[, "upr"]
+#newdata$lwr1 <- predict(model4, newdata = newdata, interval = "prediction")[, "lwr"]
+#
 ```
 
 #Section 9: Discussion (400 words)
