@@ -66,7 +66,12 @@ herring_data <- herring_data %>% group_by(sal.id, sal.length, coll.doy, lat, lon
 ##A)
 Pacific Salmon in British Columbia are valued for their social, cultural and economic benefits to many communities on our coast. Despite their important role in the coastal marine ecosystem (Schindler et al. 2003), diet studies from this region are outdated and limited to summer sampling. The adult Chinook and Coho Salmon Diet Program (Juanes Lab) seeks to address these knowledge gaps by sourcing stomach samples from the recreational fishing community to gather regional, seasonal and interannual diet data to monitor ecosystem response to environmental change.
 
-We have found Pacific Herring are the dominant fish consumed throughout regions of the Salish Sea, year-round. For this project we will investigate factors that may be important to the size of herring consumed by Chinook Salmon. Previous work found a positive, linear relationship between otolith width (mm) and length (mm) of herring from this dataset (Murchy et al. 2017). Otolith width (mm) measurements averaged from left and right otoliths will be used as a proxy for herring size (Stevenson and Campana, 1992) in this analysis. We will also use salmon catch data recorded by each angler and submitted with the associated stomach sample.
+We have found Pacific Herring are the dominant fish consumed throughout regions of the Salish Sea, year-round. For this project we will investigate factors that may be important to the size of herring consumed by Chinook Salmon. Previous work found a positive, linear relationship between otolith width (mm) and length (mm) of herring from this dataset (Murchy et al. 2017). 
+
+*Rewrite this 
+Otolith width (mm) measurements will be used as a proxy for herring size (Stevenson and Campana, 1992) in this analysis. 
+
+We will also use salmon catch data recorded by each angler and submitted with the associated stomach sample.
 
 ##B)
 How does Chinook size, catch location and time of year in the Salish Sea affect the size of herring prey consumed?
@@ -79,6 +84,8 @@ We hypothesize that otolith width will be positively linear then asymptotic at m
 
 ##E)
 We will use AIC fit with maximum likelihood estimation because it is flexible when comparing complex, non-nested models with parameters estimated from ecological field studies. AIC is commonly used in ecosystem studies where parameter estimates are relatively imprecise and we accept that the optimal model may be selected over the true, given the current sample size and our ecological understanding of the system.
+
+*Still use AIC vs AICc?
 
 (400)
 
@@ -113,13 +120,13 @@ The response variable (otolith width) is continuous and cannot take on zero or n
 ##C)
 Outliers at < 0.6 mm and > 2.2 mm are reasonable measurements representing means that included individuals from the extreme age classes. There are no zero values and one missing otolith measurement making up 0.36 % of the data. We anticipate no difficulties in removing the single NA value from subsequent analyses. Herring consumed at similar times of year may have similar growth trajectories that contribute to temporal autocorrelation. Spatial autocorrelation may occur if herring consumed in similar areas have similar prey fields and grow rates
 
-***Rewrite this
-Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach.
+*Rewrite this
+Non-independence was expected from repeated measurements of multiple herring that occurred within the same salmon stomach, which is why we are using mean otolith width for all herring from the same salmon stomach.
 
 ##D)
 We will consider the normal distribution for modelling.  
 
-***Check this
+*Check this
 (140)
 
 #Section 3: The Explanatory Variables (150 words)
@@ -202,8 +209,9 @@ A boxplot of mean salmon length per month shows that mean salmon length in summe
 
 #Section 5: Statistical Methods and Model Fitting (200 words)
 
-We will be using linear mixed-effects models using the R Package lme4 (Bates et al., 2015). We are considering the normal distribution of otolith width (mm) modelled as function of salmon length (mm), day of year in 2018, latitude and longitude. We will include a random intercept corresponding to individual salmon because there are > 10 levels (ref.). Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual. In our first round of modelling fitting all salmon lengths will be included followed by a second round of model fitting to salmon 62 cm and above as this is the regulation size restrictions for recreationally caught salmon in the Strait of Georgia. This will check the influence of removing under size regulation fish from the dataset.
+We will be using (linear mixed-effects models using the R Package lme4 (Bates et al., 2015).) We are considering (normally-distributed mean otolith width (mm)) modelled as function of salmon length (mm), day of year in 2018, latitude and longitude. Mean otolith width  include a random intercept corresponding to individual salmon because there are > 10 levels (ref.). Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual. In our first round of modelling fitting all salmon lengths will be included followed by a second round of model fitting to salmon 62 cm and above as this is the regulation size restrictions for recreationally caught salmon in the Strait of Georgia. This will check the influence of removing under size regulation fish from the dataset.
 
+()fix these points
 **come back to salmon size subset justification.
 
 (139)
