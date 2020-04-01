@@ -204,15 +204,16 @@ print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 
 A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.385) with latitude but moderately, negatively correlated longitude (-0.356). There was a strong, negative correlation (-0.874) between latitude and longitude. VIF values of latitude (4.767413) and longitude (4.69011) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.
 
-***Check this
+*Check this
 (204)
 
 #Section 5: Statistical Methods and Model Fitting (200 words)
 
-We will be using (linear mixed-effects models using the R Package lme4 (Bates et al., 2015).) We are considering (normally-distributed mean otolith width (mm)) modelled as function of salmon length (mm), day of year in 2018, latitude and longitude. Mean otolith width  include a random intercept corresponding to individual salmon because there are > 10 levels (ref.). Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual. In our first round of modelling fitting all salmon lengths will be included followed by a second round of model fitting to salmon 62 cm and above as this is the regulation size restrictions for recreationally caught salmon in the Strait of Georgia. This will check the influence of removing under size regulation fish from the dataset.
+We will be using (model type) and (distribution type) 
+We are considering mean otolith width (mm)) modelled as function of salmon length (mm), day of year in 2018, latitude and longitude. In our first round of modelling fitting all salmon lengths will be included followed by a second round of model fitting to salmon 62 cm and above as this is the regulation size restrictions for recreationally caught salmon in the Strait of Georgia. This will check the influence of removing under size regulation fish from the dataset.
 
 ()fix these points
-**come back to salmon size subset justification.
+*come back to salmon size subset justification.
 
 (139)
 
