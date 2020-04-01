@@ -237,10 +237,10 @@ We will be using linear mixed-effects models using the R Package lme4 (Bates et 
 ## Exploratory plotting
 ```{r}
 #create data frame for pairwise scatter with all variables
-herring_collinearity <- data.frame("oto.width" = herring_data$oto.width, "sal.length" = herring_data$sal.length, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
+herring_collinearity <- data.frame("sal.id" = herring_data$sal.id, "oto.width" = herring_data$oto.width, "sal.length" = herring_data$sal.length, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
 
 plot(herring_collinearity[1:5], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
-                   labels = c("Otolith Width (mm)", "Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
+                   labels = c("Salmon ID", "Otolith Width (mm)", "Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
 ```
 
 
@@ -356,6 +356,7 @@ plot(resid(model4) ~ herring_data$sal.length, xlab = "Salmon Length [cm]", ylab 
 plot(resid(model4) ~ herring_data$coll.doy, xlab = "Collection Day of Year", ylab = "Residuals(model4)", main = "", font.main = 1)
 plot(resid(model4) ~ herring_data$lat, xlab = "Latitude", ylab = "Residuals(model4)", main = "", font.main = 1)
 plot(resid(model4) ~ herring_data$long, xlab = "Longitude", ylab = "Residuals(model4)", main = "", font.main = 1)
+
 
 ```
 
