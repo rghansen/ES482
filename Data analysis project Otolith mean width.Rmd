@@ -49,16 +49,13 @@ herring_data <- data.frame(oto.width = herring$AverageWidth,
                            coll.year = herring$CollectionYear,
                            stat.area = as.factor(herring$StatArea))
 
-#check data frame structure
-str(herring_data)
-
 #figure out which stat areas to remove
 levels(as.factor(herring$StatArea))
 
 #filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island
 herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
 
-#calculate mean
+#Summarize herring data by mean otilith for each salmon
 herring_data <- herring_data %>% group_by(sal.id, sal.length, coll.doy, lat, long, coll.month) %>% summarize(oto.width = mean(oto.width))
                                                                 
 ```
@@ -169,19 +166,6 @@ rug(herring_data$long)
 
 ```
 
-###Categorical explanatory variables
-```{r, fig.width = 6,fig.height = 3}
-#Multipanel of dotcharts for categorical explanatory variables
-par(mfrow = c(1, 2))
-
-#Salmon id
-with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
-abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
-
-#Make a histogram of herring frequency per salmon
-hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
-```
 ## B)
 One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no substantial skewedness is observed.
 
@@ -208,7 +192,7 @@ print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
 Our only categorical variable is salmon id so the range in the number of otoliths per salmon was x to x will not confounded any other categorical variables. We plan to model salmon id as a random effect which will account for the effects of any unbalancing associated with salmon id on the continuous variables.
 
-A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.
+A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.385) with latitude but moderately, negatively correlated longitude (-0.356). There was a strong, negative correlation (-0.874) between latitude and longitude. VIF values of latitude (4.767413) and longitude (4.69011) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.
 
 (204)
 
@@ -238,14 +222,15 @@ herring_data$long_standardized <- (herring_data$long - mean(herring_data$long)) 
 
 ## Model Structure
 
-oto.width ~ coll.doy + lat + sal.length + (1 | sal.id)
-oto.width ~ coll.doy + long + sal.length + (1 | sal.id)
 
-1. oto.width ~ coll.doy + lat + coll.doy:lat + (1 | sal.id)
-2. oto.width ~ coll.doy + sal.length + coll.doy:sal.length + (1 | sal.id)
-3. oto.width ~ lat + sal.length + lat:sal.length + (1 | sal.id)
-4. oto.width ~ coll.doy + long + coll.doy:long + (1 | sal.id)
-5. oto.width ~ long + sal.length + long:sal.length + (1 | sal.id)
+oto.width ~ coll.doy + lat + sal.length
+oto.width ~ coll.doy + long + sal.length 
+
+1. oto.width ~ coll.doy + lat + coll.doy:lat
+2. oto.width ~ coll.doy + sal.length + coll.doy:sal.length 
+3. oto.width ~ lat + sal.length + lat:sal.length 
+4. oto.width ~ coll.doy + long + coll.doy:long 
+5. oto.width ~ long + sal.length + long:sal.length
 
 
 
