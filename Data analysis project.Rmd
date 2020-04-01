@@ -289,6 +289,9 @@ qqline(resid(model4), col = "red")
 #quantile-quantile plot for linear mixed-effects model additional assumption - does the random intercept have a norml distribution?
 qqnorm(ranef(model4)$sal.id[, "(Intercept)"])
 qqline(ranef(model4)$sal.id[, "(Intercept)"])
+
+#run a Shapiro-Wilk test for normality of the residuals
+shapiro.test(resid(model4))
 ```
 1. Written summary (200 words)
 -assessment of plausibility of model assumptions (LINE)
