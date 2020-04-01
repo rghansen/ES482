@@ -57,6 +57,10 @@ levels(as.factor(herring$StatArea))
 
 #filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island
 herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
+
+#calculate mean
+herring_data <- herring_data %>% group_by(sal.id, sal.length, coll.doy, lat, long, coll.month) %>% summarize(oto.width = mean(oto.width))
+                                                                
 ```
 
 
