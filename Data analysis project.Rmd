@@ -58,7 +58,7 @@ herring_data <- data.frame(oto.width = herring$AverageWidth,
                            sal.sex = herring$SalmonSex,
                            coll.month = herring$CollectionMonth)
 
-#check data frame structure* do we need to change data types for any variables? i.e. coll.doy, sal.id?
+#check data frame structure
 str(herring_data)
 
 #figure out which stat areas to remove
@@ -112,6 +112,11 @@ table(herring_data$oto.width > 0, useNA = "always")
 #exclude rows with NAs for continuous variables
 herring_data <- herring_data %>% na.omit()
 
+#add columns for standardized continuous predictor variable for modelling - minus mean / 1 sd
+herring_data$sal.length_standardized <- (herring_data$sal.length - mean(herring_data$sal.length)) / sd(herring_data$sal.length)
+herring_data$coll.doy_standardized <- (herring_data$coll.doy - mean(herring_data$coll.doy)) / sd(herring_data$coll.doy)
+herring_data$lat_standardized <- (herring_data$lat - mean(herring_data$lat)) / sd(herring_data$lat)
+herring_data$long_standardized <- (herring_data$long - mean(herring_data$long)) / sd(herring_data$long)
 ```
 
 ##B) 
