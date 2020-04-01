@@ -249,23 +249,21 @@ plot(herring_collinearity[1:5], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5),
 oto.width ~ coll.doy + lat + sal.length + (1 | sal.id)
 oto.width ~ coll.doy + long + sal.length + (1 | sal.id)
 
-1. oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id)
-2. oto.width ~ coll.doy + sal.length + coll.doy*sal.length + (1 | sal.id)
-3. oto.width ~ lat + sal.length + lat*sal.length + (1 | sal.id)
-4. oto.width ~ coll.doy + long + coll.doy*long + (1 | sal.id)
-5. oto.width ~ long + sal.length + long*sal.length + (1 | sal.id)
+1. oto.width ~ coll.doy + lat + coll.doy:lat + (1 | sal.id)
+2. oto.width ~ coll.doy + sal.length + coll.doy:sal.length + (1 | sal.id)
+3. oto.width ~ lat + sal.length + lat:sal.length + (1 | sal.id)
+4. oto.width ~ coll.doy + long + coll.doy:long + (1 | sal.id)
+5. oto.width ~ long + sal.length + long:sal.length + (1 | sal.id)
 
 
 
 ## Fit Statistical Models
 ```{r}
-
-model1 <- lmer(oto.width ~ coll.doy + lat + coll.doy*lat + (1 | sal.id), data = herring_data, REML = FALSE)
-model2 <- lmer(oto.width ~ coll.doy + sal.length + coll.doy*sal.length + (1 | sal.id), data = herring_data, REML = FALSE)
-model3 <- lmer(oto.width ~ lat + sal.length + lat*sal.length + (1 | sal.id), data = herring_data, REML = FALSE)
-model4 <- lmer(oto.width ~ coll.doy + long + coll.doy*long + (1 | sal.id), data = herring_data, REML = FALSE)
-model5 <- lmer(oto.width ~ long + sal.length + long*sal.length + (1 | sal.id), data = herring_data, REML = FALSE)
-
+model1 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + coll.doy_standardized:lat_standardized + (1 | sal.id), data = herring_data, REML = FALSE)
+model2 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + coll.doy_standardized:sal.length_standardized + (1 | sal.id), data = herring_data, REML = FALSE)
+model3 <- lmer(oto.width ~ lat_standardized + sal.length_standardized + lat_standardized:sal.length_standardized + (1 | sal.id), data = herring_data, REML = FALSE)
+model4 <- lmer(oto.width ~ coll.doy_standardized + long_standardized + coll.doy_standardized:long_standardized + (1 | sal.id), data = herring_data, REML = FALSE)
+model5 <- lmer(oto.width ~ long_standardized + sal.length_standardized + long_standardized:sal.length_standardized + (1 | sal.id), data = herring_data, REML = FALSE)
 ```
 
 #Section 6: Model Checking 
@@ -284,7 +282,7 @@ rug(resid(model4))
 sd_hat <- sd(resid(model4))
 curve(dnorm(x, sd = sd_hat), add = TRUE)
 
-#make quantile-quantile plot and add reference line
+#make quantile-quantile plot and add reference line * do we need this?
 qqnorm(resid(model4))
 qqline(resid(model4), col = "red")
 
