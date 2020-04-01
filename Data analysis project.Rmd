@@ -168,17 +168,9 @@ rug(herring_data$long)
 ```
 
 ###Categorical explanatory variables
-```{r, fig.width = 6,fig.height = 3}
-#Multipanel of dotcharts for categorical explanatory variables
-par(mfrow = c(1, 2))
-
-#Salmon id *is this useful? Shows that ID increases as we would expect.
-with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
-abline (h = seq(1, n, by = 5), col = "lightgrey")
-with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
-
+```{r}
 #Make a histogram of herring frequency per salmon *bins are off unsure why
-hist(herring_data$sal.id, col = grey(0.9), bin = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
+hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 
 #Make a table of salmon sex, digestion, collection month
 with(herring_data, table(sal.sex, digestion)) #is this useful? Just shows digestion of herring vs. sex of salmon - perhaps omit. How important is it to reference digestion at all if we are not including it in our model?
