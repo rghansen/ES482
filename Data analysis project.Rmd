@@ -48,7 +48,6 @@ herring_data <- data.frame(oto.width = herring$AverageWidth,
                            coll.year = herring$CollectionYear,
                            stat.area = as.factor(herring$StatArea),
                            
-                           digestion = herring$Digestion,
                            sal.sex = herring$SalmonSex,
                            coll.month = herring$CollectionMonth)
 
