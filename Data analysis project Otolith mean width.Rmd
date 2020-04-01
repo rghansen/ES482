@@ -108,10 +108,10 @@ herring_data <- herring_data %>% na.omit()
 ```
 
 ##B) 
-The response variable (otolith width) is continuous and cannot take on zero or negative values. The range of possible response values in this dataset is 0.007 mm to 2.68 mm. 
+The response variable (otolith width) is continuous and cannot take on zero or negative values. The range of possible response values in this dataset is 0.469 mm to 2.27 mm. 
 
 ##C)
-Outliers at < 0.6 mm and > 2.2 mm are reasonable measurements representing a few individuals in the extreme age classes. There are no zero values and one missing otolith measurement making up 0.11 % of the data. We anticipate no difficulties in removing the single NA value from subsequent analyses. Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach. Herring consumed at similar times of year may have similar growth trajectories that contribute to temporal autocorrelation. Spatial autocorrelation may occur if herring consumed in similar areas have similar prey fields and grow rates.
+Outliers at < 0.6 mm and > 2.2 mm are reasonable measurements representing means that included individuals from the extreme age classes. There are no zero values and one missing otolith measurement making up 0.36 % of the data. We anticipate no difficulties in removing the single NA value from subsequent analyses. Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach. Herring consumed at similar times of year may have similar growth trajectories that contribute to temporal autocorrelation. Spatial autocorrelation may occur if herring consumed in similar areas have similar prey fields and grow rates.
 
 ##D)
 We will consider the normal distribution for modelling.  
