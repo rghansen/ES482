@@ -107,12 +107,6 @@ table(herring_data$oto.width > 0, useNA = "always")
 
 #exclude rows with NAs for continuous variables
 herring_data <- herring_data %>% na.omit()
-
-#add columns for standardized continuous predictor variable for modelling - minus mean / 1 sd
-herring_data$sal.length_standardized <- (herring_data$sal.length - mean(herring_data$sal.length)) / sd(herring_data$sal.length)
-herring_data$coll.doy_standardized <- (herring_data$coll.doy - mean(herring_data$coll.doy)) / sd(herring_data$coll.doy)
-herring_data$lat_standardized <- (herring_data$lat - mean(herring_data$lat)) / sd(herring_data$lat)
-herring_data$long_standardized <- (herring_data$long - mean(herring_data$long)) / sd(herring_data$long)
 ```
 
 ##B) 
@@ -235,6 +229,12 @@ herring_collinearity <- data.frame("sal.id" = herring_data$sal.id, "oto.width" =
 
 plot(herring_collinearity[1:6], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
                    labels = c("Salmon ID", "Otolith Width (mm)", "Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
+
+#add columns for standardized continuous predictor variable for modelling - minus mean / 1 sd
+herring_data$sal.length_standardized <- (herring_data$sal.length - mean(herring_data$sal.length)) / sd(herring_data$sal.length)
+herring_data$coll.doy_standardized <- (herring_data$coll.doy - mean(herring_data$coll.doy)) / sd(herring_data$coll.doy)
+herring_data$lat_standardized <- (herring_data$lat - mean(herring_data$lat)) / sd(herring_data$lat)
+herring_data$long_standardized <- (herring_data$long - mean(herring_data$long)) / sd(herring_data$long)
 ```
 
 
