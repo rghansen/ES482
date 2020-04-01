@@ -119,6 +119,7 @@ Non-independence is expected from repeated measurements of multiple herring that
 ##D)
 We will consider the normal distribution for modelling.  
 
+***Check this
 (140)
 
 #Section 3: The Explanatory Variables (150 words)
@@ -177,10 +178,10 @@ One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
 ```{r, echo = TRUE}
-#create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
+#create data frame for pairwise scatter of continuous explanatory variables
 herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
 
-#Pairwise scatterplot of explanatory variables (salmon length, weight, day of year, latitude and longitude)
+#Pairwise scatterplot of explanatory variables
 plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
                    labels = c("Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
 
