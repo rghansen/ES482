@@ -25,16 +25,10 @@ library(tidyverse)
 #Load lmer package
 library(lme4)
 
-#load arm package
-library(MASS)
-library(arm)
-
 #Cite packages
 citation("faraway")
 citation("plyr")
 citation("tidyverse")
-citation("MASS")
-citation("arm")
 ```
 
 ##Read in and organize data
