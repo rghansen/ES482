@@ -185,7 +185,7 @@ herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "coll
 plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
                    labels = c("Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
 
-#plot mean salmon size vs. month
+#Plot mean salmon size vs. month
 boxplot(sal.length ~ coll.month, data = herring_data)
 
 #Pairwise correlation coefficients for explanatory variables
@@ -194,10 +194,10 @@ print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), 
 #Variance Inflation Factors
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
-Our only categorical variable is salmon id so the range in the number of otoliths per salmon was x to x will not confounded any other categorical variables. We plan to model salmon id as a random effect which will account for the effects of any unbalancing associated with salmon id on the continuous variables.
 
 A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.385) with latitude but moderately, negatively correlated longitude (-0.356). There was a strong, negative correlation (-0.874) between latitude and longitude. VIF values of latitude (4.767413) and longitude (4.69011) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.
 
+***Check this
 (204)
 
 #Section 5: Statistical Methods and Model Fitting (200 words)
