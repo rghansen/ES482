@@ -315,25 +315,21 @@ bbmle::AICtab(model1, model2, model3, model4, model5, base = TRUE, weights = TRU
 
 #Summary for at least one ﬁtted model - see chapter 5, page 19
 #coeﬃcient estimates for fixed and random  effects (random effects correspond to  2 sources of variation = variation between individuals and residual variation between observations)
-model1
-summary(model1)
-
-#standardize/scale the coefficients
-#what this does: "standardisation by subtracting the mean and dividing by two standard deviations"
-model4_scaled <- arm::standardize(model4)
+model4
+summary(model4)
 
 #conﬁdence intervals for coeﬃcient estimate
-confint(model4_scaled)
+confint(model4)
 
 #rearranging data to make coefficient plots to show standard errors:
 
 #data frame for coefficient plot
-confint_fixed <- as.data.frame(confint(model4_scaled, parm = c("(Intercept)", "z.coll.doy", "z.long", "z.coll.doy:z.long")))
+confint_fixed <- as.data.frame(confint(model4, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "coll.doy_standardized:long_standardized")))
 
 #compute profile confidence intervals
 confint_fixed <- as.data.frame(confint_fixed)
 confint_fixed$term <- rownames(confint_fixed)
-confint_fixed$estimate <- fixef(model4_scaled)
+confint_fixed$estimate <- fixef(model4)
 
 #ggplot
 ggplot(confint_fixed) + theme_bw() +
@@ -341,9 +337,8 @@ geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
 geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
 scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude", "Collection Day of Year : Longitude")) +
 xlab("") +
-ylab("") + ggtitle("Coefficient Estimates for model4_scaled") +
+ylab("") + ggtitle("Coefficient Estimates for model4_standardized") +
 theme(axis.text = element_text(size = 14, colour = "black"))
-
 ```
 
 #Section 8: Plotting a Model with the Data
