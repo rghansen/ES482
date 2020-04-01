@@ -178,7 +178,7 @@ with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5)
 hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 ```
 ## B)
-One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no obvious skewedness is observed.
+One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no substantial skewedness is observed.
 
 (33)
 
@@ -198,9 +198,9 @@ print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), 
 #Variance Inflation Factors
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
-Tables in section 3 indicate more herring and salmon were collected between March and July (316) compared to other months (124). More females (218) were caught compared to males (139) and 83 fish were left unsexed. We should be cautious about drawing conclusions from models that include sex or collection month as any estimates may be driven by unbalanced variables.
+Our only categorical variable is salmon id so the range in the number of otoliths per salmon was x to x will not confounded any other categorical variables. We plan to model salmon id as a random effect which will account for the effects of any unbalancing associated with salmon id on the continuous variables.
 
-Pairwise scatterplots suggest a concave up relationship between salmon length and collection day of year with a weak correlation coefficient of -0.062, perhaps due to seasonality of salmon caught during the spring and summer months. Salmon length is moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There is a weak, slightly negative correlation (-0.1284) between collection day of year and latitude but a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) are greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model. 
+Pairwise scatterplots suggest a concave up relationship between salmon length and collection day of year with a weak correlation coefficient of -0.062, perhaps due to a higher number of salmon caught by anglers during the spring and summer months. Salmon length is moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There is a weak, slightly negative correlation (-0.1284) between collection day of year and latitude but a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) are greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model. 
 
 (196)
 
