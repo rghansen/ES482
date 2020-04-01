@@ -92,7 +92,9 @@ We will use AIC fit with maximum likelihood estimation because it is flexible wh
 
 #Section 2: The Response Variable (150 words)
 ##A)
-```{r, echo = TRUE}
+```{r, fig.width = 6,fig.height = 3}
+par(mfrow = c(1, 2))
+
 #Add column for number of rows
 n <- nrow(herring_data)
 herring_data$row <- 1:n
