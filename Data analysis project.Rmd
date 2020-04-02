@@ -351,7 +351,6 @@ plot(resid(model_10cl) ~ predict(model_10cl, re.form = ~0), las = 1)
 plot(resid(model_11cl) ~ predict(model_11cl, re.form = ~0), las = 1)
 ```
 
-
 #Section 6: Model Checking 
 ##plotting residuals of at least 1 model (delete before submitting?)
 ```{r}
@@ -389,7 +388,61 @@ plot(resid(model_11cl) ~ predict(model_11cl, re.form = ~0), las = 1)
 
 ```{r, echo = TRUE}
 ##Model comparison and/or model selection and/or hypothesis testing
-#
+
+##Rewriting all potential models with REML= FALSE
+
+#Intercept-only model
+model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data, REML= FALSE)
+
+#One explanatory variable models
+model_1 <- lmer(oto.width ~ sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_2 <- lmer(oto.width ~ coll.doy_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_3 <- lmer(oto.width ~ lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_4 <- lmer(oto.width ~ long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+#Two explanatory variable models
+model_5 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_6 <- lmer(oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_7 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_8 <- lmer(oto.width ~  sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_9 <- lmer(oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+#Three explanatory variable models
+model_10 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_11 <- lmer(oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+#Two explanatory and interaction models
+model_5i <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_6i <- lmer(oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_7i <- lmer(oto.width ~ coll.doy_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_8i <- lmer(oto.width ~  sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_9i <- lmer(oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+#Three explanatory and interaction models
+model_10l <- lmer(oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_11l <- lmer(oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_10c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_11c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
+model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
+
 ##AIC (or AICc) values
 #AIC_out <- AIC(model1, model2, model3, model4, model5)
 #AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
