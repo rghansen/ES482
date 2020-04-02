@@ -233,15 +233,34 @@ herring_data$long_standardized <- (herring_data$long - mean(herring_data$long)) 
 
 
 ## Model Structure
+Possible models:
+oto.width ~ sal.length_standardized + (1 | sal.id)
+oto.width ~ coll.doy_standardized + (1 | sal.id)
+oto.width ~ lat_standardized + (1 | sal.id)
+oto.width ~ long_standardized + (1 | sal.id)
 
-oto.width ~ coll.doy + lat + sal.length + (1 | sal.id)
-oto.width ~ coll.doy + long + sal.length + (1 | sal.id)
+oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id)
+oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id)
+oto.width ~ coll.doy_standardized + lat_standardized + (1 | sal.id)
+oto.width ~  sal.length_standardized + long_standardized + (1 | sal.id)
+oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id)
 
-1. oto.width ~ coll.doy:sal.length + (1 | sal.id)
-2. oto.width ~ lat:sal.length + (1 | sal.id)
-3. oto.width ~ long:sal.length + (1 | sal.id)
+oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id)
+oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id)
 
-*new model structure?
+oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id)
+oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id)
+oto.width ~ coll.doy_standardized*lat_standardized + (1 | sal.id)
+oto.width ~  sal.length_standardized*long_standardized + (1 | sal.id)
+oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id)
+
+oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id)
+oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id)
+oto.width ~ coll.doy_standardized*sal.length_standardized + lat_standardized + (1 | sal.id)
+oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id)
+oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id)
+oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id)
+
 
 ## Fit Statistical Models *I think these are wrong - must go from complex to simple...
 ```{r}
