@@ -261,6 +261,58 @@ oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + 
 oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id)
 oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id)
 
+##All potential models
+```{r}
+#One explanatory variable models
+model_1 <- lmer(oto.width ~ sal.length_standardized + (1 | sal.id), data = herring_data)
+
+model_2 <- lmer(oto.width ~ coll.doy_standardized + (1 | sal.id), data = herring_data)
+
+model_3 <- lmer(oto.width ~ lat_standardized + (1 | sal.id), data = herring_data)
+
+model_4 <- lmer(oto.width ~ long_standardized + (1 | sal.id), data = herring_data)
+
+#Two explanatory variable models
+model_5 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
+
+model_6 <- lmer(oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id), data = herring_data)
+
+model_7 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + (1 | sal.id), data = herring_data)
+
+model_8 <- lmer(oto.width ~  sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data)
+
+model_9 <- lmer(oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data)
+
+#Three explanatory variable models
+model_10 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
+
+model_11 <- lmer(oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
+
+#Two explanatory and interaction models
+model_5i <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
+
+model_6i <- lmer(oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id), data = herring_data)
+
+model_7i <- lmer(oto.width ~ coll.doy_standardized*lat_standardized + (1 | sal.id), data = herring_data)
+
+model_8i <- lmer(oto.width ~  sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data)
+
+model_9i <- lmer(oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data)
+
+#Three explanatory and interaction models
+model_10l <- lmer(oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
+
+model_11l <- lmer(oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
+
+model_10c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data)
+
+model_11c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data)
+
+model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data)
+
+model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data)
+
+```
 
 ## Fit Statistical Models *I think these are wrong - must go from complex to simple...
 ```{r}
