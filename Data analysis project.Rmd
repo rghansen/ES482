@@ -444,13 +444,15 @@ model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat
 model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 ##AIC (or AICc) values
-#AIC_out <- AIC(model1, model2, model3, model4, model5)
-#AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
-#AIC_out
-#
+AIC_out <- AIC(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl)
+
+AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
+
+AIC_out
+
 ##AIC (or AICc) weights
-#bbmle::AICtab(model1, model2, model3, model4, model5, base = TRUE, weights = TRUE)
-#
+bbmle::AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl, base = TRUE, weights = TRUE)
+
 ##R-squared (or adjusted R-squared) values
 ##p-values - note: cannot compute pvalues because the number of herring per salmon is unbalanced - chapter 5, page 9
 #
