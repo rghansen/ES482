@@ -382,29 +382,29 @@ plot(resid(model_11c) ~ predict(model_11c))
 #Section 6: Model Checking 
 ##plotting residuals of at least 1 model (delete before submitting?)
 ```{r}
-#try checking assumptions of model 4 (retroactively, since AIC showed this model has a relatively good goodness-of-fit compared to the other candidate models)
-par(mfrow = c(2, 2))
-
-#plot residuals versus fitted values
-plot(resid(model4) ~ predict(model4))
-abline(h = 0, lty = "dashed")
-
-#plot residual as probability density then add rug marks and a reference curve
-hist(resid(model4), prob = TRUE, col = "lightgrey")
-rug(resid(model4))
-sd_hat <- sd(resid(model4))
-curve(dnorm(x, sd = sd_hat), add = TRUE)
-
-#make quantile-quantile plot and add reference line * do we need this?
-qqnorm(resid(model4))
-qqline(resid(model4), col = "red")
-
-#quantile-quantile plot for linear mixed-effects model additional assumption - does the random intercept have a norml distribution?
-qqnorm(ranef(model4)$sal.id[, "(Intercept)"])
-qqline(ranef(model4)$sal.id[, "(Intercept)"])
-
-#run a Shapiro-Wilk test for normality of the residuals
-shapiro.test(resid(model4))
+##try checking assumptions of model 4 (retroactively, since AIC showed this model has a relatively good goodness-of-fit compared to the other #candidate models)
+#par(mfrow = c(2, 2))
+#
+##plot residuals versus fitted values
+#plot(resid(model4) ~ predict(model4))
+#abline(h = 0, lty = "dashed")
+#
+##plot residual as probability density then add rug marks and a reference curve
+#hist(resid(model4), prob = TRUE, col = "lightgrey")
+#rug(resid(model4))
+#sd_hat <- sd(resid(model4))
+#curve(dnorm(x, sd = sd_hat), add = TRUE)
+#
+##make quantile-quantile plot and add reference line * do we need this?
+#qqnorm(resid(model4))
+#qqline(resid(model4), col = "red")
+#
+##quantile-quantile plot for linear mixed-effects model additional assumption - does the random intercept have a norml distribution?
+#qqnorm(ranef(model4)$sal.id[, "(Intercept)"])
+#qqline(ranef(model4)$sal.id[, "(Intercept)"])
+#
+##run a Shapiro-Wilk test for normality of the residuals
+#shapiro.test(resid(model4))
 ```
 1. Written summary (200 words)
 -assessment of plausibility of model assumptions (LINE)
@@ -415,46 +415,46 @@ shapiro.test(resid(model4))
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
 
 ```{r, echo = TRUE}
-#Model comparison and/or model selection and/or hypothesis testing
-
-#AIC (or AICc) values
-AIC_out <- AIC(model1, model2, model3, model4, model5)
-AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
-AIC_out
-
-#AIC (or AICc) weights
-bbmle::AICtab(model1, model2, model3, model4, model5, base = TRUE, weights = TRUE)
-
-#R-squared (or adjusted R-squared) values
-#p-values - note: cannot compute pvalues because the number of herring per salmon is unbalanced - chapter 5, page 9
-
-
-#Summary for at least one ﬁtted model - see chapter 5, page 19
-#coeﬃcient estimates for fixed and random  effects (random effects correspond to  2 sources of variation = variation between individuals and residual variation between observations)
-model4
-summary(model4)
-
-#conﬁdence intervals for coeﬃcient estimate
-confint(model4)
-
-#rearranging data to make coefficient plots to show standard errors:
-
-#data frame for coefficient plot
-confint_fixed <- as.data.frame(confint(model4, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "coll.doy_standardized:long_standardized")))
-
-#compute profile confidence intervals
-confint_fixed <- as.data.frame(confint_fixed)
-confint_fixed$term <- rownames(confint_fixed)
-confint_fixed$estimate <- fixef(model4)
-
-#ggplot
-ggplot(confint_fixed) + theme_bw() +
-geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
-geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
-scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude", "Collection Day of Year : Longitude")) +
-xlab("") +
-ylab("") + ggtitle("Coefficient Estimates for model4_standardized") +
-theme(axis.text = element_text(size = 14, colour = "black"))
+##Model comparison and/or model selection and/or hypothesis testing
+#
+##AIC (or AICc) values
+#AIC_out <- AIC(model1, model2, model3, model4, model5)
+#AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
+#AIC_out
+#
+##AIC (or AICc) weights
+#bbmle::AICtab(model1, model2, model3, model4, model5, base = TRUE, weights = TRUE)
+#
+##R-squared (or adjusted R-squared) values
+##p-values - note: cannot compute pvalues because the number of herring per salmon is unbalanced - chapter 5, page 9
+#
+#
+##Summary for at least one ﬁtted model - see chapter 5, page 19
+##coeﬃcient estimates for fixed and random  effects (random effects correspond to  2 sources of variation = variation between individuals and #residual variation between observations)
+#model4
+#summary(model4)
+#
+##conﬁdence intervals for coeﬃcient estimate
+#confint(model4)
+#
+##rearranging data to make coefficient plots to show standard errors:
+#
+##data frame for coefficient plot
+#confint_fixed <- as.data.frame(confint(model4, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", #"coll.doy_standardized:long_standardized")))
+#
+##compute profile confidence intervals
+#confint_fixed <- as.data.frame(confint_fixed)
+#confint_fixed$term <- rownames(confint_fixed)
+#confint_fixed$estimate <- fixef(model4)
+#
+##ggplot
+#ggplot(confint_fixed) + theme_bw() +
+#geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
+#geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
+#scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude", "Collection Day of Year : Longitude")) +
+#xlab("") +
+#ylab("") + ggtitle("Coefficient Estimates for model4_standardized") +
+#theme(axis.text = element_text(size = 14, colour = "black"))
 ```
 
 #Section 8: Plotting a Model with the Data
