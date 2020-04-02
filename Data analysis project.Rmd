@@ -237,11 +237,9 @@ herring_data$long_standardized <- (herring_data$long - mean(herring_data$long)) 
 oto.width ~ coll.doy + lat + sal.length + (1 | sal.id)
 oto.width ~ coll.doy + long + sal.length + (1 | sal.id)
 
-1. oto.width ~ coll.doy + lat + coll.doy:lat + (1 | sal.id)
-2. oto.width ~ coll.doy + sal.length + coll.doy:sal.length + (1 | sal.id)
-3. oto.width ~ lat + sal.length + lat:sal.length + (1 | sal.id)
-4. oto.width ~ coll.doy + long + coll.doy:long + (1 | sal.id)
-5. oto.width ~ long + sal.length + long:sal.length + (1 | sal.id)
+1. oto.width ~ coll.doy:sal.length + (1 | sal.id)
+2. oto.width ~ lat:sal.length + (1 | sal.id)
+3. oto.width ~ long:sal.length + (1 | sal.id)
 
 
 
