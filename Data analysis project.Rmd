@@ -314,7 +314,41 @@ model_11c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + lo
 model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data)
 
 model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data)
+```
 
+```{r}
+par(mfrow = c(3,2))
+plot(resid(model_0) ~ predict(model_0, re.form = ~0), las = 1) 
+plot(resid(model_1) ~ predict(model_1, re.form = ~0), las = 1)
+plot(resid(model_2) ~ predict(model_2, re.form = ~0), las = 1) 
+plot(resid(model_3) ~ predict(model_3, re.form = ~0), las = 1)
+plot(resid(model_4) ~ predict(model_4, re.form = ~0), las = 1) 
+
+par(mfrow = c(3,2))
+plot(resid(model_5) ~ predict(model_5, re.form = ~0), las = 1)
+plot(resid(model_6) ~ predict(model_6, re.form = ~0), las = 1) 
+plot(resid(model_7) ~ predict(model_7, re.form = ~0), las = 1)
+plot(resid(model_8) ~ predict(model_8, re.form = ~0), las = 1) 
+plot(resid(model_9) ~ predict(model_9, re.form = ~0), las = 1)
+
+par(mfrow = c(3,2))
+plot(resid(model_5i) ~ predict(model_5i, re.form = ~0), las = 1)
+plot(resid(model_6i) ~ predict(model_6i, re.form = ~0), las = 1) 
+plot(resid(model_7i) ~ predict(model_7i, re.form = ~0), las = 1)
+plot(resid(model_8i) ~ predict(model_8i, re.form = ~0), las = 1) 
+plot(resid(model_9i) ~ predict(model_9i, re.form = ~0), las = 1)
+
+par(mfrow = c(1),2))
+plot(resid(model_10) ~ predict(model_10, re.form = ~0), las = 1)
+plot(resid(model_11) ~ predict(model_11, re.form = ~0), las = 1)
+
+par(mfrow = c(3,2))
+plot(resid(model_10l) ~ predict(model_10l, re.form = ~0), las = 1)
+plot(resid(model_11l) ~ predict(model_11l, re.form = ~0), las = 1)
+plot(resid(model_10c) ~ predict(model_10c, re.form = ~0), las = 1)
+plot(resid(model_11c) ~ predict(model_11c, re.form = ~0), las = 1)
+plot(resid(model_10cl) ~ predict(model_10cl, re.form = ~0), las = 1)
+plot(resid(model_11cl) ~ predict(model_11cl, re.form = ~0), las = 1)
 ```
 
 
