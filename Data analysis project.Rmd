@@ -338,7 +338,7 @@ plot(resid(model_7i) ~ predict(model_7i, re.form = ~0), las = 1)
 plot(resid(model_8i) ~ predict(model_8i, re.form = ~0), las = 1) 
 plot(resid(model_9i) ~ predict(model_9i, re.form = ~0), las = 1)
 
-par(mfrow = c(1),2))
+par(mfrow = c(1,2))
 plot(resid(model_10) ~ predict(model_10, re.form = ~0), las = 1)
 plot(resid(model_11) ~ predict(model_11, re.form = ~0), las = 1)
 
