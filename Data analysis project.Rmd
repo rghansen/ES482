@@ -263,6 +263,9 @@ oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1
 
 ##All potential models
 ```{r}
+#Intercept-only model
+model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data)
+
 #One explanatory variable models
 model_1 <- lmer(oto.width ~ sal.length_standardized + (1 | sal.id), data = herring_data)
 
@@ -314,70 +317,6 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 
 ```
 
-```{r}
-fixef(model_1)
-fixef(model_2)
-fixef(model_3)
-fixef(model_4)
-fixef(model_5)
-fixef(model_6)
-fixef(model_7)
-fixef(model_8)
-fixef(model_9)
-fixef(model_5i)
-fixef(model_6i)
-fixef(model_7i)
-fixef(model_8i)
-fixef(model_9i)
-fixef(model_10)
-fixef(model_11)
-fixef(model_10l)
-fixef(model_11l)
-fixef(model_10c)
-fixef(model_11c)
-fixef(model_10cl)
-fixef(model_11cl)
-```
-
-```{r}
-#Plot one-v model residuals
-par(mfrow = c(2,2))
-plot(resid(model_1) ~ predict(model_1))
-plot(resid(model_2) ~ predict(model_2))
-plot(resid(model_3) ~ predict(model_3))
-plot(resid(model_4) ~ predict(model_4))
-
-#Plot two-v model residuals
-par(mfrow = c(3,2))
-plot(resid(model_5) ~ predict(model_5))
-plot(resid(model_6) ~ predict(model_6))
-plot(resid(model_7) ~ predict(model_7))
-plot(resid(model_8) ~ predict(model_8))
-plot(resid(model_9) ~ predict(model_9))
-
-#Plot three-v model with residuals
-par(mfrow = c(1,2))
-plot(resid(model_10) ~ predict(model_10))
-plot(resid(model_11) ~ predict(model_11))
-
-
-#Plot two-v interaction model with residuals
-par(mfrow = c(3,2))
-plot(resid(model_5i) ~ predict(model_5i))
-plot(resid(model_6i) ~ predict(model_6i))
-plot(resid(model_7i) ~ predict(model_7i))
-plot(resid(model_8i) ~ predict(model_8i))
-plot(resid(model_9i) ~ predict(model_9i))
-
-#Plot three-v model with residuals
-par(mfrow = c(3,2))
-plot(resid(model_10cl) ~ predict(model_10cl))
-plot(resid(model_11cl) ~ predict(model_11cl))
-plot(resid(model_10l) ~ predict(model_10l))
-plot(resid(model_11l) ~ predict(model_11l))
-plot(resid(model_10c) ~ predict(model_10c))
-plot(resid(model_11c) ~ predict(model_11c))
-```
 
 #Section 6: Model Checking 
 ##plotting residuals of at least 1 model (delete before submitting?)
