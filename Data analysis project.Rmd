@@ -241,7 +241,7 @@ oto.width ~ coll.doy + long + sal.length + (1 | sal.id)
 2. oto.width ~ lat:sal.length + (1 | sal.id)
 3. oto.width ~ long:sal.length + (1 | sal.id)
 
-
+*new model structure?
 
 ## Fit Statistical Models *I think these are wrong - must go from complex to simple...
 ```{r}
