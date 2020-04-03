@@ -317,10 +317,6 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 
 #Section 6: Model Checking 
 ```{r}
-#Plot at least one model with data
-#- use method that shows strengths and weaknesses
-#- include measurement of uncertainty
-
 #Checking assumptions of model 11
 par(mfrow = c(2, 2))
 
