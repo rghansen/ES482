@@ -25,10 +25,14 @@ library(tidyverse)
 #Load lmer package
 library(lme4)
 
+#Load bbmle package
+library(bbmle)
+
 #Cite packages
 citation("faraway")
 citation("plyr")
 citation("tidyverse")
+citation("bbmle")
 ```
 
 ##Read in and organize data
