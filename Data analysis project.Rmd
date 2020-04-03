@@ -283,36 +283,9 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 ```
 
 #Section 6: Model Checking 
+##Checking assumptions of model 11
 ```{r}
-#Plot at least one model with data
-#- use method that shows strengths and weaknesses
-#- include measurement of uncertainty
-
-#Checking assumptions of model 11
-par(mfrow = c(2, 2))
-
-#plot residuals versus fitted values
-plot(resid(model_11) ~ predict(model_11, re.form = ~0), las = 1)
-abline(h = 0, lty = "dashed")
-
-#plot residual as probability density then add rug marks and a reference curve
-hist(resid(model_11), prob = TRUE, col = "lightgrey")
-rug(resid(model_11))
-sd_hat <- sd(resid(model_11))
-curve(dnorm(x, sd = sd_hat), add = TRUE)
-
-#make quantile-quantile plot and add reference line * do we need this?
-qqnorm(resid(model_11))
-qqline(resid(model_11), col = "red")
-
-#quantile-quantile plot for linear mixed-effects model additional assumption - does the random intercept have a norml distribution?
-qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
-qqline(ranef(model_11)$sal.id[, "(Intercept)"])
-
-#run a Shapiro-Wilk test for normality of the residuals
-shapiro.test(resid(model_11))
-
-#Residuals vs. fitted shown with smoothing curve
+#Plot residuals versus fitted values shown with a smoothing curve
 herring_data$resid_11 <- resid(model_11) 
 herring_data$fitted_11 <- predict(model_11, re.form = ~0)
 
@@ -320,6 +293,26 @@ ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(fitted_11, resid_11), shape = 1) +
   geom_smooth(aes(fitted_11, resid_11), se = FALSE)
+
+#Make multipanel of residual plots
+par(mfrow = c(2, 1))
+
+#Plot histogram of residuals as probability density with rug marks and reference curve
+hist(resid(model_11), prob = TRUE, col = "lightgrey")
+rug(resid(model_11))
+sd_hat <- sd(resid(model_11))
+curve(dnorm(x, sd = sd_hat), add = TRUE)
+
+#Make quantile-quantile plot with reference line
+qqnorm(resid(model_11))
+qqline(resid(model_11), col = "red")
+
+#Run a Shapiro-Wilk test for normality of the residuals
+shapiro.test(resid(model_11))
+
+#Make quantile-quantile plot for linear mixed-effects model additional assumption - does the random intercept have a norml distribution?
+qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
+qqline(ranef(model_11)$sal.id[, "(Intercept)"])
 
 #Residuals vs. long shown with smoothing curve
 ggplot(herring_data) +
@@ -349,7 +342,6 @@ ggplot(herring_data) +
 ##Prepping models for AIC
 ```{r, echo = TRUE}
 #Rewriting all potential models with REML= FALSE
-
 #Intercept-only model
 model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data, REML= FALSE)
 
@@ -406,14 +398,14 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 
 ##Running the AIC
 ```{r}
-##AIC (or AICc) values
+#AIC (or AICc) values
 AIC_out <- AIC(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl)
 
 AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
 
 AIC_out
 
-##AIC (or AICc) weights
+#AIC (or AICc) weights
 bbmle::AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl, base = TRUE, weights = TRUE)
 ```
 
