@@ -184,28 +184,30 @@ One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
 ```{r, echo = TRUE}
-#create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
-herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
+#Create dataframe for pairwise scatter plots that only includes continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
+herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
+    "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
 
-#Pairwise scatterplot of explanatory variables (salmon length, weight, day of year, latitude and longitude)
+#Make pairwise scatterplot of explanatory variables
 plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
-                   labels = c("Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
+     labels = c("Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
 
-#plot mean salmon size vs. month
+#Plot mean salmon size vs. collection month
 boxplot(sal.length ~ coll.month, data = herring_data)
 
-#Pairwise correlation coefficients for explanatory variables
+#Calculate and view pairwise correlation coefficients for explanatory variables
 print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), digits = 2)
 
-#Variance Inflation Factors
+#Calulate and view Variance Inflation Factors
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
-Our only categorical variable is salmon id so the range in the number of otoliths per salmon was x to x will not confounded any other categorical variables. We plan to model salmon id as a random effect which will account for the effects of any unbalancing associated with salmon id on the continuous variables.
-
-A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.
-
-(204)
-
+  
+Our only categorical variable is salmon id so the range in the number of otoliths per salmon was x to x will not confounded any other categorical variables. We plan to model salmon id as a random effect which will account for the effects of any unbalancing associated with salmon id on the continuous variables.  
+  
+A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.  
+  
+(204)  
+  
 #Section 5: Statistical Methods and Model Fitting (200 words)
 
 We will be using linear mixed-effects models using the R Package lme4 (Bates et al., 2015). We are considering the normal distribution of otolith width (mm) modelled as function of salmon length (mm), day of year in 2018, latitude and longitude. We will include a random intercept corresponding to individual salmon because there are > 10 levels (ref.). Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual. In our first round of modelling fitting all salmon lengths will be included followed by a second round of model fitting to salmon 62 cm and above as this is the regulation size restrictions for recreationally caught salmon in the Strait of Georgia. This will check the influence of removing under size regulation fish from the dataset.
@@ -216,7 +218,7 @@ We will be using linear mixed-effects models using the R Package lme4 (Bates et 
 
 ##Standardizing data for models
 ```{r}
-#Add columns for standardized continuous predictor variable for modelling - minus mean / 1 sd
+#Add columns for standardized  continuous predictor variable for modelling (x - minus mean / 1 sd)
 herring_data$sal.length_standardized <- (herring_data$sal.length - mean(herring_data$sal.length)) / sd(herring_data$sal.length)
 herring_data$coll.doy_standardized <- (herring_data$coll.doy - mean(herring_data$coll.doy)) / sd(herring_data$coll.doy)
 herring_data$lat_standardized <- (herring_data$lat - mean(herring_data$lat)) / sd(herring_data$lat)
@@ -224,41 +226,12 @@ herring_data$long_standardized <- (herring_data$long - mean(herring_data$long)) 
 ```
 
 
-## Model Structure
-All models:
-oto.width ~ sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized + (1 | sal.id)
-oto.width ~ lat_standardized + (1 | sal.id)
-oto.width ~ long_standardized + (1 | sal.id)
-
-oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id)
-oto.width ~ coll.doy_standardized + lat_standardized + (1 | sal.id)
-oto.width ~  sal.length_standardized + long_standardized + (1 | sal.id)
-oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id)
-
-oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id)
-
-oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id)
-oto.width ~ coll.doy_standardized*lat_standardized + (1 | sal.id)
-oto.width ~  sal.length_standardized*long_standardized + (1 | sal.id)
-oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id)
-
-oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*sal.length_standardized + lat_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id)
-
-##All potential models
+##Creating linear mixed-effect models
 ```{r}
 #Intercept-only model
 model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data)
 
-#One explanatory variable models
+#Models with one explanatory variable
 model_1 <- lmer(oto.width ~ sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_2 <- lmer(oto.width ~ coll.doy_standardized + (1 | sal.id), data = herring_data)
@@ -267,7 +240,7 @@ model_3 <- lmer(oto.width ~ lat_standardized + (1 | sal.id), data = herring_data
 
 model_4 <- lmer(oto.width ~ long_standardized + (1 | sal.id), data = herring_data)
 
-#Two explanatory variable models
+#Models with two explanatory variables
 model_5 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_6 <- lmer(oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id), data = herring_data)
@@ -278,12 +251,12 @@ model_8 <- lmer(oto.width ~  sal.length_standardized + long_standardized + (1 | 
 
 model_9 <- lmer(oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data)
 
-#Three explanatory variable models
+#Models with three explanatory variables
 model_10 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_11 <- lmer(oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
 
-#Two explanatory and one interaction models
+#Models with two explanatory variables and one interaction term
 model_5i <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_6i <- lmer(oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id), data = herring_data)
@@ -294,7 +267,7 @@ model_8i <- lmer(oto.width ~  sal.length_standardized*long_standardized + (1 | s
 
 model_9i <- lmer(oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data)
 
-#Three explanatory variable and one interaction models
+#Models with three explanatory variables and one interaction term
 model_10l <- lmer(oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_11l <- lmer(oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
@@ -303,7 +276,7 @@ model_10c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + la
 
 model_11c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data)
 
-#Three explanatory variable and two interaction models
+#Models with three explanatory variables and two interaction terms
 model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data)
 
 model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data)
