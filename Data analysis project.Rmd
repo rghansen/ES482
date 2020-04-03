@@ -119,45 +119,45 @@ We will consider the normal distribution for modelling.
 ##A)
 ###Continuous explanatory variables
 ```{r, fig.width = 6,fig.height = 6}
-#Multipanel of dotcharts for continuous explanatory variables
+#Make multipanel of dotcharts for continuous explanatory variables
 par(mfrow = c(3, 2))
 
-#Salmon length
+#Salmon length dotchart
 with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Actual Salmon Length [mm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.length, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Collection day of year
+#Collection day of year dotchart
 with(herring_data, plot(coll.doy, row, las = 1, type = "n", xlab = "Day of Year in 2018", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(coll.doy, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Latitude
+#Latitude dotchart
 with(herring_data, plot(lat, row, las = 1, type = "n", xlab = "Latitude", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Longitude
+#Longitude dotchart
 with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Multipanel of histograms for continuous explanatory variables
+#Make multipanel of histograms for continuous explanatory variables
 par(mfrow = c(3, 2))
 
-#Salmon length
+#Salmon length histogram
 hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length")
 rug(herring_data$sal.length)
 
-#Collection day of year
+#Collection day of year histogram
 hist(herring_data$coll.doy, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of day of year", xlab = "Collection day of year")
 rug(herring_data$coll.doy)
 
-#Latitude *something is up with this y axis
+#Latitude histogram
 hist(herring_data$lat, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude")
 rug(herring_data$lat)
 
-#Longitude
+#Longitude histogram
 hist(herring_data$long, col = grey(0.9), breaks = seq(-125.5, -123, by = 0.05), main = "Histogram of longitude", xlab = "Longitude")
 rug(herring_data$long)
 
