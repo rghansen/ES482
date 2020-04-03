@@ -317,6 +317,10 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 
 #Section 6: Model Checking 
 ```{r}
+#Plot at least one model with data
+#- use method that shows strengths and weaknesses
+#- include measurement of uncertainty
+
 #Checking assumptions of model 11
 par(mfrow = c(2, 2))
 
@@ -340,6 +344,33 @@ qqline(ranef(model_11)$sal.id[, "(Intercept)"])
 
 #run a Shapiro-Wilk test for normality of the residuals
 shapiro.test(resid(model_11))
+
+#Residuals vs. fitted shown with smoothing curve
+herring_data$resid_11 <- resid(model_11) 
+herring_data$fitted_11 <- predict(model_11, re.form = ~0)
+
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(fitted_11, resid_11), shape = 1) +
+  geom_smooth(aes(fitted_11, resid_11), se = FALSE)
+
+#Residuals vs. long shown with smoothing curve
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long_standardized, resid_11), shape = 1) +
+  geom_smooth(aes(long_standardized, resid_11), se = FALSE)
+
+#Residuals vs. coll.doy shown with smoothing curve
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(coll.doy_standardized, resid_11), shape = 1) +
+  geom_smooth(aes(coll.doy_standardized, resid_11), se = FALSE)
+
+#Residuals vs. sal.length shown with smoothing curve
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(sal.length_standardized, resid_11), shape = 1) +
+  geom_smooth(aes(sal.length_standardized, resid_11), se = FALSE)
 ```
 1. Written summary (200 words)
 -assessment of plausibility of model assumptions (LINE)
@@ -417,37 +448,38 @@ AIC_out
 
 ##AIC (or AICc) weights
 bbmle::AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl, base = TRUE, weights = TRUE)
+```
 
-#R-squared (or adjusted R-squared) values
-##p-values - note: cannot compute pvalues because the number of herring per salmon is unbalanced - chapter 5, page 9
+##Summarizing the
+```{r}
+#R-squared (or adjusted R-squared) values?
+
+#coeﬃcient estimates for fixed and random  effects (random effects correspond to  2 sources of variation = variation between individuals and #residual variation between observations)
+summary(model_11)
+
+#conﬁdence intervals for coeﬃcient estimate
+confint(model_11)
+
+#Rearranging data to make coefficient plots to show standard errors:
 #
-#
-##Summary for at least one ﬁtted model - see chapter 5, page 19
-##coeﬃcient estimates for fixed and random  effects (random effects correspond to  2 sources of variation = variation between individuals and #residual variation between observations)
-#model4
-#summary(model4)
-#
-##conﬁdence intervals for coeﬃcient estimate
-#confint(model4)
-#
-##rearranging data to make coefficient plots to show standard errors:
-#
-##data frame for coefficient plot
-#confint_fixed <- as.data.frame(confint(model4, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", #"coll.doy_standardized:long_standardized")))
-#
-##compute profile confidence intervals
-#confint_fixed <- as.data.frame(confint_fixed)
-#confint_fixed$term <- rownames(confint_fixed)
-#confint_fixed$estimate <- fixef(model4)
-#
+#data frame for coefficient plot
+confint_fixed <- as.data.frame(confint(model_11, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "sal.length_standardized")))
+
+##Compute profile confidence intervals
+confint_fixed <- as.data.frame(confint_fixed)
+confint_fixed$term <- rownames(confint_fixed)
+confint_fixed$estimate <- fixef(model_11)
+
 ##ggplot
-#ggplot(confint_fixed) + theme_bw() +
-#geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
-#geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
-#scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude", "Collection Day of Year : Longitude")) +
-#xlab("") +
-#ylab("") + ggtitle("Coefficient Estimates for model4_standardized") +
-#theme(axis.text = element_text(size = 14, colour = "black"))
+ggplot(confint_fixed) + 
+  theme_bw() +
+  geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
+  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
+  scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude", "Salmon length")) +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Coefficient Estimates for model4_standardized") +
+  theme(axis.text = element_text(size = 14, colour = "black"))
 ```
 
 #Section 8: Plotting a Model with the Data
@@ -468,7 +500,20 @@ bbmle::AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, mod
 #newdata$fit1 <- predict(model4, newdata = newdata)
 #newdata$upr1 <- predict(model4, newdata = newdata, interval = "prediction")[, "upr"]
 #newdata$lwr1 <- predict(model4, newdata = newdata, interval = "prediction")[, "lwr"]
-#
+
+#Generate model predictions at population level 
+herring_data$fit_11_pop <- predict(model_11, re.form = ~0)
+
+#Generate model predictions at salmon id level
+herring_data$fit_11_sal.id <- predict(model_11)
+
+#Plot the model
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long_standardized, oto.width), shape = 1, size = 0.2) +
+  geom_line(aes(long_standardized, fit_11_pop)) + 
+  geom_point(aes(long_standardized, fit_11_sal.id, group = sal.id), shape = 2)
+
 ```
 
 #Section 9: Discussion (400 words)
