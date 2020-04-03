@@ -498,18 +498,38 @@ ggplot(confint_fixed) +
 #newdata$lwr1 <- predict(model4, newdata = newdata, interval = "prediction")[, "lwr"]
 
 #Generate model predictions at population level 
-herring_data$fit_11_pop <- predict(model_11, re.form = ~0)
+herring_data$fit_11_pop <- predict(model_11, re.form = ~ 0)
 
 #Generate model predictions at salmon id level
 herring_data$fit_11_sal.id <- predict(model_11)
 
-#Plot the model
+#Plot the model with longitude
 ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(long_standardized, oto.width), shape = 1, size = 0.2) +
   geom_line(aes(long_standardized, fit_11_pop)) + 
   geom_point(aes(long_standardized, fit_11_sal.id, group = sal.id), shape = 2)
 
+#plot model with lat
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(lat_standardized, oto.width), shape = 1, size = 0.2) +
+  geom_line(aes(lat_standardized, fit_11_pop)) + 
+  geom_point(aes(lat_standardized, fit_11_sal.id, group = sal.id), shape = 2)
+
+#plot model with salmon length
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(sal.length_standardized, oto.width), shape = 1, size = 0.2) +
+  geom_line(aes(sal.length_standardized, fit_11_pop)) + 
+  geom_point(aes(sal.length_standardized, fit_11_sal.id, group = sal.id), shape = 2)
+
+#plot model with collection day
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(coll.doy_standardized, oto.width), shape = 1, size = 0.2) +
+  geom_line(aes(coll.doy, fit_11_pop)) + 
+  geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 2)
 ```
 
 #Section 9: Discussion (400 words)
