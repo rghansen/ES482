@@ -165,10 +165,10 @@ rug(herring_data$long)
 
 ###Categorical explanatory variables
 ```{r, fig.width = 6,fig.height = 3}
-#Multipanel of dotcharts for categorical explanatory variables
+#Make multipanel for plots of categorical explanatory variables
 par(mfrow = c(1, 2))
 
-#Salmon id
+#Make dotchart of salmon id
 with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
