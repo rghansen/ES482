@@ -314,27 +314,32 @@ qqline(resid(model_11), col = "red")
 #Run a Shapiro-Wilk test for normality of the residuals
 shapiro.test(resid(model_11))
 
-#Make quantile-quantile plot for checking whether the random intercept is normally distributed
-qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
-qqline(ranef(model_11)$sal.id[, "(Intercept)"])
-
 #Plot residuals vs. longitude (shown with smoothing curve)
-ggplot(herring_data) +
+resid_vs_long_11 <- ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(long, resid_11), shape = 1) +
   geom_smooth(aes(long, resid_11), se = FALSE)
 
 #Plot residuals vs. coll.doy (shown with smoothing curve)
-ggplot(herring_data) +
+resid_vs_coll.doy_11 <- ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(coll.doy, resid_11), shape = 1) +
   geom_smooth(aes(coll.doy, resid_11), se = FALSE)
 
 #Plot residuals vs. sal.length (shown with smoothing curve)
-ggplot(herring_data) +
+resid_vs_sal.length_11 <- ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(sal.length, resid_11), shape = 1) +
   geom_smooth(aes(sal.length, resid_11), se = FALSE)
+
+grid.arrange(resid_vs_long_11, resid_vs_coll.doy_11, resid_vs_sal.length_11, nrow = 2)
+
+#Make multipanel of residual plots
+par(mfrow = c(1, 1))
+
+#Make quantile-quantile plot for checking whether the random intercept is normally distributed
+qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
+qqline(ranef(model_11)$sal.id[, "(Intercept)"])
 ```
 ##Checking assumptions of model 6
 ```{r}
