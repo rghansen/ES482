@@ -458,7 +458,7 @@ AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, m
 #Call coeﬃcient estimates for fixed effects
 fixef(model_11)
 
-#Call coeﬃcient estimates for random  effects
+#Call variation within and between salmon.id
 VarCorr(model_11)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
@@ -489,7 +489,7 @@ ggplot(confint_fixed_11) +
 #Call coeﬃcient estimates for fixed effects
 fixef(model_6)
 
-#Call coeﬃcient estimates for random  effects
+#Call variation within and between salmon.id
 VarCorr(model_6)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
