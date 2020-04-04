@@ -320,6 +320,8 @@ resid_vs_lat_11 <- ggplot(herring_data) +
   geom_point(aes(lat, resid_11), shape = 1) +
   geom_smooth(aes(lat, resid_11), se = FALSE)
 
+resid_vs_lat_11
+
 #Make multipanel of residual plots
 par(mfrow = c(1, 1))
 
@@ -366,7 +368,7 @@ resid_vs_sal.length_6 <- ggplot(herring_data) +
   geom_point(aes(sal.length, resid_6), shape = 1) +
   geom_smooth(aes(sal.length, resid_6), se = FALSE)
 
-grid.arrange(resid_vs_lat_6, resid_vs_sal.length_6, nrow = 2)
+grid.arrange(resid_vs_lat_6, resid_vs_sal.length_6, nrow = 1)
 
 #Make multipanel of residual plots
 par(mfrow = c(1, 1))
@@ -457,7 +459,7 @@ AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, m
 fixef(model_11)
 
 #Call coeﬃcient estimates for random  effects
-ranef(model_11)
+VarCorr(model_11)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
 confint(model_11)
@@ -488,7 +490,7 @@ ggplot(confint_fixed_11) +
 fixef(model_6)
 
 #Call coeﬃcient estimates for random  effects
-ranef(model_6)
+VarCorr(model_6)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
 confint(model_6)
