@@ -22,6 +22,9 @@ library(plyr)
 #Load tidyverse package
 library(tidyverse)
 
+#Load gridextra package
+library(gridExtra)
+
 #Load lmer package
 library(lme4)
 
@@ -33,6 +36,7 @@ citation("faraway")
 citation("plyr")
 citation("tidyverse")
 citation("bbmle")
+citation("gridExtra")
 ```
 
 ##Read in and organize data
@@ -53,13 +57,7 @@ herring_data <- data.frame(oto.width = herring$AverageWidth,
                            coll.year = herring$CollectionYear,
                            stat.area = as.factor(herring$StatArea))
 
-#check data frame structure
-str(herring_data)
-
-#figure out which stat areas to remove
-levels(as.factor(herring$StatArea))
-
-#filter for 2018 data, chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island
+#Filter for 2018 chinook salmon only, omit northern BC areas (Haid Gwaii) and west coast Vancouver Island
 herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
 ```
 
@@ -94,19 +92,19 @@ par(mfrow = c(1, 2))
 n <- nrow(herring_data)
 herring_data$row <- 1:n
 
-#Dotchart of otolith width (response variable)
+#Make dotchart of otolith width (response variable)
 with(herring_data, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Histogram of response variable with rugmarks
+#Make histogram of response variable with rugmarks
 hist(herring_data$oto.width, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of herring otolith width", xlab = "Herring otolith width")
 rug(herring_data$oto.width)
 
-#Checking for zeroes and NAs in otilith width
+#Check for zeroes and NAs in otilith width
 table(herring_data$oto.width > 0, useNA = "always")
 
-#exclude rows with NAs for continuous variables
+#Exclude rows with NAs for continuous variables
 herring_data <- herring_data %>% na.omit()
 ```
 
@@ -125,45 +123,45 @@ We will consider the normal distribution for modelling.
 ##A)
 ###Continuous explanatory variables
 ```{r, fig.width = 6,fig.height = 6}
-#Multipanel of dotcharts for continuous explanatory variables
+#Make multipanel of dotcharts for continuous explanatory variables
 par(mfrow = c(3, 2))
 
-#Salmon length
+#Salmon length dotchart
 with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Actual Salmon Length [mm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.length, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Collection day of year
+#Collection day of year dotchart
 with(herring_data, plot(coll.doy, row, las = 1, type = "n", xlab = "Day of Year in 2018", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(coll.doy, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Latitude
+#Latitude dotchart
 with(herring_data, plot(lat, row, las = 1, type = "n", xlab = "Latitude", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Longitude
+#Longitude dotchart
 with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
-#Multipanel of histograms for continuous explanatory variables
+#Make multipanel of histograms for continuous explanatory variables
 par(mfrow = c(3, 2))
 
-#Salmon length
+#Salmon length histogram
 hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length")
 rug(herring_data$sal.length)
 
-#Collection day of year
+#Collection day of year histogram
 hist(herring_data$coll.doy, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of day of year", xlab = "Collection day of year")
 rug(herring_data$coll.doy)
 
-#Latitude *something is up with this y axis
+#Latitude histogram
 hist(herring_data$lat, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude")
 rug(herring_data$lat)
 
-#Longitude
+#Longitude histogram
 hist(herring_data$long, col = grey(0.9), breaks = seq(-125.5, -123, by = 0.05), main = "Histogram of longitude", xlab = "Longitude")
 rug(herring_data$long)
 
@@ -171,10 +169,10 @@ rug(herring_data$long)
 
 ###Categorical explanatory variables
 ```{r, fig.width = 6,fig.height = 3}
-#Multipanel of dotcharts for categorical explanatory variables
+#Make multipanel for plots of categorical explanatory variables
 par(mfrow = c(1, 2))
 
-#Salmon id
+#Make dotchart of salmon id
 with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
@@ -190,28 +188,30 @@ One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
 ```{r, echo = TRUE}
-#create data frame for pairwise scatter with only continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
-herring_collinearity <- data.frame("sal.length" = herring_data$sal.length, "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
+#Create dataframe for pairwise scatter plots that only includes continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
+herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
+    "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
 
-#Pairwise scatterplot of explanatory variables (salmon length, weight, day of year, latitude and longitude)
+#Make pairwise scatterplot of explanatory variables
 plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
-                   labels = c("Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
+     labels = c("Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
 
-#plot mean salmon size vs. month
+#Plot mean salmon size vs. collection month
 boxplot(sal.length ~ coll.month, data = herring_data)
 
-#Pairwise correlation coefficients for explanatory variables
+#Calculate and view pairwise correlation coefficients for explanatory variables
 print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), digits = 2)
 
-#Variance Inflation Factors
+#Calulate and view Variance Inflation Factors
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
-Our only categorical variable is salmon id so the range in the number of otoliths per salmon was x to x will not confounded any other categorical variables. We plan to model salmon id as a random effect which will account for the effects of any unbalancing associated with salmon id on the continuous variables.
-
-A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.
-
-(204)
-
+  
+Our only categorical variable is salmon id so the range in the number of otoliths per salmon was x to x will not confounded any other categorical variables. We plan to model salmon id as a random effect which will account for the effects of any unbalancing associated with salmon id on the continuous variables.  
+  
+A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.  
+  
+(204)  
+  
 #Section 5: Statistical Methods and Model Fitting (200 words)
 
 We will be using linear mixed-effects models using the R Package lme4 (Bates et al., 2015). We are considering the normal distribution of otolith width (mm) modelled as function of salmon length (mm), day of year in 2018, latitude and longitude. We will include a random intercept corresponding to individual salmon because there are > 10 levels (ref.). Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual. In our first round of modelling fitting all salmon lengths will be included followed by a second round of model fitting to salmon 62 cm and above as this is the regulation size restrictions for recreationally caught salmon in the Strait of Georgia. This will check the influence of removing under size regulation fish from the dataset.
@@ -222,7 +222,7 @@ We will be using linear mixed-effects models using the R Package lme4 (Bates et 
 
 ##Standardizing data for models
 ```{r}
-#Add columns for standardized continuous predictor variable for modelling - minus mean / 1 sd
+#Add columns for standardized  continuous predictor variable for modelling (x - minus mean / 1 sd)
 herring_data$sal.length_standardized <- (herring_data$sal.length - mean(herring_data$sal.length)) / sd(herring_data$sal.length)
 herring_data$coll.doy_standardized <- (herring_data$coll.doy - mean(herring_data$coll.doy)) / sd(herring_data$coll.doy)
 herring_data$lat_standardized <- (herring_data$lat - mean(herring_data$lat)) / sd(herring_data$lat)
@@ -230,41 +230,12 @@ herring_data$long_standardized <- (herring_data$long - mean(herring_data$long)) 
 ```
 
 
-## Model Structure
-All models:
-oto.width ~ sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized + (1 | sal.id)
-oto.width ~ lat_standardized + (1 | sal.id)
-oto.width ~ long_standardized + (1 | sal.id)
-
-oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id)
-oto.width ~ coll.doy_standardized + lat_standardized + (1 | sal.id)
-oto.width ~  sal.length_standardized + long_standardized + (1 | sal.id)
-oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id)
-
-oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id)
-
-oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id)
-oto.width ~ coll.doy_standardized*lat_standardized + (1 | sal.id)
-oto.width ~  sal.length_standardized*long_standardized + (1 | sal.id)
-oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id)
-
-oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*sal.length_standardized + lat_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id)
-oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id)
-
-##All potential models
+##Creating linear mixed-effect models
 ```{r}
 #Intercept-only model
 model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data)
 
-#One explanatory variable models
+#Models with one explanatory variable
 model_1 <- lmer(oto.width ~ sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_2 <- lmer(oto.width ~ coll.doy_standardized + (1 | sal.id), data = herring_data)
@@ -273,7 +244,7 @@ model_3 <- lmer(oto.width ~ lat_standardized + (1 | sal.id), data = herring_data
 
 model_4 <- lmer(oto.width ~ long_standardized + (1 | sal.id), data = herring_data)
 
-#Two explanatory variable models
+#Models with two explanatory variables
 model_5 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_6 <- lmer(oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id), data = herring_data)
@@ -284,12 +255,12 @@ model_8 <- lmer(oto.width ~  sal.length_standardized + long_standardized + (1 | 
 
 model_9 <- lmer(oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data)
 
-#Three explanatory variable models
+#Models with three explanatory variables
 model_10 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_11 <- lmer(oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
 
-#Two explanatory and one interaction models
+#Models with two explanatory variables and one interaction term
 model_5i <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_6i <- lmer(oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id), data = herring_data)
@@ -300,7 +271,7 @@ model_8i <- lmer(oto.width ~  sal.length_standardized*long_standardized + (1 | s
 
 model_9i <- lmer(oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data)
 
-#Three explanatory variable and one interaction models
+#Models with three explanatory variables and one interaction term
 model_10l <- lmer(oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
 
 model_11l <- lmer(oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
@@ -309,39 +280,16 @@ model_10c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + la
 
 model_11c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data)
 
-#Three explanatory variable and two interaction models
+#Models with three explanatory variables and two interaction terms
 model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data)
 
 model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data)
 ```
 
 #Section 6: Model Checking 
+##Checking assumptions of model 11
 ```{r}
-#Checking assumptions of model 11
-par(mfrow = c(2, 2))
-
-#plot residuals versus fitted values
-plot(resid(model_11) ~ predict(model_11, re.form = ~0), las = 1)
-abline(h = 0, lty = "dashed")
-
-#plot residual as probability density then add rug marks and a reference curve
-hist(resid(model_11), prob = TRUE, col = "lightgrey")
-rug(resid(model_11))
-sd_hat <- sd(resid(model_11))
-curve(dnorm(x, sd = sd_hat), add = TRUE)
-
-#make quantile-quantile plot and add reference line * do we need this?
-qqnorm(resid(model_11))
-qqline(resid(model_11), col = "red")
-
-#quantile-quantile plot for linear mixed-effects model additional assumption - does the random intercept have a norml distribution?
-qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
-qqline(ranef(model_11)$sal.id[, "(Intercept)"])
-
-#run a Shapiro-Wilk test for normality of the residuals
-shapiro.test(resid(model_11))
-
-#Residuals vs. fitted shown with smoothing curve
+#Plot residuals versus fitted values (shown with a smoothing curve)
 herring_data$resid_11 <- resid(model_11) 
 herring_data$fitted_11 <- predict(model_11, re.form = ~0)
 
@@ -350,23 +298,102 @@ ggplot(herring_data) +
   geom_point(aes(fitted_11, resid_11), shape = 1) +
   geom_smooth(aes(fitted_11, resid_11), se = FALSE)
 
-#Residuals vs. long shown with smoothing curve
-ggplot(herring_data) +
-  theme_minimal() + 
-  geom_point(aes(long_standardized, resid_11), shape = 1) +
-  geom_smooth(aes(long_standardized, resid_11), se = FALSE)
+#Make multipanel of residual plots
+par(mfrow = c(1, 2))
 
-#Residuals vs. coll.doy shown with smoothing curve
-ggplot(herring_data) +
-  theme_minimal() + 
-  geom_point(aes(coll.doy_standardized, resid_11), shape = 1) +
-  geom_smooth(aes(coll.doy_standardized, resid_11), se = FALSE)
+#Plot histogram of residuals as probability density with rug marks and reference curve
+hist(resid(model_11), prob = TRUE, col = "lightgrey")
+rug(resid(model_11))
+sd_hat <- sd(resid(model_11))
+curve(dnorm(x, sd = sd_hat), add = TRUE)
 
-#Residuals vs. sal.length shown with smoothing curve
+#Make quantile-quantile plot with reference line
+qqnorm(resid(model_11))
+qqline(resid(model_11), col = "red")
+
+#Run a Shapiro-Wilk test for normality of the residuals
+shapiro.test(resid(model_11))
+
+#Plot residuals vs. longitude (shown with smoothing curve)
+resid_vs_long_11 <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, resid_11), shape = 1) +
+  geom_smooth(aes(long, resid_11), se = FALSE)
+
+#Plot residuals vs. coll.doy (shown with smoothing curve)
+resid_vs_coll.doy_11 <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(coll.doy, resid_11), shape = 1) +
+  geom_smooth(aes(coll.doy, resid_11), se = FALSE)
+
+#Plot residuals vs. sal.length (shown with smoothing curve)
+resid_vs_sal.length_11 <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(sal.length, resid_11), shape = 1) +
+  geom_smooth(aes(sal.length, resid_11), se = FALSE)
+
+grid.arrange(resid_vs_long_11, resid_vs_coll.doy_11, resid_vs_sal.length_11, nrow = 2)
+
+#Make multipanel of residual plots
+par(mfrow = c(1, 1))
+
+#Make quantile-quantile plot for checking whether the random intercept is normally distributed
+qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
+qqline(ranef(model_11)$sal.id[, "(Intercept)"])
+```
+##Checking assumptions of model 6
+```{r}
+#Plot residuals versus fitted values (shown with a smoothing curve)
+herring_data$resid_6 <- resid(model_6) 
+herring_data$fitted_6 <- predict(model_6, re.form = ~0)
+
 ggplot(herring_data) +
   theme_minimal() + 
-  geom_point(aes(sal.length_standardized, resid_11), shape = 1) +
-  geom_smooth(aes(sal.length_standardized, resid_11), se = FALSE)
+  geom_point(aes(fitted_6, resid_6), shape = 1) +
+  geom_smooth(aes(fitted_6, resid_6), se = FALSE)
+
+#Make multipanel of residual plots
+par(mfrow = c(1, 2))
+
+#Plot histogram of residuals as probability density with rug marks and reference curve
+hist(resid(model_6), prob = TRUE, col = "lightgrey")
+rug(resid(model_6))
+sd_hat <- sd(resid(model_6))
+curve(dnorm(x, sd = sd_hat), add = TRUE)
+
+#Make quantile-quantile plot with reference line
+qqnorm(resid(model_6))
+qqline(resid(model_6), col = "red")
+
+#Run a Shapiro-Wilk test for normality of the residuals
+shapiro.test(resid(model_6))
+
+#Plot residuals vs. longitude (shown with smoothing curve)
+resid_vs_long_6 <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, resid_6), shape = 1) +
+  geom_smooth(aes(long, resid_6), se = FALSE)
+
+#Plot residuals vs. coll.doy (shown with smoothing curve)
+resid_vs_coll.doy_6 <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(coll.doy, resid_6), shape = 1) +
+  geom_smooth(aes(coll.doy, resid_6), se = FALSE)
+
+#Plot residuals vs. sal.length (shown with smoothing curve)
+resid_vs_sal.length_6 <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(sal.length, resid_6), shape = 1) +
+  geom_smooth(aes(sal.length, resid_6), se = FALSE)
+
+grid.arrange(resid_vs_long_6, resid_vs_coll.doy_6, resid_vs_sal.length_6, nrow = 2)
+
+#Make multipanel of residual plots
+par(mfrow = c(1, 1))
+
+#Make quantile-quantile plot for checking whether the random intercept is normally distributed
+qqnorm(ranef(model_6)$sal.id[, "(Intercept)"])
+qqline(ranef(model_6)$sal.id[, "(Intercept)"])
 ```
 1. Written summary (200 words)
 -assessment of plausibility of model assumptions (LINE)
@@ -375,14 +402,12 @@ ggplot(herring_data) +
 
 
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
-##Prepping models for AIC
+##Rewriting all models with REML= FALSE
 ```{r, echo = TRUE}
-#Rewriting all potential models with REML= FALSE
-
 #Intercept-only model
 model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data, REML= FALSE)
 
-#One explanatory variable models
+#Models with one explanatory variable
 model_1 <- lmer(oto.width ~ sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_2 <- lmer(oto.width ~ coll.doy_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
@@ -391,7 +416,7 @@ model_3 <- lmer(oto.width ~ lat_standardized + (1 | sal.id), data = herring_data
 
 model_4 <- lmer(oto.width ~ long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
-#Two explanatory variable models
+#Models with two explanatory variables
 model_5 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_6 <- lmer(oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id), data = herring_data, REML= FALSE)
@@ -402,12 +427,12 @@ model_8 <- lmer(oto.width ~  sal.length_standardized + long_standardized + (1 | 
 
 model_9 <- lmer(oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
-#Three explanatory variable models
+#Models with three explanatory variables
 model_10 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_11 <- lmer(oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
-#Two explanatory and interaction models
+#Models with two explanatory variables and one interaction term
 model_5i <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_6i <- lmer(oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id), data = herring_data, REML= FALSE)
@@ -418,7 +443,7 @@ model_8i <- lmer(oto.width ~  sal.length_standardized*long_standardized + (1 | s
 
 model_9i <- lmer(oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
-#Three explanatory and interaction models
+#Models with three explanatory variables and one interaction term
 model_10l <- lmer(oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_11l <- lmer(oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
@@ -427,6 +452,7 @@ model_10c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + la
 
 model_11c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
+#Models with three explanatory variables and two interaction terms
 model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
@@ -435,81 +461,107 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 
 ##Running the AIC
 ```{r}
-##AIC (or AICc) values
+#Calculate AIC values
 AIC_out <- AIC(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl)
 
+#Calculate delta AIC values
 AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
 
-AIC_out
-
-##AIC (or AICc) weights
-bbmle::AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl, base = TRUE, weights = TRUE)
+#Show AIC table with weights
+AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl, base = TRUE, weights = TRUE)
 ```
 
-##Summarizing the
+##Summarizing model 11
 ```{r}
-#R-squared (or adjusted R-squared) values?
+#Call coeﬃcient estimates for fixed effects
+fixef(model_11)
 
-#coeﬃcient estimates for fixed and random  effects (random effects correspond to  2 sources of variation = variation between individuals and #residual variation between observations)
-summary(model_11)
+#Call coeﬃcient estimates for random  effects
+ranef(model_11)
 
-#conﬁdence intervals for coeﬃcient estimate
+#Calculate conﬁdence intervals for coeﬃcient estimate
 confint(model_11)
 
-#Rearranging data to make coefficient plots to show standard errors:
-#
-#data frame for coefficient plot
-confint_fixed <- as.data.frame(confint(model_11, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "sal.length_standardized")))
+#Rearrange data for a plot of coefficients with standard errors
+#Make data frame for plot of coefficients
+confint_fixed_11 <- as.data.frame(confint(model_11, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "sal.length_standardized")))
 
 ##Compute profile confidence intervals
-confint_fixed <- as.data.frame(confint_fixed)
-confint_fixed$term <- rownames(confint_fixed)
-confint_fixed$estimate <- fixef(model_11)
+confint_fixed_11 <- as.data.frame(confint_fixed_11)
+confint_fixed_11$term <- rownames(confint_fixed_11)
+confint_fixed_11$estimate <- fixef(model_11)
 
 ##ggplot
-ggplot(confint_fixed) + 
+ggplot(confint_fixed_11) + 
   theme_bw() +
   geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
   geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
   scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude", "Salmon length")) +
   xlab("") +
   ylab("") + 
-  ggtitle("Coefficient Estimates for model4_standardized") +
+  ggtitle("Coefficient Estimates for model 11") +
   theme(axis.text = element_text(size = 14, colour = "black"))
 ```
+##Summarizing model 6
+```{r}
+#Call coeﬃcient estimates for fixed effects
+fixef(model_6)
 
+#Call coeﬃcient estimates for random  effects
+ranef(model_6)
+
+#Calculate conﬁdence intervals for coeﬃcient estimate
+confint(model_6)
+
+#Rearrange data for a plot of coefficients with standard errors
+#Make data frame for plot of coefficients
+confint_fixed_6 <- as.data.frame(confint(model_6, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized")))
+
+##Compute profile confidence intervals
+confint_fixed_6 <- as.data.frame(confint_fixed_6)
+confint_fixed_6$term <- rownames(confint_fixed_6)
+confint_fixed_6$estimate <- fixef(model_6)
+
+##ggplot
+ggplot(confint_fixed_6) + 
+  theme_bw() +
+  geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
+  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
+  scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude")) +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Coefficient Estimates for model 6") +
+  theme(axis.text = element_text(size = 14, colour = "black"))
+```
 #Section 8: Plotting a Model with the Data
-
+##Plot model 11
 ```{r, echo = TRUE}
-#Plot at least one model with data
-#- use method that shows strengths and weaknesses
-#- include measurement of uncertainty
+#Create data frame for plot of model 11 predictions with longitude on the x axis
+oto.width_vs_long_data_11 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy = median(herring_data$coll.doy), sal.length = median(herring_data$sal.length))
 
-##par(mfrow = c(2, 2))
-#plot(resid(model4) ~ herring_data$sal.length, xlab = "Salmon Length [cm]", ylab = "Residuals(model4)", main = "", font.main = 1)
-#plot(resid(model4) ~ herring_data$coll.doy, xlab = "Collection Day of Year", ylab = "Residuals(model4)", main = "", font.main = 1)
-#plot(resid(model4) ~ herring_data$lat, xlab = "Latitude", ylab = "Residuals(model4)", main = "", font.main = 1)
-#plot(resid(model4) ~ herring_data$long, xlab = "Longitude", ylab = "Residuals(model4)", main = "", font.main = 1)
-#
-##Generate 95% prediction intervals for the fitted mean of the quadratic model
-#newdata <- data.frame(temp = seq(10, 100, by = 1))
-#newdata$fit1 <- predict(model4, newdata = newdata)
-#newdata$upr1 <- predict(model4, newdata = newdata, interval = "prediction")[, "upr"]
-#newdata$lwr1 <- predict(model4, newdata = newdata, interval = "prediction")[, "lwr"]
+#Add standardized long data to data frame
+oto.width_vs_long_data_11$long_standardized <- (oto.width_vs_long_data_11$long - mean(oto.width_vs_long_data_11$long)/sd(oto.width_vs_long_data_11$long))
+
+#Add standardized coll.doy data to data frame
+oto.width_vs_long_data_11$coll.doy_standardized <- (oto.width_vs_long_data_11$coll.doy - mean(oto.width_vs_long_data_11$coll.doy)/sd(oto.width_vs_long_data_11$coll.doy))
+
+#Add standardized sal.length to data frame
+oto.width_vs_long_data_11$sal.length_standardized <- (oto.width_vs_long_data_11$sal.length - mean(oto.width_vs_long_data_11$sal.length)/sd(oto.width_vs_long_data_11$sal.length))
 
 #Generate model predictions at population level 
-herring_data$fit_11_pop <- predict(model_11, re.form = ~ 0)
+oto.width_vs_long_data_11$fit_11_pop <- predict(model_11, newdata = oto.width_vs_long_data_11, re.form = ~0)
 
 #Generate model predictions at salmon id level
 herring_data$fit_11_sal.id <- predict(model_11)
 
-#Plot the model with longitude
-ggplot(herring_data) +
+#Plot the model vs. longitude
+model_vs_long_plot_11 <- ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(long, oto.width), shape = 1, size = 0.2) +
   geom_line(aes(long, fit_11_pop)) + 
   geom_point(aes(long, fit_11_sal.id, group = sal.id), shape = 2)
 
+<<<<<<< HEAD
 #plot model with lat
 ggplot(herring_data) +
   theme_minimal() + 
@@ -530,6 +582,9 @@ ggplot(herring_data) +
   geom_point(aes(coll.doy, oto.width), shape = 1, size = 0.2) +
   geom_line(aes(coll.doy, fit_11_pop)) + 
   geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 2)
+=======
+grid.arrange(model_vs_long_11, model_vs_coll.doy_11, model_vs_sal.length)
+>>>>>>> 737eea0c410a5f508b11479d57c6132a02170cf0
 ```
 
 #Section 9: Discussion (400 words)
