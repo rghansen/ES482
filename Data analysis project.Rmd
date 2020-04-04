@@ -295,7 +295,7 @@ ggplot(herring_data) +
   geom_smooth(aes(fitted_11, resid_11), se = FALSE)
 
 #Make multipanel of residual plots
-par(mfrow = c(2, 1))
+par(mfrow = c(1, 2))
 
 #Plot histogram of residuals as probability density with rug marks and reference curve
 hist(resid(model_11), prob = TRUE, col = "lightgrey")
@@ -339,13 +339,12 @@ ggplot(herring_data) +
 
 
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
-##Prepping models for AIC
+##Rewriting all models with REML= FALSE
 ```{r, echo = TRUE}
-#Rewriting all potential models with REML= FALSE
 #Intercept-only model
 model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data, REML= FALSE)
 
-#One explanatory variable models
+#Models with one explanatory variable
 model_1 <- lmer(oto.width ~ sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_2 <- lmer(oto.width ~ coll.doy_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
@@ -354,7 +353,7 @@ model_3 <- lmer(oto.width ~ lat_standardized + (1 | sal.id), data = herring_data
 
 model_4 <- lmer(oto.width ~ long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
-#Two explanatory variable models
+#Models with two explanatory variables
 model_5 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_6 <- lmer(oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id), data = herring_data, REML= FALSE)
@@ -365,12 +364,12 @@ model_8 <- lmer(oto.width ~  sal.length_standardized + long_standardized + (1 | 
 
 model_9 <- lmer(oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
-#Three explanatory variable models
+#Models with three explanatory variables
 model_10 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_11 <- lmer(oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
-#Two explanatory and interaction models
+#Models with two explanatory variables and one interaction term
 model_5i <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_6i <- lmer(oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id), data = herring_data, REML= FALSE)
@@ -381,7 +380,7 @@ model_8i <- lmer(oto.width ~  sal.length_standardized*long_standardized + (1 | s
 
 model_9i <- lmer(oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
-#Three explanatory and interaction models
+#Models with three explanatory variables and one interaction term
 model_10l <- lmer(oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_11l <- lmer(oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
@@ -390,6 +389,7 @@ model_10c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + la
 
 model_11c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
+#Models with three explanatory variables and two interaction terms
 model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
