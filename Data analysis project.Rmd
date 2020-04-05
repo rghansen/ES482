@@ -31,12 +31,6 @@ library(lme4)
 #Load bbmle package
 library(bbmle)
 
-#Load gstat package
-library(gstat)
-
-#Load sp package
-library(sp)
-
 #Cite packages
 citation("faraway")
 citation("plyr")
@@ -44,8 +38,6 @@ citation("tidyverse")
 citation("lme4")
 citation("bbmle")
 citation("gridExtra")
-citation("gstat")
-citation("sp")
 ```
 
 ##Read in and organize data
