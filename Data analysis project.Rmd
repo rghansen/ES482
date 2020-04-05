@@ -406,6 +406,18 @@ rug(ranef_int)
 sd_hat_int <- sd(ranef_int)
 curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
+
+##Plotting for spatial and temporal autocorrelation
+```{r}
+herring_data$oto.width_standardized <- (herring_data$oto.width - mean(herring_data$oto.width)) / sd(herring_data$oto.width)
+
+plot(herring_data$coll.doy, herring_data$oto.width_standardized, type = "h", main = "Otolith width vs. collection day of year", cex.main = 1, font.main = 1, xlab = "Collection day of year") 
+abline(h = 0, lty = "dashed")
+
+acf(herring_data$oto.width_, las = 1, lag = 100)
+
+
+```
 1. Written summary (200 words)
 
 -assessment of plausibility of model assumptions (LINE)
