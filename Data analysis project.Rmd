@@ -316,14 +316,6 @@ qqline(resid(model_11), col = "red")
 #Run a Shapiro-Wilk test for normality of the residuals
 shapiro.test(resid(model_11))
 
-#Plot residuals vs. lat (shown with smoothing curve)
-resid_vs_lat_11 <- ggplot(herring_data) +
-  theme_minimal() + 
-  geom_point(aes(lat, resid_11), shape = 1) +
-  geom_smooth(aes(lat, resid_11), se = FALSE)
-
-resid_vs_lat_11
-
 #Make multipanel of residual plots
 par(mfrow = c(1, 1))
 
@@ -358,19 +350,11 @@ qqline(resid(model_6), col = "red")
 #Run a Shapiro-Wilk test for normality of the residuals
 shapiro.test(resid(model_6))
 
-#Plot residuals vs. longitude (shown with smoothing curve)
-resid_vs_lat_6 <- ggplot(herring_data) +
-  theme_minimal() + 
-  geom_point(aes(lat, resid_6), shape = 1) +
-  geom_smooth(aes(lat, resid_6), se = FALSE)
-
 #Plot residuals vs. sal.length (shown with smoothing curve)
 resid_vs_sal.length_6 <- ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(sal.length, resid_6), shape = 1) +
   geom_smooth(aes(sal.length, resid_6), se = FALSE)
-
-grid.arrange(resid_vs_lat_6, resid_vs_sal.length_6, nrow = 1)
 
 #Make multipanel of residual plots
 par(mfrow = c(1, 1))
