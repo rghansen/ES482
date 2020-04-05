@@ -322,6 +322,13 @@ par(mfrow = c(1, 1))
 #Make quantile-quantile plot for checking whether the random intercept is normally distributed
 qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
 qqline(ranef(model_11)$sal.id[, "(Intercept)"])
+
+#Plot histogram of residuals as probability density with rug marks and reference curve
+ranef_int <- ranef(model_11)$sal.id[, "(Intercept)"]
+hist(ranef_int, prob = TRUE, col = "lightgrey")
+rug(ranef_int)
+sd_hat_int <- sd(ranef_int)
+curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
 ##Checking assumptions of model 6
 ```{r}
