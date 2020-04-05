@@ -666,9 +666,6 @@ model_6_coll.doy <- ggplot(herring_data) +
   geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + 
   geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral")
 
-#Create data frame for plot of model 6 predictions with sal.length on the x axis
-oto.width_vs_sal.length_data_6 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
-
 grid.arrange(model_6_long, model_6_coll.doy, nrow = 2)
 ```
 
