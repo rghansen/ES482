@@ -13,6 +13,9 @@ rm(list = ls(all = TRUE))
 #Preparation
 ##Loading and citing packages
 ```{r, echo = TRUE}
+#Load faraway package
+library(faraway)
+
 #Load plyr package
 library(plyr)
 
