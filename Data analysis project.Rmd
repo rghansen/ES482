@@ -1,14 +1,9 @@
 ---
-title: "Data analysis project"
+title: "Data Analysis Project"
 author: "Jess Qualley and Rebecca Hansen"
-date: "March 27, 2020"
+date: "April 06, 2020"
 output: word_document
 ---
-
-##Clear code (**delete before submitting***)
-```{r}
-rm(list = ls(all = TRUE))
-```
 
 #Preparation
 ##Loading packages
@@ -54,9 +49,7 @@ herring_data <- data.frame(oto.width = herring$AverageWidth,
 herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_data$coll.year == "2018" & herring_data$stat.area != "1" & herring_data$stat.area != "101" & herring_data$stat.area != "125" & herring_data$stat.area != "23" & herring_data$stat.area != "25")
 ```
 
-
 #Section 1: Introduction, Question, Goals and Hypotheses (400 words)
-
 ##A)
 Pacific Salmon in British Columbia are valued for their social, cultural and economic benefits to many communities on our coast. Despite their important role in the coastal marine ecosystem (Schindler et al. 2003), diet studies from this region are outdated and limited to summer sampling. The adult Chinook and Coho Salmon Diet Program (Juanes Lab) seeks to address these knowledge gaps by sourcing stomach samples from the recreational fishing community to gather regional, seasonal and interannual diet data to monitor ecosystem response to environmental change.
 
