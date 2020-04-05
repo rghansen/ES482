@@ -587,7 +587,7 @@ Confidence intervals of the coefficients for model 11 showed that salmon id had 
 The limitations of the predictor variables included in our models are that longitude may relate to the spatial distribution of larger and smaller groups of herring that occupy different regions within the Salish Sea. Longitude is not capturing east-west patterns from shallow to deep water habitats at a constant latitude, but rather herring caught in more westerly regions in Juan de Fuca Strait and easterly regions near Nanaimo and Denman and Hornby Island due to the geographic constraints of Vancouver Island. Modelling capture location as a categorical instead of a continuous longitude will allow us to look at patterns within different regions. Otolith width versus collection day may represent two or more different age classes and recruitment patterns of herring available to salmon. Modelling different age classes separately may allow us to model herring size better as they aren’t confounded by different size classes that occur together. Alternatively, we could model herring size as a quadratic relationship. Otolith width versus salmon length shows few data points for salmon below 62cm and model overprediction. We suspect this could be either due to gape limitation or an artifact of sampling effort due to size restrictions > 62cm for recreational catch. We may consider sourcing more salmon < 62cm or to run models with and without fish < 62cm to determine whether omitting this subset changes our result.
 
 ##D)
-Two non-stats papers supporting statements above - recruitment paper + gape limitation theory paper.
+Two non-stats papers supporting statements above : recruitment paper + gape limitation theory paper.
 
 (427)
 
