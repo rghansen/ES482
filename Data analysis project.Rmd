@@ -426,7 +426,6 @@ lat_vs_long <- ggplot(herring_data) +
   coord_fixed() +
   ggtitle("Looking for Spatial Autocorrelation in oto.width")
 print(lat_vs_long)
-
 ```
 
 Pairwise scatterplots suggest a nonlinear linear relationship with x and non-linear relationship with y and z. Model 11 Independence. A histogram of model 11 residuals appear normal in contrast to the quantile-quantile plot, which appears non-normal. At high quantiles residuals fall above the 1:1 line and variance increases. This may indicate slightly right-skewed residuals but could just be higher variance at greater fitted values. At low quantiles residuals fall below the 1:1 line as variance also increases. Unequal variance is suggested by the increase in spread of the residuals of model 11 as fitted x values increase. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting non-normal distribution of residuals. Model 6 shows the same patterns (+ independence) in residual plots suggesting an overall violation of assumptions for a linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, it could be argued that these represent the upper and lower range of the data given the pattern of increasing variance.
@@ -531,7 +530,7 @@ ggplot(confint_fixed_11) +
   scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) +
   xlab("") +
   ylab("") + 
-  ggtitle("Coefficient Estimates for model 11") +
+  ggtitle("Coefficient Estimates for Model 11") +
     scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) +
   theme(axis.text = element_text(size = 10, colour = "black"))
 ```
@@ -559,12 +558,14 @@ confint_fixed_6$estimate <- fixef(model_6)
 ggplot(confint_fixed_6) + 
   theme_bw() +
   geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
+  geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
   geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
-  scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude")) +
+  scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) +
   xlab("") +
   ylab("") + 
-  ggtitle("Coefficient Estimates for model 6") +
-  theme(axis.text = element_text(size = 14, colour = "black"))
+  ggtitle("Coefficient Estimates for Model 6") +
+    scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) +
+  theme(axis.text = element_text(size = 10, colour = "black"))
 ```
 #Section 8: Plotting a Model with the Data
 ##Plot model 11
