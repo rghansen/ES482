@@ -426,11 +426,8 @@ lat_vs_long <- ggplot(herring_data) +
 print(lat_vs_long)
 
 ```
-1. Written summary (200 words)
 
--assessment of plausibility of model assumptions (LINE)
--check for correlation in the residuals due to grouping variables (e.g., repeated measurements on individuals or within study sites), spatial autocorrelation and/or temporal autocorrelation
--comment on potential outliers, as relevant
+Pairwise scatterplots suggest a negative linear relationship with x and non-linear relationship with y and z. Model 11 Independence. A histogram of model 11 residuals appear normal in contrast to the quantile-quantile plot, which appears non-normal. At high quantiles residuals fall above the 1:1 line and variance increases. This may indicate slightly right-skewed residuals but could just be higher variance at greater fitted values. At low quantiles residuals fall below the 1:1 line as variance also increases. Unequal variance is suggested by the increase in spread of the residuals of model 11 as fitted x values increase. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting non-normal distribution of residuals. Model 6 shows the same patterns in residual plots suggesting an overall violation of assumptions for a linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible and another should be considered. Outliers may exist above 0.5 and below -40; however, it could be argued that these represent the upper and lower range of the data given the pattern of increasing variance.
 
 
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
@@ -534,7 +531,6 @@ ggplot(confint_fixed_11) +
   ggtitle("Coefficient Estimates for model 11") +
   theme(axis.text = element_text(size = 14, colour = "black"))
 ```
-
 ##Summarizing model 6
 ```{r}
 #Call coeﬃcient estimates for fixed effects
@@ -560,14 +556,12 @@ ggplot(confint_fixed_6) +
   theme_bw() +
   geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
   geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
-  scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) +
+  scale_y_discrete(labels = c("Intercept", "Collection Day of Year", "Longitude")) +
   xlab("") +
   ylab("") + 
-  scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) +
   ggtitle("Coefficient Estimates for model 6") +
-  theme(axis.text = element_text(size = 10, colour = "black"))
+  theme(axis.text = element_text(size = 14, colour = "black"))
 ```
-
 #Section 8: Plotting a Model with the Data
 ##Plot model 11
 ```{r, echo = TRUE}
@@ -664,33 +658,29 @@ herring_data$fit_6_sal.id <- predict(model_6)
 #Plot the model vs.coll.doy
 model_6_coll.doy <- ggplot(herring_data) +
   theme_minimal() + 
-  geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +
+  geom_point(aes(coll.doy, oto.width), shape = 1, size = 0.2) +
   geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + 
-  geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral")
+  geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 2)
+
+#Create data frame for plot of model 6 predictions with sal.length on the x axis
+oto.width_vs_sal.length_data_6 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
 
 grid.arrange(model_6_long, model_6_coll.doy, nrow = 2)
 ```
 
 #Section 9: Discussion (400 words)
 ##A)
-Assessment of how well the model seems to ﬁt the data
-- model checking
-- visualization of the model with the data
-- 
+The model does not fit the data well in addition to violating linear model assumptions for both model 11 and 6. Model 11 versus longitude overpredicts between -124.0 to -125.0 and may underpredict between -123.5 to -124.0. Otolith width versus collection day of year overpredicts between day 0 to 50 and underpredicts between day 125 to 175. Otolith width versus salmon length overpredicts between 40 cm to 60 cm. The same patterns are observed for model 6 versus longitude and collection day.
+
 ##B)
-Qualitative interpretation of the model
-- interpretation of results in relation to your research questions and hypotheses
-- general interpretation of conﬁdence intervals or standard errors for coeﬃcient estimates
--
+Confidence intervals of the coefficients for model 11 showed that salmon id had the greatest effect on otolith width but salmon length has very little effect as confidence intervals overlap with 0. Similarly, model 6 without salmon length shows the greatest effect attributed to salmon id and a relatively small effect (close to 0) from longitude and collection day of year, with a consistently greater effect of longitude compared to collection day of year across both models. Salmon id, longitude and collection day of year explain the variation in herring otolith width compared to salmon length. Interestingly, longitude is a better predictor than latitude in this modelling exercise; however, these conclusions are approximate. 
+
 ##C)
-Limitations of the model(s) that you have ﬁt
-- Limitations
-- Possible options for improvement
-- Possible approaches for further data analysis
+The limitations of the predictor variables included in our models are that longitude may relate to the spatial distribution of larger and smaller groups of herring that occupy different regions within the Salish Sea. Longitude is not capturing east-west patterns from shallow to deep water habitats at a constant latitude, but rather herring caught in more westerly regions in Juan de Fuca Strait and easterly regions near Nanaimo and Denman and Hornby Island due to the geographic constraints of Vancouver Island. Modelling capture location as a categorical instead of a continuous longitude will allow us to look at patterns within different regions. Otolith width versus collection day may represent two or more different age classes and recruitment patterns of herring available to salmon. Modelling different age classes separately may allow us to model herring size better as they aren’t confounded by different size classes that occur together. Alternatively, we could model herring size as a quadratic relationship. Otolith width versus salmon length shows few data points for salmon below 62cm and model overprediction. We suspect this could be either due to gape limitation or an artifact of sampling effort due to size restrictions > 62cm for recreational catch. We may consider sourcing more salmon < 62cm or to run models with and without fish < 62cm to determine whether omitting this subset changes our result.
 
 ##D)
-Results into context
-- citie at least two relevant scientiﬁc papers
+Two non-stats papers supporting statements above.
+
 
 ## References
 
