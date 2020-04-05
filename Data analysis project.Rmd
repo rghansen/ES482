@@ -565,6 +565,7 @@ ggplot(confint_fixed_6) +
   ggtitle("Coefficient Estimates for model 6") +
   theme(axis.text = element_text(size = 14, colour = "black"))
 ```
+
 #Section 8: Plotting a Model with the Data
 ##Plot model 11
 ```{r, echo = TRUE}
@@ -661,9 +662,9 @@ herring_data$fit_6_sal.id <- predict(model_6)
 #Plot the model vs.coll.doy
 model_6_coll.doy <- ggplot(herring_data) +
   theme_minimal() + 
-  geom_point(aes(coll.doy, oto.width), shape = 1, size = 0.2) +
+  geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +
   geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + 
-  geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 2)
+  geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral")
 
 #Create data frame for plot of model 6 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_6 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
