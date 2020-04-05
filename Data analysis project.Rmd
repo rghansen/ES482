@@ -410,14 +410,16 @@ curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 
 ##Plotting for spatial and temporal autocorrelation
 ```{r}
+#create column standardized otolith width
 herring_data$oto.width_standardized <- (herring_data$oto.width - mean(herring_data$oto.width)) / sd(herring_data$oto.width)
 
-plot(herring_data$coll.doy, herring_data$oto.width_standardized, type = "h", main = "Otolith width vs. collection day of year", cex.main = 1, font.main = 1, xlab = "Collection day of year") 
-abline(h = 0, lty = "dashed")
-
+#generate acf plot
 acf(herring_data$oto.width_, las = 1, lag = 100)
 
+#create column of standardized otolith width above or below mean
 herring_data$sign <- as.character(sign(herring_data$oto.width_standardized))
+
+#generate bubble plot
 lat_vs_long <- ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(long, lat, colour = sign, size = abs(oto.width_standardized), shape = sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + 
@@ -427,7 +429,7 @@ print(lat_vs_long)
 
 ```
 
-Pairwise scatterplots suggest a negative linear relationship with x and non-linear relationship with y and z. Model 11 Independence. A histogram of model 11 residuals appear normal in contrast to the quantile-quantile plot, which appears non-normal. At high quantiles residuals fall above the 1:1 line and variance increases. This may indicate slightly right-skewed residuals but could just be higher variance at greater fitted values. At low quantiles residuals fall below the 1:1 line as variance also increases. Unequal variance is suggested by the increase in spread of the residuals of model 11 as fitted x values increase. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting non-normal distribution of residuals. Model 6 shows the same patterns in residual plots suggesting an overall violation of assumptions for a linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible and another should be considered. Outliers may exist above 0.5 and below -40; however, it could be argued that these represent the upper and lower range of the data given the pattern of increasing variance.
+Pairwise scatterplots suggest a nonlinear linear relationship with x and non-linear relationship with y and z. Model 11 Independence. A histogram of model 11 residuals appear normal in contrast to the quantile-quantile plot, which appears non-normal. At high quantiles residuals fall above the 1:1 line and variance increases. This may indicate slightly right-skewed residuals but could just be higher variance at greater fitted values. At low quantiles residuals fall below the 1:1 line as variance also increases. Unequal variance is suggested by the increase in spread of the residuals of model 11 as fitted x values increase. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting non-normal distribution of residuals. Model 6 shows the same patterns (+ independence) in residual plots suggesting an overall violation of assumptions for a linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, it could be argued that these represent the upper and lower range of the data given the pattern of increasing variance.
 
 
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
