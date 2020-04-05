@@ -31,12 +31,21 @@ library(lme4)
 #Load bbmle package
 library(bbmle)
 
+#Load gstat package
+library(gstat)
+
+#Load sp package
+library(sp)
+
 #Cite packages
 citation("faraway")
 citation("plyr")
 citation("tidyverse")
+citation("lme4")
 citation("bbmle")
 citation("gridExtra")
+citation("gstat")
+citation("sp")
 ```
 
 ##Read in and organize data
@@ -416,6 +425,13 @@ abline(h = 0, lty = "dashed")
 
 acf(herring_data$oto.width_, las = 1, lag = 100)
 
+herring_data$sign <- as.character(sign(herring_data$oto.width_standardized))
+lat_vs_long <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, lat, colour = sign, size = abs(oto.width_standardized), shape = sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + 
+  coord_fixed() +
+  ggtitle("Looking for Spatial Autocorrelation in oto.width")
+print(lat_vs_long)
 
 ```
 1. Written summary (200 words)
