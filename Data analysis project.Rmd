@@ -289,7 +289,29 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 ```
 
 #Section 6: Model Checking 
-##Checking assumptions of model 11
+
+##Plotting otolith.width vs. explanatory variables from the model
+```{r}
+#Otolith width vs. longitude
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, oto.width), shape = 1) +
+  geom_smooth(aes(long, oto.width), se = FALSE)
+
+#Otolith width vs. coll.doy
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(coll.doy, oto.width), shape = 1) +
+  geom_smooth(aes(coll.doy, oto.width), se = FALSE)
+
+#Otolith width vs. sal.length
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(sal.length, oto.width), shape = 1) +
+  geom_smooth(aes(sal.length, oto.width), se = FALSE)
+```
+
+##Plotting residual for model 11
 ```{r}
 #Plot residuals versus fitted values (shown with a smoothing curve)
 herring_data$resid_11 <- resid(model_11) 
@@ -315,7 +337,10 @@ qqline(resid(model_11), col = "red")
 
 #Run a Shapiro-Wilk test for normality of the residuals
 shapiro.test(resid(model_11))
+```
 
+##Plotting random intercepts for model 11
+```{r}
 #Make multipanel of residual plots
 par(mfrow = c(1, 1))
 
@@ -330,7 +355,8 @@ rug(ranef_int)
 sd_hat_int <- sd(ranef_int)
 curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
-##Checking assumptions of model 6
+
+##Plotting residuals of model 6
 ```{r}
 #Plot residuals versus fitted values (shown with a smoothing curve)
 herring_data$resid_6 <- resid(model_6) 
@@ -362,7 +388,10 @@ resid_vs_sal.length_6 <- ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(sal.length, resid_6), shape = 1) +
   geom_smooth(aes(sal.length, resid_6), se = FALSE)
+```
 
+##Plotting random intercepts for  model 6
+```{r}
 #Make multipanel of residual plots
 par(mfrow = c(1, 1))
 
