@@ -534,6 +534,7 @@ ggplot(confint_fixed_11) +
   ggtitle("Coefficient Estimates for model 11") +
   theme(axis.text = element_text(size = 14, colour = "black"))
 ```
+
 ##Summarizing model 6
 ```{r}
 #Call coeﬃcient estimates for fixed effects
