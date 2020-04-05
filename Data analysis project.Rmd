@@ -11,7 +11,7 @@ rm(list = ls(all = TRUE))
 ```
 
 #Preparation
-##Loading and citing packages
+##Loading packages
 ```{r, echo = TRUE}
 #Load faraway package
 library(faraway)
@@ -30,14 +30,6 @@ library(lme4)
 
 #Load bbmle package
 library(bbmle)
-
-#Cite packages
-citation("faraway")
-citation("plyr")
-citation("tidyverse")
-citation("lme4")
-citation("bbmle")
-citation("gridExtra")
 ```
 
 ##Read in and organize data
@@ -699,3 +691,16 @@ Journal of Statistical Software, 67 (1), 1-48.
 Scharf, F. S., F. Juanes, and R. A. Rountree. 2000. Predator size - Prey size relationships of marine fish predators: Interspecific variation and effects of ontogeny and body size on trophic-niche breadth. Marine Ecology Progress Series 208:229–248.
 
 Therriault, T. W., D. E. Hay, and J. F. Schweigert. 2009. Biological overview and trends in pelagic forage fish abundance in the Salish Sea (Strait of Georgia, British Columbia). Marine Ornithology 37:3–8.
+
+Julian Faraway (2016). faraway: Functions and Datasets for Books by Julian Faraway. R package version 1.0.7. https://CRAN.R-project.org/package=faraway
+
+Hadley Wickham (2011). The Split-Apply-Combine Strategy for Data Analysis. Journal of Statistical Software, 40(1), 1-29. URL  http://www.jstatsoft.org/v40/i01/.
+
+Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686
+
+Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1), 1-48. doi:10.18637/jss.v067.i01.
+
+Ben Bolker and R Development Core Team (2020). bbmle: Tools for General Maximum Likelihood Estimation. R package version 1.0.23.1. https://CRAN.R-project.org/package=bbmle
+
+Baptiste Auguie (2017). gridExtra: Miscellaneous Functions for "Grid" Graphics. R package version 2.3. https://CRAN.R-project.org/package=gridExtra
+
