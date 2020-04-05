@@ -35,6 +35,7 @@ library(bbmle)
 citation("faraway")
 citation("plyr")
 citation("tidyverse")
+citation("lme4")
 citation("bbmle")
 citation("gridExtra")
 ```
@@ -289,7 +290,29 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 ```
 
 #Section 6: Model Checking 
-##Checking assumptions of model 11
+
+##Plotting otolith.width vs. explanatory variables from the model
+```{r}
+#Otolith width vs. longitude
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, oto.width), shape = 1) +
+  geom_smooth(aes(long, oto.width), se = FALSE)
+
+#Otolith width vs. coll.doy
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(coll.doy, oto.width), shape = 1) +
+  geom_smooth(aes(coll.doy, oto.width), se = FALSE)
+
+#Otolith width vs. sal.length
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(sal.length, oto.width), shape = 1) +
+  geom_smooth(aes(sal.length, oto.width), se = FALSE)
+```
+
+##Plotting residual for model 11
 ```{r}
 #Plot residuals versus fitted values (shown with a smoothing curve)
 herring_data$resid_11 <- resid(model_11) 
@@ -315,15 +338,26 @@ qqline(resid(model_11), col = "red")
 
 #Run a Shapiro-Wilk test for normality of the residuals
 shapiro.test(resid(model_11))
+```
 
+##Plotting random intercepts for model 11
+```{r}
 #Make multipanel of residual plots
 par(mfrow = c(1, 1))
 
 #Make quantile-quantile plot for checking whether the random intercept is normally distributed
 qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
 qqline(ranef(model_11)$sal.id[, "(Intercept)"])
+
+#Plot histogram of residuals as probability density with rug marks and reference curve
+ranef_int <- ranef(model_11)$sal.id[, "(Intercept)"]
+hist(ranef_int, prob = TRUE, col = "lightgrey")
+rug(ranef_int)
+sd_hat_int <- sd(ranef_int)
+curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
-##Checking assumptions of model 6
+
+##Plotting residuals of model 6
 ```{r}
 #Plot residuals versus fitted values (shown with a smoothing curve)
 herring_data$resid_6 <- resid(model_6) 
@@ -355,13 +389,42 @@ resid_vs_sal.length_6 <- ggplot(herring_data) +
   theme_minimal() + 
   geom_point(aes(sal.length, resid_6), shape = 1) +
   geom_smooth(aes(sal.length, resid_6), se = FALSE)
+```
 
+##Plotting random intercepts for  model 6
+```{r}
 #Make multipanel of residual plots
 par(mfrow = c(1, 1))
 
 #Make quantile-quantile plot for checking whether the random intercept is normally distributed
 qqnorm(ranef(model_6)$sal.id[, "(Intercept)"])
 qqline(ranef(model_6)$sal.id[, "(Intercept)"])
+
+#Plot histogram of residuals as probability density with rug marks and reference curve
+ranef_int <- ranef(model_6)$sal.id[, "(Intercept)"]
+hist(ranef_int, prob = TRUE, col = "lightgrey")
+rug(ranef_int)
+sd_hat_int <- sd(ranef_int)
+curve(dnorm(x, sd = sd_hat_int), add = TRUE)
+```
+
+##Plotting for spatial and temporal autocorrelation
+```{r}
+herring_data$oto.width_standardized <- (herring_data$oto.width - mean(herring_data$oto.width)) / sd(herring_data$oto.width)
+
+plot(herring_data$coll.doy, herring_data$oto.width_standardized, type = "h", main = "Otolith width vs. collection day of year", cex.main = 1, font.main = 1, xlab = "Collection day of year") 
+abline(h = 0, lty = "dashed")
+
+acf(herring_data$oto.width_, las = 1, lag = 100)
+
+herring_data$sign <- as.character(sign(herring_data$oto.width_standardized))
+lat_vs_long <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, lat, colour = sign, size = abs(oto.width_standardized), shape = sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + 
+  coord_fixed() +
+  ggtitle("Looking for Spatial Autocorrelation in oto.width")
+print(lat_vs_long)
+
 ```
 1. Written summary (200 words)
 
