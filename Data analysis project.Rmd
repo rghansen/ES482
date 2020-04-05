@@ -13,9 +13,6 @@ rm(list = ls(all = TRUE))
 #Preparation
 ##Loading and citing packages
 ```{r, echo = TRUE}
-#Load faraway package
-library(faraway)
-
 #Load plyr package
 library(plyr)
 
@@ -32,7 +29,6 @@ library(lme4)
 library(bbmle)
 
 #Cite packages
-citation("faraway")
 citation("plyr")
 citation("tidyverse")
 citation("lme4")
