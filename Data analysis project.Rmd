@@ -512,7 +512,7 @@ ggplot(confint_fixed_6) + theme_bw() +  geom_point(aes(y = term, x = estimate), 
   
 #Section 8: Plotting a Model with the Data
 ##Visualizing Model 11
-```{r, echo = TRUE}
+```{r, fig.width = 8, fig.height = 10}
 #Create data frame for plot of model 11 predictions with longitude on the x axis
 oto.width_vs_long_data_11 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
@@ -526,10 +526,10 @@ oto.width_vs_long_data_11$fit_11_pop <- predict(model_11, newdata = oto.width_vs
 herring_data$fit_11_sal.id <- predict(model_11)
 
 #Plot the model vs. longitude
-model_11_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_11_pop), data = oto.width_vs_long_data_11) + geom_point(aes(long, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]")
+model_11_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_11_pop), data = oto.width_vs_long_data_11) + geom_point(aes(long, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Create data frame for plot of model 11 predictions with coll.doy on the x axis
-oto.width_vs_coll.doy_data_11 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
+oto.width_vs_coll.doy_data_11 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized)) 
 
 #Add standardized coll.doy data to data frame
 oto.width_vs_coll.doy_data_11$coll.doy_standardized <- ((oto.width_vs_coll.doy_data_11$coll.doy - mean(oto.width_vs_coll.doy_data_11$coll.doy))/sd(oto.width_vs_coll.doy_data_11$coll.doy))
@@ -541,7 +541,7 @@ oto.width_vs_coll.doy_data_11$fit_11_pop <- predict(model_11, newdata = oto.widt
 herring_data$fit_11_sal.id <- predict(model_11)
 
 #Plot the model vs.coll.doy
-model_11_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +  geom_line(aes(coll.doy, fit_11_pop), data = oto.width_vs_coll.doy_data_11) + geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Collection day of year") + ylab("Otolith width [mm]")
+model_11_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +  geom_line(aes(coll.doy, fit_11_pop), data = oto.width_vs_coll.doy_data_11) + geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Collection day of year") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Create data frame for plot of model 11 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_11 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
@@ -553,13 +553,13 @@ oto.width_vs_sal.length_data_11$sal.length_standardized <- ((oto.width_vs_sal.le
 oto.width_vs_sal.length_data_11$fit_11_pop <- predict(model_11, newdata = oto.width_vs_sal.length_data_11, re.form = ~0)
 
 #Plot the model vs. sal.length
-model_11_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 19, size = 1) +  geom_line(aes(sal.length, fit_11_pop), data = oto.width_vs_sal.length_data_11) + geom_point(aes(sal.length, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Salmon length [cm]") + ylab("Otolith width [mm]")
+model_11_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 19, size = 1) +  geom_line(aes(sal.length, fit_11_pop), data = oto.width_vs_sal.length_data_11) + geom_point(aes(sal.length, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Salmon length [cm]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
-grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 2)
+grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 3)
 ```
 
 ##Visualizing Model 6
-```{r, echo = TRUE}
+```{r, fig.width = 8, fig.height = 8}
 #Create data frame for plot of model 6 predictions with longitude on the x axis
 oto.width_vs_long_data_6 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
@@ -573,7 +573,7 @@ oto.width_vs_long_data_6$fit_6_pop <- predict(model_6, newdata = oto.width_vs_lo
 herring_data$fit_6_sal.id <- predict(model_6)
 
 #Plot the model vs. longitude
-model_6_long <- ggplot(herring_data) +  theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_6_pop), data = oto.width_vs_long_data_6) + geom_point(aes(long, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]")
+model_6_long <- ggplot(herring_data) +  theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_6_pop), data = oto.width_vs_long_data_6) + geom_point(aes(long, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Create data frame for plot of model 6 predictions with coll.doy on the x axis
 oto.width_vs_coll.doy_data_6 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
@@ -588,7 +588,7 @@ oto.width_vs_coll.doy_data_6$fit_6_pop <- predict(model_6, newdata = oto.width_v
 herring_data$fit_6_sal.id <- predict(model_6)
 
 #Plot the model vs.coll.doy
-model_6_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) + geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Collection day of year") +  ylab("Otolith width [mm]")
+model_6_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) + geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Collection day of year") +  ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Create data frame for plot of model 6 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_6 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
