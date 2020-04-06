@@ -75,12 +75,12 @@ n <- nrow(herring_data)
 herring_data$row <- 1:n
 
 #Make dotchart of otolith width (response variable)
-with(herring_data, plot(oto.width, row, las = 1, type = "n", cex.lab = 1, cex.axis = 1, xlab = "Otolith width [mm]", ylab = "Row Number"))
+with(herring_data, plot(oto.width, row, las = 1, type = "n", cex.main = 1.5, cex.lab = 1.5, cex.axis = 1, xlab = "Otolith width [mm]", ylab = "Row Number", main = "Dotchart of otolith width"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Make histogram of response variable with rugmarks
-hist(herring_data$oto.width, cex.main = 1.5, cex.lab = 1, cex.axis = 1, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of otolith width", xlab = "Otolith width [mm]")
+hist(herring_data$oto.width, cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.5, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of otolith width", xlab = "Otolith width [mm]")
 rug(herring_data$oto.width)
 ```
 
@@ -96,7 +96,7 @@ herring_data <- herring_data %>% na.omit()
 The response variable (otolith width) is continuous and cannot take on zero or negative values. The range of possible response values in this dataset is 0.007 mm to 2.68 mm. 
 
 ## C)
-Outliers at < 0.6 mm and > 2.2 mm are reasonable measurements representing a few individuals in the extreme age classes. There are no zero values and one missing otolith measurement making up 0.11 % of the data. We anticipate no difficulties in removing the single NA value from subsequent analyses. Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach. Herring consumed at similar times of year may have similar growth trajectories that contribute to temporal autocorrelation. Spatial autocorrelation may occur if herring consumed in similar areas have similar prey fields and grow rates.
+Outliers at < 0.6 mm and > 2.2 mm are reasonable measurements representing a few individuals in the extreme size classes. There are no zero values and one missing otolith measurement making up 0.11 % of the data. We anticipate no difficulties in removing the single NA value from subsequent analyses. Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach. Herring consumed at similar times of year may have similar growth trajectories that contribute to temporal autocorrelation. Spatial autocorrelation may occur if herring consumed in similar areas have similar prey fields and grow rates.
 
 ## D)
 We will use the normal distribution for modelling. (140)
