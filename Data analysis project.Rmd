@@ -308,7 +308,7 @@ qqnorm(resid(model_11))
 qqline(resid(model_11), col = "red")
 ```
 
-##Plotting random intercepts for model 11
+##Plotting random intercepts for Model 11
 ```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
@@ -325,7 +325,7 @@ sd_hat_int <- sd(ranef_int)
 curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
 
-##Plotting residuals of model 6
+##Plotting residuals of Model 6
 ```{r, fig.width = 8, fig.height = 4, echo = FALSE}
 #Add residuals and fitted values to data frame
 herring_data$resid_6 <- resid(model_6) 
@@ -355,7 +355,7 @@ qqline(resid(model_6), col = "red")
 ggplot(herring_data) +  theme_minimal() + geom_point(aes(sal.length, resid_6), shape = 1) + geom_smooth(aes(sal.length, resid_6), se = FALSE) + xlab("Residuals for Model 6") + ylab("Salmon length [cm]")
 ```
 
-##Plotting random intercepts for  model 6
+##Plotting random intercepts for  Model 6
 ```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
@@ -393,7 +393,7 @@ lat_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, lat
 print(lat_vs_long)
 ```
 
-Pairwise scatterplots suggest a nonlinear relationship between the response and predictor variables. ACF plot suggests temporal autocorrelation at short time lags ~ 10 days or less. Bubble plots indicate spatial autocorrelation and/or may reflect the spatial size distribution of herring. Model 11 histogram of residuals appear normal compared to the quantile-quantile plot suggesting a non-normal distribution. Residuals fall above the 1:1 line at high quantiles and below the 1:1 line at negative quantiles, suggesting slightly right-skewed residuals. The increase in spread of the model 11 residuals versus fitted values suggests unequal variance. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting a non-normal distribution of residuals. Model 6 of residuals and random intercept distribution show the same pattern as model 11, violating assumptions of the linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, they may just represent the upper and lower range of the data given the pattern of increasing variance. (181)
+Pairwise scatterplots suggest a nonlinear relationship between the response and predictor variables. ACF plot suggests temporal autocorrelation at short time lags ~ 10 days or less. Bubble plots indicate spatial autocorrelation and/or may reflect the spatial size distribution of herring. Model 11 histogram of residuals appear normal compared to the quantile-quantile plot suggesting a non-normal distribution. Residuals fall above the 1:1 line at high quantiles and below the 1:1 line at negative quantiles, suggesting slightly right-skewed residuals. The increase in spread of the Model 11 residuals versus fitted values suggests unequal variance. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting a non-normal distribution of residuals. Model 6 of residuals and random intercept distribution show the same pattern as Model 11, violating assumptions of the linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, they may just represent the upper and lower range of the data given the pattern of increasing variance. (181)
 
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
 ##Rewriting all models with REML= FALSE
@@ -521,7 +521,7 @@ ggplot(confint_fixed_6) + theme_bw() +  geom_point(aes(y = term, x = estimate), 
 #Section 8: Plotting a Model with the Data
 ##Visualizing Model 11
 ```{r, fig.width = 8, fig.height = 10, echo = FALSE}
-#Create data frame for plot of model 11 predictions with longitude on the x axis
+#Create data frame for plot of Model 11 predictions with longitude on the x axis
 oto.width_vs_long_data_11 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
 #Add standardized long data to data frame
@@ -536,7 +536,7 @@ herring_data$fit_11_sal.id <- predict(model_11)
 #Plot the model vs. longitude
 model_11_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_11_pop), data = oto.width_vs_long_data_11) + geom_point(aes(long, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
-#Create data frame for plot of model 11 predictions with coll.doy on the x axis
+#Create data frame for plot of Model 11 predictions with coll.doy on the x axis
 oto.width_vs_coll.doy_data_11 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized)) 
 
 #Add standardized coll.doy data to data frame
@@ -551,7 +551,7 @@ herring_data$fit_11_sal.id <- predict(model_11)
 #Plot the model vs.coll.doy
 model_11_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +  geom_line(aes(coll.doy, fit_11_pop), data = oto.width_vs_coll.doy_data_11) + geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Collection day of year") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
-#Create data frame for plot of model 11 predictions with sal.length on the x axis
+#Create data frame for plot of Model 11 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_11 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
 
 #Add standardized sal.length data to data frame
@@ -569,7 +569,7 @@ grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 3)
 ##Visualizing Model 6
 
 ```{r, fig.width = 8, fig.height = 8, echo = FALSE}
-#Create data frame for plot of model 6 predictions with longitude on the x axis
+#Create data frame for plot of Model 6 predictions with longitude on the x axis
 oto.width_vs_long_data_6 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
 #Add standardized long data to data frame
@@ -584,7 +584,7 @@ herring_data$fit_6_sal.id <- predict(model_6)
 #Plot the model vs. longitude
 model_6_long <- ggplot(herring_data) +  theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_6_pop), data = oto.width_vs_long_data_6) + geom_point(aes(long, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
-#Create data frame for plot of model 6 predictions with coll.doy on the x axis
+#Create data frame for plot of Model 6 predictions with coll.doy on the x axis
 oto.width_vs_coll.doy_data_6 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
 #Add standardized coll.doy data to data frame
@@ -599,7 +599,7 @@ herring_data$fit_6_sal.id <- predict(model_6)
 #Plot the model vs.coll.doy
 model_6_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) + geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Collection day of year") +  ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
-#Create data frame for plot of model 6 predictions with sal.length on the x axis
+#Create data frame for plot of Model 6 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_6 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
 
 grid.arrange(model_6_long, model_6_coll.doy, nrow = 2)
@@ -610,7 +610,7 @@ grid.arrange(model_6_long, model_6_coll.doy, nrow = 2)
 Model 11 and 6 does not fit the data well and violates linear model assumptions. Both models overpredict otolith width between longitude -124.0 to -125.0. Both models overpredict between 0 to 50 days and underpredict 125 to 175 days. Model 11 overpredicts for salmon between 40 cm to 60 cm.
 
 ##B)
-Model 11 coefficient plot shows that salmon length has a small positive relationship with otolith width, but the confidence interval overlaps with 0 and is not a useful predictor unlike longitude and day of year that doesn’t overlap with 0 and has a small, negative relationship with otolith width. Similar patterns are observed for model 6. The results support our hypothesis for a positive relationship between otolith width versus salmon length and longitude but contradicts positive relationship we hypothesized for collection day. Interestingly, longitude better describes otolith width than latitude so we determine that longitude and collection day of year best describe the variation in herring size consumed by Chinook Salmon in the Salish Sea in 2018.
+Model 11 coefficient plot shows that salmon length has a small positive relationship with otolith width, but the confidence interval overlaps with 0 and is not a useful predictor unlike longitude and day of year that doesn’t overlap with 0 and has a small, negative relationship with otolith width. Similar patterns are observed for Model 6. The results support our hypothesis for a positive relationship between otolith width versus salmon length and longitude but contradicts positive relationship we hypothesized for collection day. Interestingly, longitude better describes otolith width than latitude so we determine that longitude and collection day of year best describe the variation in herring size consumed by Chinook Salmon in the Salish Sea in 2018.
 
 ##C)
 Longitude is not capturing east-west patterns from shallow to deep water, but the spatial size distribution of herring in westerly regions near Comox Valley and easterly regions near San Juan Islands. Modelling capture location as a categorical variable will allow us to look at regional patterns. Otolith width versus collection day may represent two or more age classes of available herring. Modelling age classes separately may suggest the importance of a different set of factors. Alternatively, we could model herring size as a quadratic relationship. Otolith width versus salmon length shows few salmon below 62cm paired with model overprediction, due to gape limitation or size restrictions >62cm for recreational catch. Generating models with and without fish <62cm can determine whether omitting this subset is justified and changes our result.
