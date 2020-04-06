@@ -266,31 +266,35 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 
 #Section 6: Model Checking 
 ##Plotting otolith.width vs. models' explanatory variables
-```{r}
+```{r,  fig.width = 10, fig.height = 7}
 #Otolith width vs. longitude
-ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 1) + geom_smooth(aes(long, oto.width), se = FALSE) + xlab("Longitude [°]") +  ylab("Otolith width [mm]")
+oto_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 1) + geom_smooth(aes(long, oto.width), se = FALSE) + xlab("Longitude [°]") +  ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Otolith width vs. coll.doy
-ggplot(herring_data) +  theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 1) + geom_smooth(aes(coll.doy, oto.width), se = FALSE) + xlab("Collection of day") + ylab("Otolith width [mm]")
+oto_vs_coll.doy <- ggplot(herring_data) +  theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 1) + geom_smooth(aes(coll.doy, oto.width), se = FALSE) + xlab("Collection of day") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Otolith width vs. sal.length
-ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 1) + geom_smooth(aes(sal.length, oto.width), se = FALSE) + xlab("Salmon length [cm]") + ylab("Otolith width [mm]")
+oto_vs_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 1) + geom_smooth(aes(sal.length, oto.width), se = FALSE) + xlab("Salmon length [cm]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+
+grid.arrange(oto_vs_long, oto_vs_coll.doy, oto_vs_sal.length, nrow = 2)
 ```
 
 ##Plotting residuals for Model 11
-```{r}
+```{r, fig.width = 8, fig.height = 4}
 #Add residuals and fitted values to data frame
 herring_data$resid_11 <- resid(model_11) 
 herring_data$fitted_11 <- predict(model_11, re.form = ~0)
 
 #Plot residuals versus fitted values (shown with a smoothing curve)
 ggplot(herring_data) + theme_minimal() + geom_point(aes(fitted_11, resid_11), shape = 1) + geom_smooth(aes(fitted_11, resid_11), se = FALSE) + xlab("Fitted values for Model 11") + ylab("Residuals for Model 11")
+```
 
+```{r, fig.width = 10, fig.height = 5}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
 
 #Plot histogram of residuals as probability density with rug marks and reference curve
-hist(resid(model_11), prob = TRUE, col = "lightgrey", main = "Histogram of Model 11 residuals", xlab = "Model 11 residuals")
+hist(resid(model_11), breaks = seq(-0.6, 0.8, 0.05), cex.main = 1.5, cex.lab = 1, cex.axis = 1, prob = TRUE, col = "lightgrey", main = "Histogram of Model 11 residuals", xlab = "Model 11 residuals")
 rug(resid(model_11))
 sd_hat <- sd(resid(model_11))
 curve(dnorm(x, sd = sd_hat), add = TRUE)
@@ -301,9 +305,9 @@ qqline(resid(model_11), col = "red")
 ```
 
 ##Plotting random intercepts for model 11
-```{r}
+```{r, fig.width = 10, fig.height = 5}
 #Make multipanel of residual plots
-par(mfrow = c(1, 1))
+par(mfrow = c(1, 2))
 
 #Make quantile-quantile plot for checking whether the random intercept is normally distributed
 qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
@@ -311,26 +315,28 @@ qqline(ranef(model_11)$sal.id[, "(Intercept)"])
 
 #Plot histogram of residuals as probability density with rug marks and reference curve
 ranef_int <- ranef(model_11)$sal.id[, "(Intercept)"]
-hist(ranef_int, prob = TRUE, breaks = seq(-1, 0.8, 0.1), col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
+hist(ranef_int, prob = TRUE, breaks = seq(-1, 0.8, 0.1), cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
 rug(ranef_int)
 sd_hat_int <- sd(ranef_int)
 curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
 
 ##Plotting residuals of model 6
-```{r}
+```{r, fig.width = 8, fig.height = 4}
 #Add residuals and fitted values to data frame
 herring_data$resid_6 <- resid(model_6) 
 herring_data$fitted_6 <- predict(model_6, re.form = ~0)
 
 #Plot residuals versus fitted values (shown with a smoothing curve)
 ggplot(herring_data) + theme_minimal() + geom_point(aes(fitted_6, resid_6), shape = 1) + geom_smooth(aes(fitted_6, resid_6), se = FALSE) + xlab("Residuals for Model 6") +  ylab("Fitted values for Model 6")
+```
 
+```{r, fig.width = 10, fig.height = 5}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
 
 #Plot histogram of residuals as probability density with rug marks and reference curve
-hist(resid(model_6), prob = TRUE, main = "Histogram of Model 6 residuals", xlab = "Model 6 residuals", col = "lightgrey")
+hist(resid(model_6), prob = TRUE, cex.main = 1.5, cex.lab = 1, cex.axis = 1, main = "Histogram of Model 6 residuals", breaks = seq(-0.6, 0.8, 0.05), xlab = "Model 6 residuals", col = "lightgrey")
 rug(resid(model_6))
 sd_hat <- sd(resid(model_6))
 curve(dnorm(x, sd = sd_hat), add = TRUE)
@@ -338,15 +344,17 @@ curve(dnorm(x, sd = sd_hat), add = TRUE)
 #Make quantile-quantile plot with reference line
 qqnorm(resid(model_6))
 qqline(resid(model_6), col = "red")
+```
 
+```{r, fig.width = 8, fig.height = 4}
 #Plot residuals vs. sal.length (shown with smoothing curve)
 ggplot(herring_data) +  theme_minimal() + geom_point(aes(sal.length, resid_6), shape = 1) + geom_smooth(aes(sal.length, resid_6), se = FALSE) + xlab("Residuals for Model 6") + ylab("Salmon length [cm]")
 ```
 
 ##Plotting random intercepts for  model 6
-```{r}
+```{r, fig.width = 10, fig.height = 5}
 #Make multipanel of residual plots
-par(mfrow = c(1, 1))
+par(mfrow = c(1, 2))
 
 #Make quantile-quantile plot for checking whether the random intercept is normally distributed
 qqnorm(ranef(model_6)$sal.id[, "(Intercept)"])
@@ -354,25 +362,30 @@ qqline(ranef(model_6)$sal.id[, "(Intercept)"])
 
 #Plot histogram of residuals as probability density with rug marks and reference curve
 ranef_int <- ranef(model_6)$sal.id[, "(Intercept)"]
-hist(ranef_int, prob = TRUE, breaks = seq(-1.1, 0.7, 0.1), col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
+hist(ranef_int, prob = TRUE, breaks = seq(-1.1, 0.7, 0.1), cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
 rug(ranef_int)
 sd_hat_int <- sd(ranef_int)
 curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
 
 ##Plotting for spatial and temporal autocorrelation
-```{r}
+```{r, fig.width = 10, fig.height = 5}
 #Create column of standardized otolith widths ((x - mean)/ 1 sd)
 herring_data$oto.width_standardized <- (herring_data$oto.width - mean(herring_data$oto.width)) / sd(herring_data$oto.width)
 
 #Generate acf plot of standardized otolith widths
-acf(herring_data$oto.width_, las = 1, lag = 100)
+acf(herring_data$oto.width_, las = 1, lag = 100, cex.main = 1.5, cex.lab = 1, cex.axis = 1, main = "Series for otolith width")
+```
 
+```{r, fig.width = 6, fig.height = 4}
 #Create column of standardized otolith widths classified as above or below mean
-herring_data$sign <- as.character(sign(herring_data$oto.width_standardized))
+herring_data$Sign <- as.character(sign(herring_data$oto.width_standardized))
+
+#Create column of the magnitude of standardized otolith widths
+herring_data$Magnitude <- abs(herring_data$oto.width_standardized)
 
 #Generate bubble plot
-lat_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, lat, colour = sign, size = abs(oto.width_standardized), shape = sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + coord_fixed() +  ggtitle("Bubble plot of otolith width") + xlab("Longitude [°]") + ylab("Latitude [°]")
+lat_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, lat, colour = Sign, size = Magnitude, shape = Sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + coord_fixed() +  ggtitle("Bubble plot of otolith width") + xlab("Longitude [°]") + ylab("Latitude [°]")
 print(lat_vs_long)
 ```
 
