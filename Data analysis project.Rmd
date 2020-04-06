@@ -365,7 +365,7 @@ herring_data$oto.width_standardized <- (herring_data$oto.width - mean(herring_da
 
 ```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Generate acf plot of standardized otolith widths
-acf(herring_data$oto.width_, las = 1, lag = 100, cex.main = 1.5, cex.lab = 1, cex.axis = 1, main = "Series for standardized otolith widths")
+acf(herring_data$oto.width_, las = 1, lag = 100, cex.main = 2, cex.lab = 1.5, cex.axis = 1, main = "Series for standardized otolith widths")
 ```
 
 ```{r, fig.width = 5, fig.height = 3, echo = FALSE}
