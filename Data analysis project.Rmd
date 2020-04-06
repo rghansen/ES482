@@ -166,7 +166,7 @@ with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5)
 #Make a histogram of herring frequency per salmon
 hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 ```
-## B)
+##B)
 One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no substantial skewedness is observed.
 
 (33)
@@ -174,7 +174,7 @@ One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
 ```{r, echo = TRUE}
-#Create dataframe for pairwise scatter plots that only includes continuous explanatory variables - salmon lenght, weight, collection day of year, latitude and longitude
+#Create data frame of continuous explanatory variables for pairwise scatter plots
 herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
     "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
 
@@ -210,13 +210,12 @@ We will be using linear mixed-effects models using the R Package lme4 (Bates et 
 
 ##Standardizing data for models
 ```{r}
-#Add columns for standardized  continuous predictor variable for modelling (x - minus mean / 1 sd)
-herring_data$sal.length_standardized <- (herring_data$sal.length - mean(herring_data$sal.length)) / sd(herring_data$sal.length)
+#Add columns for standardized continuous explanatory variables ((x - mean)/ 1 sd)
+herring_data$sal.length_standardized <- (herring_data$sal.length - mean(herring_data$sal.length))  / sd(herring_data$sal.length)
 herring_data$coll.doy_standardized <- (herring_data$coll.doy - mean(herring_data$coll.doy)) / sd(herring_data$coll.doy)
 herring_data$lat_standardized <- (herring_data$lat - mean(herring_data$lat)) / sd(herring_data$lat)
 herring_data$long_standardized <- (herring_data$long - mean(herring_data$long)) / sd(herring_data$long)
 ```
-
 
 ##Creating linear mixed-effect models
 ```{r}
@@ -275,8 +274,7 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 ```
 
 #Section 6: Model Checking 
-
-##Plotting otolith.width vs. explanatory variables from the model
+##Plotting otolith.width vs. models' explanatory variables
 ```{r}
 #Otolith width vs. longitude
 ggplot(herring_data) +
@@ -297,7 +295,7 @@ ggplot(herring_data) +
   geom_smooth(aes(sal.length, oto.width), se = FALSE)
 ```
 
-##Plotting residual for model 11
+##Plotting residuals for Model 11
 ```{r}
 #Plot residuals versus fitted values (shown with a smoothing curve)
 herring_data$resid_11 <- resid(model_11) 
@@ -485,7 +483,7 @@ AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
 AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl, base = TRUE, weights = TRUE)
 ```
 
-##Summarizing model 11
+##Summarizing Model 11
 ```{r}
 #Call coeﬃcient estimates for fixed effects
 fixef(model_11)
@@ -500,12 +498,12 @@ confint(model_11)
 #Make data frame for plot of coefficients
 confint_fixed_11 <- as.data.frame(confint(model_11, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "sal.length_standardized")))
 
-##Compute profile confidence intervals
+##Compute profile confidence intervals for coefficient estimates
 confint_fixed_11 <- as.data.frame(confint_fixed_11)
 confint_fixed_11$term <- rownames(confint_fixed_11)
 confint_fixed_11$estimate <- fixef(model_11)
 
-##ggplot
+##Plot confidence intervals for coefficient estimates
 ggplot(confint_fixed_11) + 
   theme_bw() +
   geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
@@ -518,7 +516,7 @@ ggplot(confint_fixed_11) +
     scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) +
   theme(axis.text = element_text(size = 10, colour = "black"))
 ```
-##Summarizing model 6
+##Summarizing Model 6
 ```{r}
 #Call coeﬃcient estimates for fixed effects
 fixef(model_6)
@@ -533,12 +531,12 @@ confint(model_6)
 #Make data frame for plot of coefficients
 confint_fixed_6 <- as.data.frame(confint(model_6, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized")))
 
-##Compute profile confidence intervals
+##Compute profile confidence intervals for coefficient estimates
 confint_fixed_6 <- as.data.frame(confint_fixed_6)
 confint_fixed_6$term <- rownames(confint_fixed_6)
 confint_fixed_6$estimate <- fixef(model_6)
 
-##ggplot
+##Plot confidence intervals for coefficent estimates
 ggplot(confint_fixed_6) + 
   theme_bw() +
   geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
@@ -552,7 +550,7 @@ ggplot(confint_fixed_6) +
   theme(axis.text = element_text(size = 10, colour = "black"))
 ```
 #Section 8: Plotting a Model with the Data
-##Plot model 11
+##Visualizing Model 11
 ```{r, echo = TRUE}
 #Create data frame for plot of model 11 predictions with longitude on the x axis
 oto.width_vs_long_data_11 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
@@ -612,7 +610,7 @@ model_11_sal.length <- ggplot(herring_data) +
 grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 2)
 ```
 
-##Plot model 6
+##Visualizing Model 6
 ```{r, echo = TRUE}
 #Create data frame for plot of model 6 predictions with longitude on the x axis
 oto.width_vs_long_data_6 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
