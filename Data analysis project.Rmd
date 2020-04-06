@@ -131,7 +131,7 @@ with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 ```{r, fig.width = 6, fig.height = 7}
 #Make multipanel of histograms for continuous explanatory variables
-par(mfrow = c(3, 2))
+par(mfrow = c(2, 2))
 
 #Salmon length histogram
 hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length [cm]")
