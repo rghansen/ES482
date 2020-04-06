@@ -168,7 +168,7 @@ One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors
 ### A)
-```{r, echo = TRUE, fig.width = 7, fig.height = 5.5, echo = FALSE}
+```{r, echo = TRUE, fig.width = 6, fig.height = 5, echo = FALSE}
 #Create data frame of continuous explanatory variables for pairwise scatter plots
 herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
     "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
@@ -178,7 +178,7 @@ plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5),
      labels = c("Chinook\nLength [cm]", "Collection\nDay in 2018", "Latitude [°]", "Longitude [°]"))
 ```
 
-```{r, fig.width = 5, fig.height = 3, echo = FALSE}
+```{r, fig.width = 5, fig.height = 3.5, echo = FALSE}
 #Plot mean salmon size vs. collection month
 boxplot(sal.length ~ coll.month, data = herring_data, cex.main = 0.75, cex.lab = 0.75, cex.axis = 0.75, xlab = "Collection day of year", ylab = "Salmon length [cm]", main = "Boxplot of salmon size by collection month")
 ```
@@ -213,52 +213,36 @@ model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data)
 
 #Models with one explanatory variable
 model_1 <- lmer(oto.width ~ sal.length_standardized + (1 | sal.id), data = herring_data)
-
 model_2 <- lmer(oto.width ~ coll.doy_standardized + (1 | sal.id), data = herring_data)
-
 model_3 <- lmer(oto.width ~ lat_standardized + (1 | sal.id), data = herring_data)
-
 model_4 <- lmer(oto.width ~ long_standardized + (1 | sal.id), data = herring_data)
 
 #Models with two explanatory variables
 model_5 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
-
 model_6 <- lmer(oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id), data = herring_data)
-
 model_7 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + (1 | sal.id), data = herring_data)
-
 model_8 <- lmer(oto.width ~  sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data)
-
 model_9 <- lmer(oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data)
 
 #Models with three explanatory variables
 model_10 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
-
 model_11 <- lmer(oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id), data = herring_data)
 
 #Models with two explanatory variables and one interaction term
 model_5i <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
-
 model_6i <- lmer(oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id), data = herring_data)
-
 model_7i <- lmer(oto.width ~ coll.doy_standardized*lat_standardized + (1 | sal.id), data = herring_data)
-
 model_8i <- lmer(oto.width ~  sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data)
-
 model_9i <- lmer(oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data)
 
 #Models with three explanatory variables and one interaction term
 model_10l <- lmer(oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
-
 model_11l <- lmer(oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id), data = herring_data)
-
 model_10c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data)
-
 model_11c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data)
 
 #Models with three explanatory variables and two interaction terms
 model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data)
-
 model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data)
 ```
 
@@ -383,64 +367,44 @@ Pairwise scatterplots suggest a nonlinear relationship between the response and 
 
 ## Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
 ### Running AIC
-```{r}
-#Rewrote all models from Section 5 with REML = FALSE
-```
-
 ```{r, echo = FALSE}
+#Rewrote all models from Section 5 with REML = FALSE
 #Intercept-only model
 model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data, REML= FALSE)
 
 #Models with one explanatory variable
 model_1 <- lmer(oto.width ~ sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_2 <- lmer(oto.width ~ coll.doy_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_3 <- lmer(oto.width ~ lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_4 <- lmer(oto.width ~ long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 #Models with two explanatory variables
 model_5 <- lmer(oto.width ~ coll.doy_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_6 <- lmer(oto.width ~ coll.doy_standardized + long_standardized  + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_7 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_8 <- lmer(oto.width ~  sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_9 <- lmer(oto.width ~  sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 #Models with three explanatory variables
 model_10 <- lmer(oto.width ~ coll.doy_standardized + lat_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_11 <- lmer(oto.width ~ coll.doy_standardized + long_standardized + sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 #Models with two explanatory variables and one interaction term
 model_5i <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_6i <- lmer(oto.width ~ coll.doy_standardized*long_standardized  + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_7i <- lmer(oto.width ~ coll.doy_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_8i <- lmer(oto.width ~  sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_9i <- lmer(oto.width ~  sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 #Models with three explanatory variables and one interaction term
 model_10l <- lmer(oto.width ~ coll.doy_standardized  + lat_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_11l <- lmer(oto.width ~ coll.doy_standardized + long_standardized*sal.length_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_10c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_11c <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized + long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
 
 #Models with three explanatory variables and two interaction terms
 model_10cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lat_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*long_standardized + (1 | sal.id), data = herring_data, REML= FALSE)
-
 ```
 
 ```{r}
@@ -456,52 +420,44 @@ AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, m
 
 ### Summarizing Model 11 and Model 6
 ```{r}
-#Call coeﬃcient estimates for fixed effects of Model 11
+#Call coeﬃcient estimates for fixed effects of Model 11 and Model 6
 fixef(model_11)
-
-#Call variation within and between the random effect (salmon ID) of Model 11
-VarCorr(model_11)
-
-#Calculate conﬁdence intervals for coeﬃcient estimates of Model 11
-confint(model_11)
-
-#Call coeﬃcient estimates for fixed effects of Model 6
 fixef(model_6)
 
-#Call variation within and between the random effect (salmon ID) of Model 6
+#Call variation within and between the random effect (salmon ID) of Model 11 and Model 6
+VarCorr(model_11)
 VarCorr(model_6)
-
-#Calculate conﬁdence intervals for coeﬃcient estimates of Model 6
-confint(model_6)
 ```
 
 ```{r, fig.width = 10, fig.height = 8, echo = FALSE}
-#Rearrange data for a plot of coefficients with standard errors
-#Make data frame for plot of coefficients
+#Calculate conﬁdence intervals for coeﬃcient estimates of Model 11 and Model 6
+confint(model_11)
+confint(model_6)
+
+#Make data frame for plot of coefficients for Model 11
 confint_fixed_11 <- as.data.frame(confint(model_11, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "sal.length_standardized")))
 
-#Compute profile confidence intervals for coefficient estimates
+#Compute profile confidence intervals for coefficient estimates for Model 11
 confint_fixed_11 <- as.data.frame(confint_fixed_11)
 confint_fixed_11$term <- rownames(confint_fixed_11)
 confint_fixed_11$estimate <- fixef(model_11)
 
-#Plot confidence intervals for coefficient estimates
+#Plot confidence intervals for coefficient estimates for Model 11
 confint_11 <- ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
 
-#Rearrange data for a plot of coefficients with standard errors
-#Make data frame for plot of coefficients
+#Make data frame for plot of coefficients for Model 6
 confint_fixed_6 <- as.data.frame(confint(model_6, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized")))
 
-#Compute profile confidence intervals for coefficient estimates
+#Compute profile confidence intervals for coefficient estimates for Model 6
 confint_fixed_6 <- as.data.frame(confint_fixed_6)
 confint_fixed_6$term <- rownames(confint_fixed_6)
 confint_fixed_6$estimate <- fixef(model_6)
 
-#Plot confidence intervals for coefficent estimates
+#Plot confidence intervals for coefficent estimates for Model 6
 confint_6 <- ggplot(confint_fixed_6) + theme_bw() +  geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
   geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) + xlab("Estimate") + ylab("") + ggtitle("Coefficient Estimates for Model 6") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
 
-grid.arrange(confint_11, confint_6, nrow = 2)
+grid.arrange(confint_11, confint_6, nrow = 2) 
 ```
   
 ## Section 8: Plotting a Model with the Data
