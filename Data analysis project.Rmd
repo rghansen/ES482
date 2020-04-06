@@ -357,7 +357,7 @@ curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 #Plot residuals vs. sal.length (shown with smoothing curve)
 ggplot(herring_data) +  theme_minimal() + geom_point(aes(sal.length, resid_6), shape = 1) + geom_smooth(aes(sal.length, resid_6), se = FALSE) + ylab("Residuals for Model 6") + xlab("Salmon length [cm]")
 ```
-
+## Checking for temporal and spatial autocorrelation
 ```{r}
 #Create column of standardized otolith widths ((x - mean)/ 1 sd)
 herring_data$oto.width_standardized <- (herring_data$oto.width - mean(herring_data$oto.width)) / sd(herring_data$oto.width)
@@ -383,6 +383,7 @@ print(lat_vs_long)
 Pairwise scatterplots suggest a nonlinear relationship between the response and predictor variables. ACF plot suggests temporal autocorrelation at short time lags ~ 10 days or less. Bubble plots indicate spatial autocorrelation and/or may reflect the spatial size distribution of herring. Model 11 histogram of residuals appear normal compared to the quantile-quantile plot suggesting a non-normal distribution. Residuals fall above the 1:1 line at high quantiles and below the 1:1 line at negative quantiles, suggesting slightly right-skewed residuals. The increase in spread of the Model 11 residuals versus fitted values suggests unequal variance. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting a non-normal distribution of residuals. Model 6 of residuals and random intercept distribution show the same pattern as Model 11, violating assumptions of the linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, they may just represent the upper and lower range of the data given the pattern of increasing variance. (181)
 
 # Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
+## Running AIC
 ```{r}
 #Rewrote all models from Section 5 with REML = FALSE
 ```
@@ -454,6 +455,7 @@ AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
 AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl, base = TRUE, weights = TRUE)
 ```
 
+## Summarixing Model 11 and Model 6
 ```{r}
 #Call coeﬃcient estimates for fixed effects of Model 11
 fixef(model_11)
