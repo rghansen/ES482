@@ -494,7 +494,6 @@ confint_fixed_11$estimate <- fixef(model_11)
 ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
 ```
   
-
 ```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Rearrange data for a plot of coefficients with standard errors
 #Make data frame for plot of coefficients
@@ -559,7 +558,6 @@ grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 3)
 ```
 
 ## Visualizing Model 6
-
 ```{r, fig.width = 8, fig.height = 8, echo = FALSE}
 #Create data frame for plot of Model 6 predictions with longitude on the x axis
 oto.width_vs_long_data_6 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
@@ -597,7 +595,7 @@ oto.width_vs_sal.length_data_6 <- data.frame(sal.length = seq(45, 96, 0.5), long
 grid.arrange(model_6_long, model_6_coll.doy, nrow = 2)
 ```
 
-# Section 9: Discussion (400 words)
+# Section 9: Discussion
 ## A)
 Model 11 and 6 does not fit the data well and violates linear model assumptions. Both models overpredict otolith width between longitude -124.0 to -125.0. Both models overpredict between 0 to 50 days and underpredict 125 to 175 days. Model 11 overpredicts for salmon between 40 cm to 60 cm.
 
