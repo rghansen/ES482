@@ -288,16 +288,12 @@ ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), 
 
 ##Plotting residuals for Model 11
 ```{r}
-#Plot residuals versus fitted values (shown with a smoothing curve)
+#Add residuals and fitted values to data frame
 herring_data$resid_11 <- resid(model_11) 
 herring_data$fitted_11 <- predict(model_11, re.form = ~0)
 
-ggplot(herring_data) +
-  theme_minimal() + 
-  geom_point(aes(fitted_11, resid_11), shape = 1) +
-  geom_smooth(aes(fitted_11, resid_11), se = FALSE) +
-   xlab("Fitted values for Model 11") +
-  ylab("Residuals for Model 11")
+#Plot residuals versus fitted values (shown with a smoothing curve)
+ggplot(herring_data) + theme_minimal() + geom_point(aes(fitted_11, resid_11), shape = 1) + geom_smooth(aes(fitted_11, resid_11), se = FALSE) + xlab("Fitted values for Model 11") + ylab("Residuals for Model 11")
 
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
@@ -335,16 +331,12 @@ curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 
 ##Plotting residuals of model 6
 ```{r}
-#Plot residuals versus fitted values (shown with a smoothing curve)
+#Add residuals and fitted values to data frame
 herring_data$resid_6 <- resid(model_6) 
 herring_data$fitted_6 <- predict(model_6, re.form = ~0)
 
-ggplot(herring_data) +
-  theme_minimal() + 
-  geom_point(aes(fitted_6, resid_6), shape = 1) +
-  geom_smooth(aes(fitted_6, resid_6), se = FALSE) +
-  xlab("Residuals for Model 6") +
-  ylab("Fitted values for Model 6")
+#Plot residuals versus fitted values (shown with a smoothing curve)
+ggplot(herring_data) + theme_minimal() + geom_point(aes(fitted_6, resid_6), shape = 1) + geom_smooth(aes(fitted_6, resid_6), se = FALSE) + xlab("Residuals for Model 6") +  ylab("Fitted values for Model 6")
 
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
@@ -363,12 +355,7 @@ qqline(resid(model_6), col = "red")
 shapiro.test(resid(model_6))
 
 #Plot residuals vs. sal.length (shown with smoothing curve)
-ggplot(herring_data) +
-  theme_minimal() + 
-  geom_point(aes(sal.length, resid_6), shape = 1) +
-  geom_smooth(aes(sal.length, resid_6), se = FALSE) +
-   xlab("Residuals for Model 6") +
-  ylab("Salmon length [cm]")
+ggplot(herring_data) +  theme_minimal() + geom_point(aes(sal.length, resid_6), shape = 1) + geom_smooth(aes(sal.length, resid_6), se = FALSE) + xlab("Residuals for Model 6") + ylab("Salmon length [cm]")
 ```
 
 ##Plotting random intercepts for  model 6
@@ -400,14 +387,7 @@ acf(herring_data$oto.width_, las = 1, lag = 100)
 herring_data$sign <- as.character(sign(herring_data$oto.width_standardized))
 
 #Generate bubble plot
-lat_vs_long <- ggplot(herring_data) +
-  theme_minimal() + 
-  geom_point(aes(long, lat, colour = sign, size = abs(oto.width_standardized), shape = sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + 
-  scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + 
-  coord_fixed() +
-  ggtitle("Bubble plot of otolith width") +
-  xlab("Longitude [°]") +
-  ylab("Latitude [°]")
+lat_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, lat, colour = sign, size = abs(oto.width_standardized), shape = sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + coord_fixed() +  ggtitle("Bubble plot of otolith width") + xlab("Longitude [°]") + ylab("Latitude [°]")
 print(lat_vs_long)
 ```
 
