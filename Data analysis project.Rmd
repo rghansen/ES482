@@ -67,6 +67,7 @@ We will use AIC fit with maximum likelihood estimation because it is flexible wh
 # Section 2: The Response Variable (150 words)
 ## A)
 ```{r, fig.width = 10, fig.height = 5, echo = FALSE}
+#Make multipanel plot
 par(mfrow = c(1, 2))
 
 #Add column for number of rows
@@ -102,7 +103,6 @@ We will use the normal distribution for modelling. (140)
 
 # Section 3: The Explanatory Variables
 ## A)
-### Continuous explanatory variables
 ```{r, fig.width = 6, fig.height = 8, echo = FALSE}
 #Make multipanel of dotcharts for continuous explanatory variables
 par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))
@@ -150,7 +150,6 @@ rug(herring_data$long)
 
 ```
 
-### Categorical explanatory variables
 ```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel for plots of categorical explanatory variables
 par(mfrow = c(1, 2))
