@@ -4,7 +4,6 @@ author: "Jess Qualley and Rebecca Hansen"
 date: "April 06, 2020"
 output: word_document
 ---
-
 # Preparation
 ## Loading packages
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
