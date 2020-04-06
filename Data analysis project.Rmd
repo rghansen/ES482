@@ -178,7 +178,7 @@ plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5),
      labels = c("Chinook\nLength [cm]", "Collection\nDay in 2018", "Latitude [°]", "Longitude [°]"))
 ```
 
-```{r, fig.width = 6, fig.height = 4, echo = FALSE}
+```{r, fig.width = 5, fig.height = 3, echo = FALSE}
 #Plot mean salmon size vs. collection month
 boxplot(sal.length ~ coll.month, data = herring_data, cex.main = 0.75, cex.lab = 0.75, cex.axis = 0.75, xlab = "Collection day of year", ylab = "Salmon length [cm]", main = "Boxplot of salmon size by collection month")
 ```
@@ -190,11 +190,10 @@ print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), 
 #Calulate and view Variance Inflation Factors
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
-  
 
-The only categorical variable is salmon id and the range in the number of herring per salmon was 1 to 7, which will not confound any other categorical variables. We will model salmon ID as a random effect to account for unbalancing effects associated with salmon ID on the continuous variables.
+The only categorical variable is salmon id and the range in the number of herring per salmon was 1 to 7, which will not confound any other categorical variables. We will model salmon ID as a random effect to account otolith width measurements being non-indpendent for herring found in the same salmon stomach.
   
-The boxplot of mean salmon length per month shows greater variance and greater summer sample sizes where lengths overlap with those observed in earlier months of the year. This unbalanced sampling effort may be contributing to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model. (200)  
+The boxplot of mean salmon length per month shows greater variance and greater summer sample sizes where lengths overlap with those observed in earlier months of the year. This unbalanced sampling effort may be contributing to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model. (193)  
 
 # Section 5: Statistical Methods and Model Fitting
 
@@ -278,7 +277,7 @@ oto_vs_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal
 grid.arrange(oto_vs_long, oto_vs_coll.doy, oto_vs_sal.length, nrow = 2)
 ```
 
-## Plotting residuals for Model 11 and Model 6
+## Plotting residuals for Model 11 and Model 6 (when predictions exclude random intercepts)
 ```{r}
 #Add Model 11 residuals and fitted values to data frame
 herring_data$resid_11 <- resid(model_11) 
@@ -333,7 +332,7 @@ par(mfrow = c(2, 2))
 qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
 qqline(ranef(model_11)$sal.id[, "(Intercept)"])
 
-#Plot histogram of Model 11 residuals as probability density with rug marks and reference curve
+#Plot histogram of Model 11 intercepts as probability density with rug marks and reference curve
 ranef_int <- ranef(model_11)$sal.id[, "(Intercept)"]
 hist(ranef_int, prob = TRUE, breaks = seq(-1, 0.8, 0.1), cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
 rug(ranef_int)
@@ -344,7 +343,7 @@ curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 qqnorm(ranef(model_6)$sal.id[, "(Intercept)"])
 qqline(ranef(model_6)$sal.id[, "(Intercept)"])
 
-#Plot histogram of residuals as probability density with rug marks and reference curve
+#Plot histogram of intercepts as probability density with rug marks and reference curve
 ranef_int <- ranef(model_6)$sal.id[, "(Intercept)"]
 hist(ranef_int, prob = TRUE, breaks = seq(-1.1, 0.7, 0.1), cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
 rug(ranef_int)
@@ -352,7 +351,7 @@ sd_hat_int <- sd(ranef_int)
 curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
 
-## Plottng Model 6 residuals vs. salmon length
+## Plotting Model 6 residuals vs. salmon length
 ```{r, fig.width = 8, fig.height = 4, echo = FALSE}
 #Plot residuals vs. sal.length (shown with smoothing curve)
 ggplot(herring_data) +  theme_minimal() + geom_point(aes(sal.length, resid_6), shape = 1) + geom_smooth(aes(sal.length, resid_6), se = FALSE) + ylab("Residuals for Model 6") + xlab("Salmon length [cm]")
@@ -380,7 +379,7 @@ lat_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, lat
 print(lat_vs_long)
 ```
 
-Pairwise scatterplots suggest a nonlinear relationship between the response and predictor variables. ACF plot suggests temporal autocorrelation at short time lags ~ 10 days or less. Bubble plots indicate spatial autocorrelation and/or may reflect the spatial size distribution of herring. Model 11 histogram of residuals appear normal compared to the quantile-quantile plot suggesting a non-normal distribution. Residuals fall above the 1:1 line at high quantiles and below the 1:1 line at negative quantiles, suggesting slightly right-skewed residuals. The increase in spread of the Model 11 residuals versus fitted values suggests unequal variance. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting a non-normal distribution of residuals. Model 6 of residuals and random intercept distribution show the same pattern as Model 11, violating assumptions of the linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, they may just represent the upper and lower range of the data given the pattern of increasing variance. (181)
+Pairwise scatterplots suggest a nonlinear relationship between the response and predictor variables. ACF plot suggests temporal autocorrelation at short time lags ~ 10 days or less. Bubble plots indicate spatial autocorrelation and/or may reflect the spatial size distribution of herring. Model 11 histogram of residuals (for predictions excluding random intercepts) appear normal compared to the quantile-quantile plot suggesting a non-normal distribution. Residuals fall above the 1:1 line at high quantiles and below the 1:1 line at negative quantiles, suggesting slightly right-skewed residuals. The increase in spread of the Model 11 residuals versus fitted values suggests unequal variance. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting a non-normal distribution of residuals. Model 6 residuals (excluding random intercepts) and random intercept distribution show the same pattern as Model 11, violating assumptions of the linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, they may just represent the upper and lower range of the data given the pattern of increasing variance. (183)
 
 # Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
 ## Running AIC
@@ -455,7 +454,7 @@ AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
 AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl, base = TRUE, weights = TRUE)
 ```
 
-## Summarixing Model 11 and Model 6
+## Summarizing Model 11 and Model 6
 ```{r}
 #Call coeﬃcient estimates for fixed effects of Model 11
 fixef(model_11)
@@ -476,7 +475,7 @@ VarCorr(model_6)
 confint(model_6)
 ```
 
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
+```{r, fig.width = 10, fig.height = 8, echo = FALSE}
 #Rearrange data for a plot of coefficients with standard errors
 #Make data frame for plot of coefficients
 confint_fixed_11 <- as.data.frame(confint(model_11, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "sal.length_standardized")))
@@ -487,10 +486,8 @@ confint_fixed_11$term <- rownames(confint_fixed_11)
 confint_fixed_11$estimate <- fixef(model_11)
 
 ##Plot confidence intervals for coefficient estimates
-ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
-```
-  
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
+confint_11 <- ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
+
 #Rearrange data for a plot of coefficients with standard errors
 #Make data frame for plot of coefficients
 confint_fixed_6 <- as.data.frame(confint(model_6, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized")))
@@ -501,8 +498,10 @@ confint_fixed_6$term <- rownames(confint_fixed_6)
 confint_fixed_6$estimate <- fixef(model_6)
 
 ##Plot confidence intervals for coefficent estimates
-ggplot(confint_fixed_6) + theme_bw() +  geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
+confint_6 <- ggplot(confint_fixed_6) + theme_bw() +  geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
   geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) + xlab("Estimate") + ylab("") + ggtitle("Coefficient Estimates for Model 6") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
+
+grid.arrange(confint_11, confint_6, nrow = 2)
 ```
   
 # Section 8: Plotting a Model with the Data
