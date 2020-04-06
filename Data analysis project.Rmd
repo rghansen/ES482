@@ -71,7 +71,7 @@ We will use AIC fit with maximum likelihood estimation because it is flexible wh
 
 #Section 2: The Response Variable (150 words)
 ##A)
-```{r, fig.width = 6,fig.height = 3}
+```{r, fig.width = 6,fig.height = 4}
 par(mfrow = c(1, 2))
 
 #Add column for number of rows
@@ -79,12 +79,12 @@ n <- nrow(herring_data)
 herring_data$row <- 1:n
 
 #Make dotchart of otolith width (response variable)
-with(herring_data, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
+with(herring_data, plot(oto.width, row, las = 1, type = "n", cex.lab = 0.75, cex.axis = 0.75, xlab = "Otolith width [mm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Make histogram of response variable with rugmarks
-hist(herring_data$oto.width, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of otolith width", xlab = "Otolith width [mm]")
+hist(herring_data$oto.width, cex.main = 0.75, cex.lab = 0.75, cex.axis = 0.75, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of otolith width", xlab = "Otolith width [mm]")
 rug(herring_data$oto.width)
 
 #Check for zeroes and NAs in otilith width
