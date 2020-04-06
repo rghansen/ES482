@@ -53,21 +53,19 @@ herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_da
 ##A)
 Pacific Salmon in British Columbia are valued for their social, cultural and economic benefits to many communities on our coast. Despite their important role in the coastal marine ecosystem (Schindler et al. 2003), diet studies from this region are outdated and limited to summer sampling. The adult Chinook and Coho Salmon Diet Program (Juanes Lab) seeks to address these knowledge gaps by sourcing stomach samples from the recreational fishing community to gather regional, seasonal and interannual diet data to monitor ecosystem response to environmental change.
 
-We have found Pacific Herring are the dominant fish consumed throughout regions of the Salish Sea, year-round. For this project we will investigate factors that may be important to the size of herring consumed by Chinook Salmon. Previous work found a positive, linear relationship between otolith width (mm) and length (mm) of herring from this dataset (Murchy et al. 2017). Otolith width (mm) measurements averaged from left and right otoliths will be used as a proxy for herring size (Stevenson and Campana, 1992) in this analysis. We will also use salmon catch data recorded by each angler and submitted with the associated stomach sample.
+Pacific Herring are the dominant fish consumed throughout regions of the Salish Sea, year-round. For this project we will investigate factors that may be important to the size of herring consumed by Chinook Salmon. Previous work found a positive, linear relationship between otolith width (mm) and length (mm) of herring from this dataset. Otolith width (mm) measurements averaged from left and right otoliths will be used as a proxy for herring size (Stevenson and Campana, 1992) in this analysis. We will use salmon catch data recorded by each angler and linked to each stomach sample.
 
 ##B)
 How does Chinook size, catch location and time of year in the Salish Sea affect the size of herring prey consumed?
 
 ##C)
-This analysis is descriptive, with the goal of showing how explanatory variables describe patterns in herring size consumed by Chinook in the Salish Sea.
+This analysis is descriptive, with the goal of showing how explanatory variables describe patterns in herring size consumed by Chinook.
 
 ##D)
-We hypothesize that otolith width will be positively linear as salmon length increases. Otolith width and day of year will show a positive linear relationship with the calendar year. We expect a moderately positive, linear relationship with increasing latitude. We expect a negative linear relationship with longitude if larger herring occur along west Strait of Georgia. However, we could see a non-linear relationship with longitude if maximum herring size occurrs in mid-channel waters. We expect an interaction between salmon length and latitude, as there productivity in northern regions. An interaction between salmon length and longitude may occur if mainland stocks and those on Vancouver Island differ in size. We expect an interaction between salmon length and day of year, as each age class grows through the year.
+We hypothesize that otolith width will be positively linear with salmon length and collection day of year. We expect a moderately positive, linear relationship with increasing latitude and negative linear relationship with longitude if larger herring occur along western Strait of Georgia. A non-linear relationship with longitude is possible if maximum herring size occurrs in mid-channel waters. We expect an interaction between salmon length and latitude, because of higher productivity in northern regions. An interaction between salmon length and longitude is possible if mainland and Vancouver Island stocks differ in size. We expect an interaction between salmon length and day of year as each age class grows.
 
 ##E)
-We will use AIC fit with maximum likelihood estimation because it is flexible when comparing complex, non-nested models with parameters estimated from ecological field studies. AIC is commonly used in ecosystem studies where parameter estimates are relatively imprecise and we accept that the optimal model may be selected over the true, given the current sample size and our ecological understanding of the system.
-
-(400)
+We will use AIC fit with maximum likelihood estimation because it is flexible when comparing complex, non-nested models with parameters estimated from ecological field studies. AIC is commonly used in ecosystem studies where parameter estimates are relatively imprecise and we accept that the optimal model may be selected over the true, given the current sample size and our ecological understanding of the system. (396)
 
 #Section 2: The Response Variable (150 words)
 ##A)
@@ -101,9 +99,7 @@ The response variable (otolith width) is continuous and cannot take on zero or n
 Outliers at < 0.6 mm and > 2.2 mm are reasonable measurements representing a few individuals in the extreme age classes. There are no zero values and one missing otolith measurement making up 0.11 % of the data. We anticipate no difficulties in removing the single NA value from subsequent analyses. Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach. Herring consumed at similar times of year may have similar growth trajectories that contribute to temporal autocorrelation. Spatial autocorrelation may occur if herring consumed in similar areas have similar prey fields and grow rates.
 
 ##D)
-We will consider the normal distribution for modelling.  
-
-(140)
+We will use the normal distribution for modelling. (140)
 
 #Section 3: The Explanatory Variables (150 words)
 ##A)
@@ -135,7 +131,7 @@ with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 ```{r, fig.width = 6, fig.height = 7}
 #Make multipanel of histograms for continuous explanatory variables
-par(mfrow = c(3, 2))
+par(mfrow = c(2, 2))
 
 #Salmon length histogram
 hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length [cm]")
@@ -170,9 +166,7 @@ hist(herring_data$sal.id, col = grey(0.9), cex.main = 1.5, cex.lab = 1, cex.axis
 ```
   
 ##B)
-One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no substantial skewedness is observed.
-
-(33)
+One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no substantial skewedness is observed. (32)
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
@@ -197,21 +191,13 @@ print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), 
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
   
-Our only categorical variable is salmon id so the range in the number of otoliths per salmon was x to x will not confounded any other categorical variables. We plan to model salmon id as a random effect which will account for the effects of any unbalancing associated with salmon id on the continuous variables.  
+The only categorical variable is salmon id and the range in the number of herring per salmon was 1 to 7, which will not confounded any other categorical variables. We will model salmon id as a random effect to account unbalancing effects associated with salmon id on the continuous variables.
   
-A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.  
-  
-(204)  
+The boxplot of mean salmon length per month shows mean salmon length in summer overlapped with mean salmon length observed in earlier months of the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model. (197)  
 
-*get otolith number per salmon id range
-  
 #Section 5: Statistical Methods and Model Fitting (200 words)
 
-We will be using linear mixed-effects models using the R Package lme4 (Bates et al., 2015). We are assuming that otolith width (mm), our response variable, is normally distributed as suggested by a histogram of otolith width. We will model otolith width (mm) as function of salmon length (cm), day of year in 2018, latitude and longitude. Dotplots and histograms of these predictor variables show few missing values or outliers so the data from these variables can be used for modelling. There wasn't strong colinearity between predictor variables except for longitude and latitude, which we will not include in the same model. We have chosen to standardize our predictor variables as they were measured on vastly different scales. We will include a random intercept corresponding to individual salmon (salmon id) to avoid autocorrelation from non-independence of multiple herring that may occur in a single salmon or experimental unit. Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual salmon. We have chosen a random intercept for salmon id because the number of levels is greater than 10 (ref.).
-
-(193)
-
-*ref for > 10 levels
+We will be using linear mixed-effects models using the R Package lme4 (Bates et al. 2015). We are assuming that otolith width (mm), our response variable, is normally distributed as suggested by a histogram of otolith width. We will model otolith width (mm) as function of salmon length (cm), day of year in 2018, latitude and longitude. Dotplots and histograms of these predictor variables show few missing values or outliers so the data from these variables can be used for modelling. There wasn't strong colinearity between predictor variables except for longitude and latitude, which we will not include in the same model. We have chosen to standardize our predictor variables as they were measured on vastly different scales. We will include a random intercept corresponding to individual salmon (salmon id) to avoid autocorrelation from non-independence of multiple herring that may occur in a single salmon or experimental unit. Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual salmon. We have chosen a random intercept for salmon id because the number of levels is greater than 10 (Zuur et al. 2007). (196)
 
 ##Standardizing data for models
 ```{r}
@@ -403,7 +389,7 @@ lat_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, lat
 print(lat_vs_long)
 ```
 
-Pairwise scatterplots suggest a nonlinear relationship between the response and predictor variables. ACF plot suggests temporal autocorrelation at short time lags ~ 10 days or less. Bubble plots indicate spatial autocorrelation and/or may reflect the spatial size distribution of herring. Model 11 histogram of residuals appear normal compared to the quantile-quantile plot suggesting a non-normal distribution. Residuals fall above the 1:1 line at high quantiles and below the 1:1 line at negative quantiles, suggesting slightly right-skewed residuals. The increase in spread of the model 11 residuals versus fitted values suggests unequal variance. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting a non-normal distribution of residuals. Model 6 shows the same pattern of residuals and random intercept distribution, violating assumptions of the linear model in addition to spatial and temporal autocorrelation. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, they may just represent the upper and lower range of the data given the pattern of increasing variance.
+Pairwise scatterplots suggest a nonlinear relationship between the response and predictor variables. ACF plot suggests temporal autocorrelation at short time lags ~ 10 days or less. Bubble plots indicate spatial autocorrelation and/or may reflect the spatial size distribution of herring. Model 11 histogram of residuals appear normal compared to the quantile-quantile plot suggesting a non-normal distribution. Residuals fall above the 1:1 line at high quantiles and below the 1:1 line at negative quantiles, suggesting slightly right-skewed residuals. The increase in spread of the model 11 residuals versus fitted values suggests unequal variance. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting a non-normal distribution of residuals. Model 6 of residuals and random intercept distribution show the same pattern as model 11, violating assumptions of the linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, they may just represent the upper and lower range of the data given the pattern of increasing variance. (181)
 
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
 ##Rewriting all models with REML= FALSE
@@ -610,17 +596,16 @@ grid.arrange(model_6_long, model_6_coll.doy, nrow = 2)
 
 #Section 9: Discussion (400 words)
 ##A)
-The model does not fit the data well in addition to violating linear model assumptions for both model 11 and 6. Model 11 versus longitude overpredicts between -124.0 to -125.0 and may underpredict between -123.5 to -124.0. Otolith width versus collection day of year overpredicts between day 0 to 50 and underpredicts between day 125 to 175. Otolith width versus salmon length overpredicts between 40 cm to 60 cm. The same patterns are observed for model 6 versus longitude and collection day.
+Model 11 and 6 does not fit the data well and violates linear model assumptions. Both models overpredict otolith width between longitude -124.0 to -125.0. Both models overpredict between 0 to 50 days and underpredict 125 to 175 days. Model 11 overpredicts for salmon between 40 cm to 60 cm.
 
 ##B)
-Coefficient plot for model 11 shows that salmon length has a small, positive relationship with otolith width but that confidence intervals overlap with 0 meaning it is not as useful a predictor as longitude and day of year which also has a small negative effect but does not overlap with 0. The intercept (?) has a large effect. Similar patterns are observed for model 6, consistent with our hypotheses for a positive relationship between otolith width and salmon length and otolith width and longitude. However, result contradict our hypothesis for a positive relationship between otolith width and collection day. Interestingly, longitude better describes otolith width than latitude in this modelling exercise and therefore, longitude and collection day of year best describe the variation in size of herring consumed by Chinook Salmon in the Salish Sea.
+Model 11 coefficient plot shows that salmon length has a small positive relationship with otolith width, but the confidence interval overlaps with 0 and is not a useful predictor unlike longitude and day of year that doesn’t overlap with 0 and has a small, negative relationship with otolith width. Similar patterns are observed for model 6. The results support our hypothesis for a positive relationship between otolith width versus salmon length and longitude but contradicts positive relationship we hypothesized for collection day. Interestingly, longitude better describes otolith width than latitude so we determine that longitude and collection day of year best describe the variation in herring size consumed by Chinook Salmon in the Salish Sea in 2018.
 
 ##C)
-Limitations are that longitude may relate to the spatial distribution of larger and smaller groups of herring that occupy different regions within the Salish Sea. Longitude is not capturing east-west patterns from shallow to deep water habitats at a constant latitude, but rather herring caught in more westerly regions near Nanaimo and Denman and Hornby Island and easterly regions near San Juan Islands/Puget Sound. Modelling capture location as a categorical variable instead of a continuous longitude will allow us to look at patterns within different regions. Otolith width versus collection day may represent two or more different age classes and recruitment patterns of herring available to salmon. Modelling different age classes separately may allow us to model herring size better as they aren’t confounded by different size classes that occur together. Alternatively, we could model herring size as a quadratic relationship. Otolith width versus salmon length shows few data points for salmon below 62cm and model overprediction. We suspect this could be either due to gape limitation or an artifact of sampling effort due to size restrictions > 62cm for recreational catch. We may consider sourcing more salmon < 62cm or to run models with and without fish < 62cm to determine whether omitting this subset changes our result.
+Longitude is not capturing east-west patterns from shallow to deep water, but the spatial size distribution of herring in westerly regions near Comox Valley and easterly regions near San Juan Islands. Modelling capture location as a categorical variable will allow us to look at regional patterns. Otolith width versus collection day may represent two or more age classes of available herring. Modelling age classes separately may suggest the importance of a different set of factors. Alternatively, we could model herring size as a quadratic relationship. Otolith width versus salmon length shows few salmon below 62cm paired with model overprediction, due to gape limitation or size restrictions >62cm for recreational catch. Generating models with and without fish <62cm can determine whether omitting this subset is justified and changes our result.
 
 ##D)
-The longitudinal and day of year pattern may be reflecting high herring abundance along east coast Vancouver Island and spawning near Hornby and Denman Island in mid-March (Therriault et al. 2009). Perhaps a greater contribution of large herring consumed in western regions (-125.0) and a smaller size range of juvenile recruits beginning in June is driving these trends. Although, salmon length is less important the overall trend suggests that prey size range increases with body size, consistent with findings of other marine predators (Scharf et al. 2000). However, these conclusions are approximate and requires further investigation.
-
+The longitudinal and day of year pattern may reflect high herring abundance along east coast Vancouver Island and peak spawning near Hornby/Denman Island in mid-March (Therriault et al. 2009). Perhaps a greater contribution of large herring consumed in western regions and small larvae appearing in June are driving these trends. Although salmon length is a poor predictor, the overall trend suggests prey size range increases with salmon size, consistent with findings in other marine predators (Scharf et al. 2000). (385)
 
 ## References
 
@@ -647,3 +632,4 @@ Ben Bolker and R Development Core Team (2020). bbmle: Tools for General Maximum 
 
 Baptiste Auguie (2017). gridExtra: Miscellaneous Functions for "Grid" Graphics. R package version 2.3. https://CRAN.R-project.org/package=gridExtra
 
+Zuur, A., et al., 2007. Analysing Ecological Data. Springer: New York.
