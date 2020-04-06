@@ -484,17 +484,7 @@ confint_fixed_11$term <- rownames(confint_fixed_11)
 confint_fixed_11$estimate <- fixef(model_11)
 
 ##Plot confidence intervals for coefficient estimates
-ggplot(confint_fixed_11) + 
-  theme_bw() +
-  geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
-  geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
-  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
-  scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) +
-  xlab("Estimate") +
-  ylab("") + 
-  ggtitle("Coefficient Estimates for Model 11") +
-    scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) +
-  theme(axis.text = element_text(size = 10, colour = "black"))
+ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 10, colour = "black"))
 ```
 ##Summarizing Model 6
 ```{r}
@@ -517,17 +507,8 @@ confint_fixed_6$term <- rownames(confint_fixed_6)
 confint_fixed_6$estimate <- fixef(model_6)
 
 ##Plot confidence intervals for coefficent estimates
-ggplot(confint_fixed_6) + 
-  theme_bw() +
-  geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
-  geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
-  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
-  scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) +
-  xlab("Estimate") +
-  ylab("") + 
-  ggtitle("Coefficient Estimates for Model 6") +
-    scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) +
-  theme(axis.text = element_text(size = 10, colour = "black"))
+ggplot(confint_fixed_6) + theme_bw() +  geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
+  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) + xlab("Estimate") + ylab("") + ggtitle("Coefficient Estimates for Model 6") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 10, colour = "black"))
 ```
 #Section 8: Plotting a Model with the Data
 ##Visualizing Model 11
