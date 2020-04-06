@@ -84,7 +84,7 @@ abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Make histogram of response variable with rugmarks
-hist(herring_data$oto.width, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of herring otolith width", xlab = "Herring otolith width")
+hist(herring_data$oto.width, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of otolith width", xlab = "Otolith width [mm]")
 rug(herring_data$oto.width)
 
 #Check for zeroes and NAs in otilith width
@@ -113,22 +113,22 @@ We will consider the normal distribution for modelling.
 par(mfrow = c(3, 2))
 
 #Salmon length dotchart
-with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Actual Salmon Length [mm]", ylab = "Row Number"))
+with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Salmon length [cm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.length, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Collection day of year dotchart
-with(herring_data, plot(coll.doy, row, las = 1, type = "n", xlab = "Day of Year in 2018", ylab = "Row Number"))
+with(herring_data, plot(coll.doy, row, las = 1, type = "n", xlab = "Collection day of year", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(coll.doy, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Latitude dotchart
-with(herring_data, plot(lat, row, las = 1, type = "n", xlab = "Latitude", ylab = "Row Number"))
+with(herring_data, plot(lat, row, las = 1, type = "n", xlab = "Latitude [°]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Longitude dotchart
-with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude", ylab = "Row Number"))
+with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude [°]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
@@ -136,19 +136,19 @@ with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 par(mfrow = c(3, 2))
 
 #Salmon length histogram
-hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length")
+hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length [cm]")
 rug(herring_data$sal.length)
 
 #Collection day of year histogram
-hist(herring_data$coll.doy, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of day of year", xlab = "Collection day of year")
+hist(herring_data$coll.doy, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of collection day of year", xlab = "Collection day of year")
 rug(herring_data$coll.doy)
 
 #Latitude histogram
-hist(herring_data$lat, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude")
+hist(herring_data$lat, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude [°]")
 rug(herring_data$lat)
 
 #Longitude histogram
-hist(herring_data$long, col = grey(0.9), breaks = seq(-125.5, -123, by = 0.05), main = "Histogram of longitude", xlab = "Longitude")
+hist(herring_data$long, col = grey(0.9), breaks = seq(-125.5, -123, by = 0.05), main = "Histogram of longitude", xlab = "Longitude [°]")
 rug(herring_data$long)
 
 ```
@@ -180,10 +180,10 @@ herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
 
 #Make pairwise scatterplot of explanatory variables
 plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
-     labels = c("Chinook\nLength [mm]", "Collection\nDay in 2018", "Latitude", "Longitude"))
+     labels = c("Chinook\nLength [cm]", "Collection\nDay in 2018", "Latitude [°]", "Longitude [°]"))
 
 #Plot mean salmon size vs. collection month
-boxplot(sal.length ~ coll.month, data = herring_data)
+boxplot(sal.length ~ coll.month, data = herring_data, xlab = "Collection day of year", ylab = "Salmon length [cm]", main = "Boxplot of salmon size by collection month")
 
 #Calculate and view pairwise correlation coefficients for explanatory variables
 print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), digits = 2)
