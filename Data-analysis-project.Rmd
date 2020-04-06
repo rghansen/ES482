@@ -7,7 +7,7 @@ output: word_document
 
 #Preparation
 ##Loading packages
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r, echo = TRUE}
 #Load faraway package
 library(faraway)
 
