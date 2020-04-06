@@ -7,7 +7,7 @@ output: word_document
 
 #Preparation
 ##Loading packages
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 #Load faraway package
 library(faraway)
 
@@ -69,7 +69,7 @@ We will use AIC fit with maximum likelihood estimation because it is flexible wh
 
 #Section 2: The Response Variable (150 words)
 ##A)
-```{r, fig.width = 10, fig.height = 5}
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 par(mfrow = c(1, 2))
 
 #Add column for number of rows
@@ -84,7 +84,9 @@ with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0
 #Make histogram of response variable with rugmarks
 hist(herring_data$oto.width, cex.main = 1.5, cex.lab = 1, cex.axis = 1, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of otolith width", xlab = "Otolith width [mm]")
 rug(herring_data$oto.width)
+```
 
+```{r}
 #Check for zeroes and NAs in otilith width
 table(herring_data$oto.width > 0, useNA = "always")
 
@@ -104,7 +106,7 @@ We will use the normal distribution for modelling. (140)
 #Section 3: The Explanatory Variables (150 words)
 ##A)
 ###Continuous explanatory variables
-```{r, fig.width = 6, fig.height = 8}
+```{r, fig.width = 6, fig.height = 8, echo = FALSE}
 #Make multipanel of dotcharts for continuous explanatory variables
 par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))
 
@@ -129,30 +131,30 @@ abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
 ```
 
-```{r, fig.width = 6, fig.height = 7}
+```{r, fig.width = 10, fig.height = 7, echo = FALSE}
 #Make multipanel of histograms for continuous explanatory variables
 par(mfrow = c(2, 2))
 
 #Salmon length histogram
-hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length [cm]")
+hist(herring_data$sal.length, cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length [cm]")
 rug(herring_data$sal.length)
 
 #Collection day of year histogram
-hist(herring_data$coll.doy, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of collection day of year", xlab = "Collection day of year")
+hist(herring_data$coll.doy, cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of collection day of year", xlab = "Collection day of year")
 rug(herring_data$coll.doy)
 
 #Latitude histogram
-hist(herring_data$lat, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude [°]")
+hist(herring_data$lat, cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude [°]")
 rug(herring_data$lat)
 
 #Longitude histogram
-hist(herring_data$long, col = grey(0.9), breaks = seq(-125.5, -123, by = 0.05), main = "Histogram of longitude", xlab = "Longitude [°]")
+hist(herring_data$long, cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = grey(0.9), breaks = seq(-125.5, -123, by = 0.05), main = "Histogram of longitude", xlab = "Longitude [°]")
 rug(herring_data$long)
 
 ```
 
 ###Categorical explanatory variables
-```{r, fig.width = 10, fig.height = 5}
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel for plots of categorical explanatory variables
 par(mfrow = c(1, 2))
 
@@ -170,7 +172,7 @@ One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
-```{r, echo = TRUE, fig.width = 7, fig.height = 5.5}
+```{r, echo = TRUE, fig.width = 7, fig.height = 5.5, echo = FALSE}
 #Create data frame of continuous explanatory variables for pairwise scatter plots
 herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
     "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
@@ -180,10 +182,12 @@ plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5),
      labels = c("Chinook\nLength [cm]", "Collection\nDay in 2018", "Latitude [°]", "Longitude [°]"))
 ```
 
-```{r, fig.width = 6, fig.height = 4}
+```{r, fig.width = 6, fig.height = 4, echo = FALSE}
 #Plot mean salmon size vs. collection month
 boxplot(sal.length ~ coll.month, data = herring_data, cex.main = 0.75, cex.lab = 0.75, cex.axis = 0.75, xlab = "Collection day of year", ylab = "Salmon length [cm]", main = "Boxplot of salmon size by collection month")
+```
 
+```{r}
 #Calculate and view pairwise correlation coefficients for explanatory variables
 print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), digits = 2)
 
@@ -266,7 +270,7 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 
 #Section 6: Model Checking 
 ##Plotting otolith.width vs. models' explanatory variables
-```{r,  fig.width = 10, fig.height = 7}
+```{r,  fig.width = 10, fig.height = 7, echo = FALSE}
 #Otolith width vs. longitude
 oto_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 1) + geom_smooth(aes(long, oto.width), se = FALSE) + xlab("Longitude [°]") +  ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
@@ -280,7 +284,7 @@ grid.arrange(oto_vs_long, oto_vs_coll.doy, oto_vs_sal.length, nrow = 2)
 ```
 
 ##Plotting residuals for Model 11
-```{r, fig.width = 8, fig.height = 4}
+```{r, fig.width = 8, fig.height = 4, echo = FALSE}
 #Add residuals and fitted values to data frame
 herring_data$resid_11 <- resid(model_11) 
 herring_data$fitted_11 <- predict(model_11, re.form = ~0)
@@ -289,7 +293,7 @@ herring_data$fitted_11 <- predict(model_11, re.form = ~0)
 ggplot(herring_data) + theme_minimal() + geom_point(aes(fitted_11, resid_11), shape = 1) + geom_smooth(aes(fitted_11, resid_11), se = FALSE) + xlab("Fitted values for Model 11") + ylab("Residuals for Model 11")
 ```
 
-```{r, fig.width = 10, fig.height = 5}
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
 
@@ -305,7 +309,7 @@ qqline(resid(model_11), col = "red")
 ```
 
 ##Plotting random intercepts for model 11
-```{r, fig.width = 10, fig.height = 5}
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
 
@@ -322,7 +326,7 @@ curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
 
 ##Plotting residuals of model 6
-```{r, fig.width = 8, fig.height = 4}
+```{r, fig.width = 8, fig.height = 4, echo = FALSE}
 #Add residuals and fitted values to data frame
 herring_data$resid_6 <- resid(model_6) 
 herring_data$fitted_6 <- predict(model_6, re.form = ~0)
@@ -331,7 +335,7 @@ herring_data$fitted_6 <- predict(model_6, re.form = ~0)
 ggplot(herring_data) + theme_minimal() + geom_point(aes(fitted_6, resid_6), shape = 1) + geom_smooth(aes(fitted_6, resid_6), se = FALSE) + xlab("Residuals for Model 6") +  ylab("Fitted values for Model 6")
 ```
 
-```{r, fig.width = 10, fig.height = 5}
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
 
@@ -346,13 +350,13 @@ qqnorm(resid(model_6))
 qqline(resid(model_6), col = "red")
 ```
 
-```{r, fig.width = 8, fig.height = 4}
+```{r, fig.width = 8, fig.height = 4, echo = FALSE}
 #Plot residuals vs. sal.length (shown with smoothing curve)
 ggplot(herring_data) +  theme_minimal() + geom_point(aes(sal.length, resid_6), shape = 1) + geom_smooth(aes(sal.length, resid_6), se = FALSE) + xlab("Residuals for Model 6") + ylab("Salmon length [cm]")
 ```
 
 ##Plotting random intercepts for  model 6
-```{r, fig.width = 10, fig.height = 5}
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
 
@@ -369,15 +373,15 @@ curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
 
 ##Plotting for spatial and temporal autocorrelation
-```{r, fig.width = 10, fig.height = 5}
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Create column of standardized otolith widths ((x - mean)/ 1 sd)
 herring_data$oto.width_standardized <- (herring_data$oto.width - mean(herring_data$oto.width)) / sd(herring_data$oto.width)
 
 #Generate acf plot of standardized otolith widths
-acf(herring_data$oto.width_, las = 1, lag = 100, cex.main = 1.5, cex.lab = 1, cex.axis = 1, main = "Series for otolith width")
+acf(herring_data$oto.width_, las = 1, lag = 100, cex.main = 1.5, cex.lab = 1, cex.axis = 1, main = "Series for standardized otolith widths")
 ```
 
-```{r, fig.width = 6, fig.height = 4}
+```{r, fig.width = 5, fig.height = 3, echo = FALSE}
 #Create column of standardized otolith widths classified as above or below mean
 herring_data$Sign <- as.character(sign(herring_data$oto.width_standardized))
 
@@ -385,7 +389,7 @@ herring_data$Sign <- as.character(sign(herring_data$oto.width_standardized))
 herring_data$Magnitude <- abs(herring_data$oto.width_standardized)
 
 #Generate bubble plot
-lat_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, lat, colour = Sign, size = Magnitude, shape = Sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + coord_fixed() +  ggtitle("Bubble plot of otolith width") + xlab("Longitude [°]") + ylab("Latitude [°]")
+lat_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, lat, colour = Sign, size = Magnitude, shape = Sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + coord_fixed() +  ggtitle("Bubble plot of standardized otolith width") + xlab("Longitude [°]") + ylab("Latitude [°]")
 print(lat_vs_long)
 ```
 
@@ -393,7 +397,7 @@ Pairwise scatterplots suggest a nonlinear relationship between the response and 
 
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
 ##Rewriting all models with REML= FALSE
-```{r, echo = TRUE}
+```{r}
 #Intercept-only model
 model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data, REML= FALSE)
 
@@ -471,7 +475,9 @@ VarCorr(model_11)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
 confint(model_11)
+```
 
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Rearrange data for a plot of coefficients with standard errors
 #Make data frame for plot of coefficients
 confint_fixed_11 <- as.data.frame(confint(model_11, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "sal.length_standardized")))
@@ -482,8 +488,9 @@ confint_fixed_11$term <- rownames(confint_fixed_11)
 confint_fixed_11$estimate <- fixef(model_11)
 
 ##Plot confidence intervals for coefficient estimates
-ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 10, colour = "black"))
+ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
 ```
+  
 ##Summarizing Model 6
 ```{r}
 #Call coeﬃcient estimates for fixed effects
@@ -494,7 +501,9 @@ VarCorr(model_6)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
 confint(model_6)
+```
 
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Rearrange data for a plot of coefficients with standard errors
 #Make data frame for plot of coefficients
 confint_fixed_6 <- as.data.frame(confint(model_6, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized")))
@@ -506,11 +515,12 @@ confint_fixed_6$estimate <- fixef(model_6)
 
 ##Plot confidence intervals for coefficent estimates
 ggplot(confint_fixed_6) + theme_bw() +  geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
-  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) + xlab("Estimate") + ylab("") + ggtitle("Coefficient Estimates for Model 6") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 10, colour = "black"))
+  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) + xlab("Estimate") + ylab("") + ggtitle("Coefficient Estimates for Model 6") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
 ```
+  
 #Section 8: Plotting a Model with the Data
 ##Visualizing Model 11
-```{r, echo = TRUE}
+```{r, fig.width = 8, fig.height = 10, echo = FALSE}
 #Create data frame for plot of model 11 predictions with longitude on the x axis
 oto.width_vs_long_data_11 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
@@ -524,10 +534,10 @@ oto.width_vs_long_data_11$fit_11_pop <- predict(model_11, newdata = oto.width_vs
 herring_data$fit_11_sal.id <- predict(model_11)
 
 #Plot the model vs. longitude
-model_11_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_11_pop), data = oto.width_vs_long_data_11) + geom_point(aes(long, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]")
+model_11_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_11_pop), data = oto.width_vs_long_data_11) + geom_point(aes(long, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Create data frame for plot of model 11 predictions with coll.doy on the x axis
-oto.width_vs_coll.doy_data_11 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
+oto.width_vs_coll.doy_data_11 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized)) 
 
 #Add standardized coll.doy data to data frame
 oto.width_vs_coll.doy_data_11$coll.doy_standardized <- ((oto.width_vs_coll.doy_data_11$coll.doy - mean(oto.width_vs_coll.doy_data_11$coll.doy))/sd(oto.width_vs_coll.doy_data_11$coll.doy))
@@ -539,7 +549,7 @@ oto.width_vs_coll.doy_data_11$fit_11_pop <- predict(model_11, newdata = oto.widt
 herring_data$fit_11_sal.id <- predict(model_11)
 
 #Plot the model vs.coll.doy
-model_11_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +  geom_line(aes(coll.doy, fit_11_pop), data = oto.width_vs_coll.doy_data_11) + geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Collection day of year") + ylab("Otolith width [mm]")
+model_11_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +  geom_line(aes(coll.doy, fit_11_pop), data = oto.width_vs_coll.doy_data_11) + geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Collection day of year") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Create data frame for plot of model 11 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_11 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
@@ -551,13 +561,14 @@ oto.width_vs_sal.length_data_11$sal.length_standardized <- ((oto.width_vs_sal.le
 oto.width_vs_sal.length_data_11$fit_11_pop <- predict(model_11, newdata = oto.width_vs_sal.length_data_11, re.form = ~0)
 
 #Plot the model vs. sal.length
-model_11_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 19, size = 1) +  geom_line(aes(sal.length, fit_11_pop), data = oto.width_vs_sal.length_data_11) + geom_point(aes(sal.length, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Salmon length [cm]") + ylab("Otolith width [mm]")
+model_11_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 19, size = 1) +  geom_line(aes(sal.length, fit_11_pop), data = oto.width_vs_sal.length_data_11) + geom_point(aes(sal.length, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Salmon length [cm]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
-grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 2)
+grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 3)
 ```
 
 ##Visualizing Model 6
-```{r, echo = TRUE}
+
+```{r, fig.width = 8, fig.height = 8, echo = FALSE}
 #Create data frame for plot of model 6 predictions with longitude on the x axis
 oto.width_vs_long_data_6 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
@@ -571,7 +582,7 @@ oto.width_vs_long_data_6$fit_6_pop <- predict(model_6, newdata = oto.width_vs_lo
 herring_data$fit_6_sal.id <- predict(model_6)
 
 #Plot the model vs. longitude
-model_6_long <- ggplot(herring_data) +  theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_6_pop), data = oto.width_vs_long_data_6) + geom_point(aes(long, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]")
+model_6_long <- ggplot(herring_data) +  theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_6_pop), data = oto.width_vs_long_data_6) + geom_point(aes(long, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Create data frame for plot of model 6 predictions with coll.doy on the x axis
 oto.width_vs_coll.doy_data_6 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
@@ -586,7 +597,7 @@ oto.width_vs_coll.doy_data_6$fit_6_pop <- predict(model_6, newdata = oto.width_v
 herring_data$fit_6_sal.id <- predict(model_6)
 
 #Plot the model vs.coll.doy
-model_6_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) + geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Collection day of year") +  ylab("Otolith width [mm]")
+model_6_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) + geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Collection day of year") +  ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
 
 #Create data frame for plot of model 6 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_6 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
