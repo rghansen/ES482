@@ -459,16 +459,25 @@ AIC_out$delta_AIC <- AIC_out$AIC - min(AIC_out$AIC)
 AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, model_8, model_9, model_5i, model_6i, model_7i, model_8i, model_9i, model_10, model_11, model_10l, model_10c, model_11l, model_11c, model_10cl, model_11cl, base = TRUE, weights = TRUE)
 ```
 
-##Summarizing Model 11
+##Summarizing Model 11 and Model 6
 ```{r}
-#Call coeﬃcient estimates for fixed effects
+#Call coeﬃcient estimates for fixed effects of Model 11
 fixef(model_11)
 
-#Call variation within and between salmon.id
+#Call variation within and between salmon.id of Model 11
 VarCorr(model_11)
 
-#Calculate conﬁdence intervals for coeﬃcient estimate
+#Calculate conﬁdence intervals for coeﬃcient estimate of Model 11
 confint(model_11)
+
+#Call coeﬃcient estimates for fixed effects of Model 6
+fixef(model_6)
+
+#Call variation within and between salmon.id of Model 6
+VarCorr(model_6)
+
+#Calculate conﬁdence intervals for coeﬃcient estimate of Model 6
+confint(model_6)
 ```
 
 ```{r, fig.width = 10, fig.height = 5, echo = FALSE}
@@ -485,17 +494,6 @@ confint_fixed_11$estimate <- fixef(model_11)
 ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
 ```
   
-##Summarizing Model 6
-```{r}
-#Call coeﬃcient estimates for fixed effects
-fixef(model_6)
-
-#Call variation within and between salmon.id
-VarCorr(model_6)
-
-#Calculate conﬁdence intervals for coeﬃcient estimate
-confint(model_6)
-```
 
 ```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Rearrange data for a plot of coefficients with standard errors
