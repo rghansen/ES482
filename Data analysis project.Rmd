@@ -131,7 +131,9 @@ with(herring_data, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
 with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude [°]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
+```
 
+```{r, fig.width = 6, fig.height = 7}
 #Make multipanel of histograms for continuous explanatory variables
 par(mfrow = c(3, 2))
 
@@ -154,18 +156,19 @@ rug(herring_data$long)
 ```
 
 ###Categorical explanatory variables
-```{r, fig.width = 6,fig.height = 3}
+```{r, fig.width = 10, fig.height = 5}
 #Make multipanel for plots of categorical explanatory variables
 par(mfrow = c(1, 2))
 
 #Make dotchart of salmon id
-with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
+with(herring_data, plot(sal.id, row, las = 1, type = "n", cex.lab = 1, cex.axis = 1, xlab = "Salmon ID", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Make a histogram of herring frequency per salmon
-hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
+hist(herring_data$sal.id, col = grey(0.9), cex.main = 1.5, cex.lab = 1, cex.axis = 1, breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 ```
+  
 ##B)
 One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no substantial skewedness is observed.
 
@@ -173,7 +176,7 @@ One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
-```{r, echo = TRUE}
+```{r, echo = TRUE, fig.width = 7, fig.height = 5.5}
 #Create data frame of continuous explanatory variables for pairwise scatter plots
 herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
     "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
@@ -181,9 +184,11 @@ herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
 #Make pairwise scatterplot of explanatory variables
 plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
      labels = c("Chinook\nLength [cm]", "Collection\nDay in 2018", "Latitude [°]", "Longitude [°]"))
+```
 
+```{r, fig.width = 6, fig.height = 4}
 #Plot mean salmon size vs. collection month
-boxplot(sal.length ~ coll.month, data = herring_data, xlab = "Collection day of year", ylab = "Salmon length [cm]", main = "Boxplot of salmon size by collection month")
+boxplot(sal.length ~ coll.month, data = herring_data, cex.main = 0.75, cex.lab = 0.75, cex.axis = 0.75, xlab = "Collection day of year", ylab = "Salmon length [cm]", main = "Boxplot of salmon size by collection month")
 
 #Calculate and view pairwise correlation coefficients for explanatory variables
 print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), digits = 2)
