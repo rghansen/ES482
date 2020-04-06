@@ -462,7 +462,7 @@ AICtab(model_0, model_1, model_2, model_3, model_4, model_5, model_6, model_7, m
 ```
 
 ##Summarizing Model 11
-```{r, fig.width = 10, fig.height = 5}
+```{r}
 #Call coeﬃcient estimates for fixed effects
 fixef(model_11)
 
@@ -471,7 +471,9 @@ VarCorr(model_11)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
 confint(model_11)
+```
 
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Rearrange data for a plot of coefficients with standard errors
 #Make data frame for plot of coefficients
 confint_fixed_11 <- as.data.frame(confint(model_11, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "sal.length_standardized")))
@@ -486,7 +488,7 @@ ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), 
 ```
   
 ##Summarizing Model 6
-```{r, fig.width = 10, fig.height = 5}
+```{r}
 #Call coeﬃcient estimates for fixed effects
 fixef(model_6)
 
@@ -495,7 +497,9 @@ VarCorr(model_6)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
 confint(model_6)
+```
 
+```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Rearrange data for a plot of coefficients with standard errors
 #Make data frame for plot of coefficients
 confint_fixed_6 <- as.data.frame(confint(model_6, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized")))
@@ -512,7 +516,7 @@ ggplot(confint_fixed_6) + theme_bw() +  geom_point(aes(y = term, x = estimate), 
   
 #Section 8: Plotting a Model with the Data
 ##Visualizing Model 11
-```{r, fig.width = 8, fig.height = 10}
+```{r, fig.width = 8, fig.height = 10, echo = FALSE}
 #Create data frame for plot of model 11 predictions with longitude on the x axis
 oto.width_vs_long_data_11 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
@@ -559,7 +563,8 @@ grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 3)
 ```
 
 ##Visualizing Model 6
-```{r, fig.width = 8, fig.height = 8}
+
+```{r, fig.width = 8, fig.height = 8, echo = FALSE}
 #Create data frame for plot of model 6 predictions with longitude on the x axis
 oto.width_vs_long_data_6 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
