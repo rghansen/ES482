@@ -7,7 +7,7 @@ output: word_document
 
 #Preparation
 ##Loading packages
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo = TRUE}
 #Load faraway package
 library(faraway)
 
@@ -53,23 +53,25 @@ herring_data <- herring_data %>% filter(herring_data$sal.sp == "ch" & herring_da
 ##A)
 Pacific Salmon in British Columbia are valued for their social, cultural and economic benefits to many communities on our coast. Despite their important role in the coastal marine ecosystem (Schindler et al. 2003), diet studies from this region are outdated and limited to summer sampling. The adult Chinook and Coho Salmon Diet Program (Juanes Lab) seeks to address these knowledge gaps by sourcing stomach samples from the recreational fishing community to gather regional, seasonal and interannual diet data to monitor ecosystem response to environmental change.
 
-Pacific Herring are the dominant fish consumed throughout regions of the Salish Sea, year-round. For this project we will investigate factors that may be important to the size of herring consumed by Chinook Salmon. Previous work found a positive, linear relationship between otolith width (mm) and length (mm) of herring from this dataset. Otolith width (mm) measurements averaged from left and right otoliths will be used as a proxy for herring size (Stevenson and Campana, 1992) in this analysis. We will use salmon catch data recorded by each angler and linked to each stomach sample.
+We have found Pacific Herring are the dominant fish consumed throughout regions of the Salish Sea, year-round. For this project we will investigate factors that may be important to the size of herring consumed by Chinook Salmon. Previous work found a positive, linear relationship between otolith width (mm) and length (mm) of herring from this dataset (Murchy et al. 2017). Otolith width (mm) measurements averaged from left and right otoliths will be used as a proxy for herring size (Stevenson and Campana, 1992) in this analysis. We will also use salmon catch data recorded by each angler and submitted with the associated stomach sample.
 
 ##B)
 How does Chinook size, catch location and time of year in the Salish Sea affect the size of herring prey consumed?
 
 ##C)
-This analysis is descriptive, with the goal of showing how explanatory variables describe patterns in herring size consumed by Chinook.
+This analysis is descriptive, with the goal of showing how explanatory variables describe patterns in herring size consumed by Chinook in the Salish Sea.
 
 ##D)
-We hypothesize that otolith width will be positively linear with salmon length and collection day of year. We expect a moderately positive, linear relationship with increasing latitude and negative linear relationship with longitude if larger herring occur along western Strait of Georgia. A non-linear relationship with longitude is possible if maximum herring size occurrs in mid-channel waters. We expect an interaction between salmon length and latitude, because of higher productivity in northern regions. An interaction between salmon length and longitude is possible if mainland and Vancouver Island stocks differ in size. We expect an interaction between salmon length and day of year as each age class grows.
+We hypothesize that otolith width will be positively linear as salmon length increases. Otolith width and day of year will show a positive linear relationship with the calendar year. We expect a moderately positive, linear relationship with increasing latitude. We expect a negative linear relationship with longitude if larger herring occur along west Strait of Georgia. However, we could see a non-linear relationship with longitude if maximum herring size occurrs in mid-channel waters. We expect an interaction between salmon length and latitude, as there productivity in northern regions. An interaction between salmon length and longitude may occur if mainland stocks and those on Vancouver Island differ in size. We expect an interaction between salmon length and day of year, as each age class grows through the year.
 
 ##E)
-We will use AIC fit with maximum likelihood estimation because it is flexible when comparing complex, non-nested models with parameters estimated from ecological field studies. AIC is commonly used in ecosystem studies where parameter estimates are relatively imprecise and we accept that the optimal model may be selected over the true model, given the current sample size and our ecological understanding of the system. (396)
+We will use AIC fit with maximum likelihood estimation because it is flexible when comparing complex, non-nested models with parameters estimated from ecological field studies. AIC is commonly used in ecosystem studies where parameter estimates are relatively imprecise and we accept that the optimal model may be selected over the true, given the current sample size and our ecological understanding of the system.
+
+(400)
 
 #Section 2: The Response Variable (150 words)
 ##A)
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
+```{r, fig.width = 6,fig.height = 3}
 par(mfrow = c(1, 2))
 
 #Add column for number of rows
@@ -77,16 +79,14 @@ n <- nrow(herring_data)
 herring_data$row <- 1:n
 
 #Make dotchart of otolith width (response variable)
-with(herring_data, plot(oto.width, row, las = 1, type = "n", cex.lab = 1, cex.axis = 1, xlab = "Otolith width [mm]", ylab = "Row Number"))
+with(herring_data, plot(oto.width, row, las = 1, type = "n", xlab = "Otolith width [mm]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(oto.width, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Make histogram of response variable with rugmarks
-hist(herring_data$oto.width, cex.main = 1.5, cex.lab = 1, cex.axis = 1, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of otolith width", xlab = "Otolith width [mm]")
+hist(herring_data$oto.width, xlim = c(0.3, 2.8), breaks = seq(0.2, 2.8, by = 0.05), col = grey(0.9), main = "Histogram of otolith width", xlab = "Otolith width [mm]")
 rug(herring_data$oto.width)
-```
 
-```{r}
 #Check for zeroes and NAs in otilith width
 table(herring_data$oto.width > 0, useNA = "always")
 
@@ -101,14 +101,16 @@ The response variable (otolith width) is continuous and cannot take on zero or n
 Outliers at < 0.6 mm and > 2.2 mm are reasonable measurements representing a few individuals in the extreme age classes. There are no zero values and one missing otolith measurement making up 0.11 % of the data. We anticipate no difficulties in removing the single NA value from subsequent analyses. Non-independence is expected from repeated measurements of multiple herring that occurred within the same salmon stomach. Herring consumed at similar times of year may have similar growth trajectories that contribute to temporal autocorrelation. Spatial autocorrelation may occur if herring consumed in similar areas have similar prey fields and grow rates.
 
 ##D)
-We will use the normal distribution for modelling. (140)
+We will consider the normal distribution for modelling.  
+
+(140)
 
 #Section 3: The Explanatory Variables (150 words)
 ##A)
 ###Continuous explanatory variables
-```{r, fig.width = 6, fig.height = 8, echo = FALSE}
+```{r, fig.width = 6,fig.height = 6}
 #Make multipanel of dotcharts for continuous explanatory variables
-par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))
+par(mfrow = c(3, 2))
 
 #Salmon length dotchart
 with(herring_data, plot(sal.length, row, las = 1, type = "n", xlab = "Salmon length [cm]", ylab = "Row Number"))
@@ -129,50 +131,49 @@ with(herring_data, points(lat, row, las = 1, type = "p", pch = 19, cex = 0.5))
 with(herring_data, plot(long, row, las = 1, type = "n", xlab = "Longitude [°]", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(long, row, las = 1, type = "p", pch = 19, cex = 0.5))
-```
 
-```{r, fig.width = 10, fig.height = 7, echo = FALSE}
 #Make multipanel of histograms for continuous explanatory variables
-par(mfrow = c(2, 2))
+par(mfrow = c(3, 2))
 
 #Salmon length histogram
-hist(herring_data$sal.length, cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length [cm]")
+hist(herring_data$sal.length, col = grey(0.9), breaks = seq(40, 100, by = 1), main = "Histogram of salmon length", xlab = "Salmon length [cm]")
 rug(herring_data$sal.length)
 
 #Collection day of year histogram
-hist(herring_data$coll.doy, cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of collection day of year", xlab = "Collection day of year")
+hist(herring_data$coll.doy, col = grey(0.9), breaks = seq(0, 400, by = 7), main = "Histogram of collection day of year", xlab = "Collection day of year")
 rug(herring_data$coll.doy)
 
 #Latitude histogram
-hist(herring_data$lat, cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude [°]")
+hist(herring_data$lat, col = grey(0.9), breaks = seq(48.0, 51.0, by = 0.05), main = "Histogram of latitude", xlab = "Latitude [°]")
 rug(herring_data$lat)
 
 #Longitude histogram
-hist(herring_data$long, cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = grey(0.9), breaks = seq(-125.5, -123, by = 0.05), main = "Histogram of longitude", xlab = "Longitude [°]")
+hist(herring_data$long, col = grey(0.9), breaks = seq(-125.5, -123, by = 0.05), main = "Histogram of longitude", xlab = "Longitude [°]")
 rug(herring_data$long)
 
 ```
 
 ###Categorical explanatory variables
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
+```{r, fig.width = 6,fig.height = 3}
 #Make multipanel for plots of categorical explanatory variables
 par(mfrow = c(1, 2))
 
 #Make dotchart of salmon id
-with(herring_data, plot(sal.id, row, las = 1, type = "n", cex.lab = 1, cex.axis = 1, xlab = "Salmon ID", ylab = "Row Number"))
+with(herring_data, plot(sal.id, row, las = 1, type = "n", xlab = "Salmon ID", ylab = "Row Number"))
 abline (h = seq(1, n, by = 5), col = "lightgrey")
 with(herring_data, points(sal.id, row, las = 1, type = "p", pch = 19, cex = 0.5))
 
 #Make a histogram of herring frequency per salmon
-hist(herring_data$sal.id, col = grey(0.9), cex.main = 1.5, cex.lab = 1, cex.axis = 1, breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
+hist(herring_data$sal.id, col = grey(0.9), breaks = seq(17300, 18200, by = 1), main = "Histogram of Salmon ID", xlab = "Salmon ID")
 ```
-
 ##B)
-One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no substantial skewedness is observed. (32)
+One outlier is observed at 45cm and three outliers at 90 - 100cm. However, these are reasonable sizes for recreationally caught chinook salmon. No transformations are necessary as no substantial skewedness is observed.
+
+(33)
 
 #Section 4: Collinearity, Balance, and Variance Inﬂation Factors (200 words)
 ##A)
-```{r, echo = TRUE, fig.width = 7, fig.height = 5.5, echo = FALSE}
+```{r, echo = TRUE}
 #Create data frame of continuous explanatory variables for pairwise scatter plots
 herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
     "coll.doy" = herring_data$coll.doy, "lat" = herring_data$lat, "long" = herring_data$long)
@@ -180,14 +181,10 @@ herring_collinearity <- data.frame("sal.length" = herring_data$sal.length,
 #Make pairwise scatterplot of explanatory variables
 plot(herring_collinearity[1:4], cex = 0.5, pch = 19, col = rgb(0, 0, 0, 0.5), 
      labels = c("Chinook\nLength [cm]", "Collection\nDay in 2018", "Latitude [°]", "Longitude [°]"))
-```
 
-```{r, fig.width = 6, fig.height = 4, echo = FALSE}
 #Plot mean salmon size vs. collection month
-boxplot(sal.length ~ coll.month, data = herring_data, cex.main = 0.75, cex.lab = 0.75, cex.axis = 0.75, xlab = "Collection day of year", ylab = "Salmon length [cm]", main = "Boxplot of salmon size by collection month")
-```
+boxplot(sal.length ~ coll.month, data = herring_data, xlab = "Collection day of year", ylab = "Salmon length [cm]", main = "Boxplot of salmon size by collection month")
 
-```{r}
 #Calculate and view pairwise correlation coefficients for explanatory variables
 print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), digits = 2)
 
@@ -195,14 +192,21 @@ print(cor(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])), 
 print(vif(na.omit(herring_data[ ,c("sal.length", "coll.doy", "lat", "long")])))
 ```
   
-
-The only categorical variable is salmon id and the range in the number of herring per salmon was 1 to 7, which will not confound any other categorical variables. We will model salmon id as a random effect to account unbalancing effects associated with salmon id on the continuous variables.
+Our only categorical variable is salmon id so the range in the number of otoliths per salmon was x to x will not confounded any other categorical variables. We plan to model salmon id as a random effect which will account for the effects of any unbalancing associated with salmon id on the continuous variables.  
   
-The boxplot of mean salmon length per month shows greater variance and summer samples where lengths overlap with those observed in earlier months of the year, likely due to unbalanced sampling effort contributing to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model. (197)  
+A boxplot of mean salmon length per month shows that mean salmon length in summer months overlapped with mean salmon length observed in earlier months in the year, likely due to unbalanced sampling effort over the year as opposed to the concave up shape observed in the pairwise scatterplot. The remaining relationships observed in the pairwise scatterplots were consistent with the pairwise correlation coefficients. Salmon length was moderately, positively correlated (0.449) with latitude but moderately, negatively correlated longitude (-0.3991). There was a strong, negative correlation (-0.8721) between latitude and longitude. VIF values of latitude (4.721313) and longitude (4.428887) were greater than 3 and strongly colinear, which is expected due to the geographical constraints of the Strait of Georgia and Juan de Fuca. We will run models with either latitude or longitude to avoid the confounding effects of including both variables in a single model.  
+  
+(204)  
 
+*get otolith number per salmon id range
+  
 #Section 5: Statistical Methods and Model Fitting (200 words)
 
-We will be using linear mixed-effects models using the R Package lme4 (Bates et al. 2015). We are assuming that otolith width (mm), our response variable, is normally distributed as suggested by a histogram of otolith width. We will model otolith width (mm) as function of salmon length (cm), day of year in 2018, latitude and longitude. Dotplots and histograms of these predictor variables show few missing values or outliers so the data from these variables can be used for modelling. There wasn't strong colinearity between predictor variables except for longitude and latitude, which we will not include in the same model. We have chosen to standardize our predictor variables as they were measured on vastly different scales. We will include a random intercept corresponding to individual salmon (salmon id) to avoid autocorrelation from non-independence of multiple herring that may occur in a single salmon or experimental unit. Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual salmon. We have chosen a random intercept for salmon id because the number of levels is greater than 10 (Zuur et al. 2007). (196)
+We will be using linear mixed-effects models using the R Package lme4 (Bates et al., 2015). We are assuming that otolith width (mm), our response variable, is normally distributed as suggested by a histogram of otolith width. We will model otolith width (mm) as function of salmon length (cm), day of year in 2018, latitude and longitude. Dotplots and histograms of these predictor variables show few missing values or outliers so the data from these variables can be used for modelling. There wasn't strong colinearity between predictor variables except for longitude and latitude, which we will not include in the same model. We have chosen to standardize our predictor variables as they were measured on vastly different scales. We will include a random intercept corresponding to individual salmon (salmon id) to avoid autocorrelation from non-independence of multiple herring that may occur in a single salmon or experimental unit. Ecologically, it is likely that multiple herring in one stomach have similar sizes if they travel in the same school targeted by an individual salmon. We have chosen a random intercept for salmon id because the number of levels is greater than 10 (ref.).
+
+(193)
+
+*ref for > 10 levels
 
 ##Standardizing data for models
 ```{r}
@@ -271,35 +275,50 @@ model_11cl <- lmer(oto.width ~ coll.doy_standardized*sal.length_standardized*lon
 
 #Section 6: Model Checking 
 ##Plotting otolith.width vs. models' explanatory variables
-```{r,  fig.width = 10, fig.height = 7, echo = FALSE}
+```{r}
 #Otolith width vs. longitude
-oto_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 1) + geom_smooth(aes(long, oto.width), se = FALSE) + xlab("Longitude [°]") +  ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, oto.width), shape = 1) +
+  geom_smooth(aes(long, oto.width), se = FALSE) +
+  xlab("Longitude [°]") +
+  ylab("Otolith width [mm]")
 
 #Otolith width vs. coll.doy
-oto_vs_coll.doy <- ggplot(herring_data) +  theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 1) + geom_smooth(aes(coll.doy, oto.width), se = FALSE) + xlab("Collection of day") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(coll.doy, oto.width), shape = 1) +
+  geom_smooth(aes(coll.doy, oto.width), se = FALSE) +
+  xlab("Collection of day") +
+  ylab("Otolith width [mm]")
 
 #Otolith width vs. sal.length
-oto_vs_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 1) + geom_smooth(aes(sal.length, oto.width), se = FALSE) + xlab("Salmon length [cm]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
-
-grid.arrange(oto_vs_long, oto_vs_coll.doy, oto_vs_sal.length, nrow = 2)
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(sal.length, oto.width), shape = 1) +
+  geom_smooth(aes(sal.length, oto.width), se = FALSE) +
+  xlab("Salmon length [cm]") +
+  ylab("Otolith width [mm]")
 ```
 
 ##Plotting residuals for Model 11
-```{r, fig.width = 8, fig.height = 4, echo = FALSE}
-#Add residuals and fitted values to data frame
+```{r}
+#Plot residuals versus fitted values (shown with a smoothing curve)
 herring_data$resid_11 <- resid(model_11) 
 herring_data$fitted_11 <- predict(model_11, re.form = ~0)
 
-#Plot residuals versus fitted values (shown with a smoothing curve)
-ggplot(herring_data) + theme_minimal() + geom_point(aes(fitted_11, resid_11), shape = 1) + geom_smooth(aes(fitted_11, resid_11), se = FALSE) + xlab("Fitted values for Model 11") + ylab("Residuals for Model 11")
-```
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(fitted_11, resid_11), shape = 1) +
+  geom_smooth(aes(fitted_11, resid_11), se = FALSE) +
+   xlab("Fitted values for Model 11") +
+  ylab("Residuals for Model 11")
 
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
 
 #Plot histogram of residuals as probability density with rug marks and reference curve
-hist(resid(model_11), breaks = seq(-0.6, 0.8, 0.05), cex.main = 1.5, cex.lab = 1, cex.axis = 1, prob = TRUE, col = "lightgrey", main = "Histogram of Model 11 residuals", xlab = "Model 11 residuals")
+hist(resid(model_11), prob = TRUE, col = "lightgrey", main = "Histogram of Model 11 residuals", xlab = "Model 11 residuals")
 rug(resid(model_11))
 sd_hat <- sd(resid(model_11))
 curve(dnorm(x, sd = sd_hat), add = TRUE)
@@ -307,12 +326,15 @@ curve(dnorm(x, sd = sd_hat), add = TRUE)
 #Make quantile-quantile plot with reference line
 qqnorm(resid(model_11))
 qqline(resid(model_11), col = "red")
+
+#Run a Shapiro-Wilk test for normality of the residuals
+shapiro.test(resid(model_11))
 ```
 
-##Plotting random intercepts for Model 11
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
+##Plotting random intercepts for model 11
+```{r}
 #Make multipanel of residual plots
-par(mfrow = c(1, 2))
+par(mfrow = c(1, 1))
 
 #Make quantile-quantile plot for checking whether the random intercept is normally distributed
 qqnorm(ranef(model_11)$sal.id[, "(Intercept)"])
@@ -320,28 +342,30 @@ qqline(ranef(model_11)$sal.id[, "(Intercept)"])
 
 #Plot histogram of residuals as probability density with rug marks and reference curve
 ranef_int <- ranef(model_11)$sal.id[, "(Intercept)"]
-hist(ranef_int, prob = TRUE, breaks = seq(-1, 0.8, 0.1), cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
+hist(ranef_int, prob = TRUE, breaks = seq(-1, 0.8, 0.1), col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
 rug(ranef_int)
 sd_hat_int <- sd(ranef_int)
 curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
 
-##Plotting residuals of Model 6
-```{r, fig.width = 8, fig.height = 4, echo = FALSE}
-#Add residuals and fitted values to data frame
+##Plotting residuals of model 6
+```{r}
+#Plot residuals versus fitted values (shown with a smoothing curve)
 herring_data$resid_6 <- resid(model_6) 
 herring_data$fitted_6 <- predict(model_6, re.form = ~0)
 
-#Plot residuals versus fitted values (shown with a smoothing curve)
-ggplot(herring_data) + theme_minimal() + geom_point(aes(fitted_6, resid_6), shape = 1) + geom_smooth(aes(fitted_6, resid_6), se = FALSE) + xlab("Residuals for Model 6") +  ylab("Fitted values for Model 6")
-```
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(fitted_6, resid_6), shape = 1) +
+  geom_smooth(aes(fitted_6, resid_6), se = FALSE) +
+  xlab("Residuals for Model 6") +
+  ylab("Fitted values for Model 6")
 
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Make multipanel of residual plots
 par(mfrow = c(1, 2))
 
 #Plot histogram of residuals as probability density with rug marks and reference curve
-hist(resid(model_6), prob = TRUE, cex.main = 1.5, cex.lab = 1, cex.axis = 1, main = "Histogram of Model 6 residuals", breaks = seq(-0.6, 0.8, 0.05), xlab = "Model 6 residuals", col = "lightgrey")
+hist(resid(model_6), prob = TRUE, main = "Histogram of Model 6 residuals", xlab = "Model 6 residuals", col = "lightgrey")
 rug(resid(model_6))
 sd_hat <- sd(resid(model_6))
 curve(dnorm(x, sd = sd_hat), add = TRUE)
@@ -349,17 +373,23 @@ curve(dnorm(x, sd = sd_hat), add = TRUE)
 #Make quantile-quantile plot with reference line
 qqnorm(resid(model_6))
 qqline(resid(model_6), col = "red")
-```
 
-```{r, fig.width = 8, fig.height = 4, echo = FALSE}
+#Run a Shapiro-Wilk test for normality of the residuals
+shapiro.test(resid(model_6))
+
 #Plot residuals vs. sal.length (shown with smoothing curve)
-ggplot(herring_data) +  theme_minimal() + geom_point(aes(sal.length, resid_6), shape = 1) + geom_smooth(aes(sal.length, resid_6), se = FALSE) + xlab("Residuals for Model 6") + ylab("Salmon length [cm]")
+ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(sal.length, resid_6), shape = 1) +
+  geom_smooth(aes(sal.length, resid_6), se = FALSE) +
+   xlab("Residuals for Model 6") +
+  ylab("Salmon length [cm]")
 ```
 
-##Plotting random intercepts for  Model 6
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
+##Plotting random intercepts for  model 6
+```{r}
 #Make multipanel of residual plots
-par(mfrow = c(1, 2))
+par(mfrow = c(1, 1))
 
 #Make quantile-quantile plot for checking whether the random intercept is normally distributed
 qqnorm(ranef(model_6)$sal.id[, "(Intercept)"])
@@ -367,38 +397,40 @@ qqline(ranef(model_6)$sal.id[, "(Intercept)"])
 
 #Plot histogram of residuals as probability density with rug marks and reference curve
 ranef_int <- ranef(model_6)$sal.id[, "(Intercept)"]
-hist(ranef_int, prob = TRUE, breaks = seq(-1.1, 0.7, 0.1), cex.main = 1.5, cex.lab = 1, cex.axis = 1, col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
+hist(ranef_int, prob = TRUE, breaks = seq(-1.1, 0.7, 0.1), col = "lightgrey", main = "Histogram of random intercepts", xlab = "Random intercepts")
 rug(ranef_int)
 sd_hat_int <- sd(ranef_int)
 curve(dnorm(x, sd = sd_hat_int), add = TRUE)
 ```
 
 ##Plotting for spatial and temporal autocorrelation
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
+```{r}
 #Create column of standardized otolith widths ((x - mean)/ 1 sd)
 herring_data$oto.width_standardized <- (herring_data$oto.width - mean(herring_data$oto.width)) / sd(herring_data$oto.width)
 
 #Generate acf plot of standardized otolith widths
-acf(herring_data$oto.width_, las = 1, lag = 100, cex.main = 1.5, cex.lab = 1, cex.axis = 1, main = "Series for standardized otolith widths")
-```
+acf(herring_data$oto.width_, las = 1, lag = 100)
 
-```{r, fig.width = 5, fig.height = 3, echo = FALSE}
 #Create column of standardized otolith widths classified as above or below mean
-herring_data$Sign <- as.character(sign(herring_data$oto.width_standardized))
-
-#Create column of the magnitude of standardized otolith widths
-herring_data$Magnitude <- abs(herring_data$oto.width_standardized)
+herring_data$sign <- as.character(sign(herring_data$oto.width_standardized))
 
 #Generate bubble plot
-lat_vs_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, lat, colour = Sign, size = Magnitude, shape = Sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + coord_fixed() +  ggtitle("Bubble plot of standardized otolith width") + xlab("Longitude [°]") + ylab("Latitude [°]")
+lat_vs_long <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, lat, colour = sign, size = abs(oto.width_standardized), shape = sign)) + scale_colour_manual( values = c("1" = "darkorange", "-1" = "steelblue4", "0" = "black")) + 
+  scale_shape_manual(values = c("1" = 1, "-1" = 1, "0" = 19)) + 
+  coord_fixed() +
+  ggtitle("Bubble plot of otolith width") +
+  xlab("Longitude [°]") +
+  ylab("Latitude [°]")
 print(lat_vs_long)
 ```
 
-Pairwise scatterplots suggest a nonlinear relationship between the response and predictor variables. ACF plot suggests temporal autocorrelation at short time lags ~ 10 days or less. Bubble plots indicate spatial autocorrelation and/or may reflect the spatial size distribution of herring. Model 11 histogram of residuals appear normal compared to the quantile-quantile plot suggesting a non-normal distribution. Residuals fall above the 1:1 line at high quantiles and below the 1:1 line at negative quantiles, suggesting slightly right-skewed residuals. The increase in spread of the Model 11 residuals versus fitted values suggests unequal variance. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting a non-normal distribution of residuals. Model 6 of residuals and random intercept distribution show the same pattern as Model 11, violating assumptions of the linear model. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, they may just represent the upper and lower range of the data given the pattern of increasing variance. (181)
+Pairwise scatterplots suggest a nonlinear relationship between the response and predictor variables. ACF plot suggests temporal autocorrelation at short time lags ~ 10 days or less. Bubble plots indicate spatial autocorrelation and/or may reflect the spatial size distribution of herring. Model 11 histogram of residuals appear normal compared to the quantile-quantile plot suggesting a non-normal distribution. Residuals fall above the 1:1 line at high quantiles and below the 1:1 line at negative quantiles, suggesting slightly right-skewed residuals. The increase in spread of the model 11 residuals versus fitted values suggests unequal variance. Residuals for the random intercept appear to fall below the 1:1 line at negative quantiles, suggesting a non-normal distribution of residuals. Model 6 shows the same pattern of residuals and random intercept distribution, violating assumptions of the linear model in addition to spatial and temporal autocorrelation. The increase in variance and non-linear relationships indicate that the linear model is not plausible. Outliers may exist above 0.5 and below -40; however, they may just represent the upper and lower range of the data given the pattern of increasing variance.
 
 #Section 7: Model Summary, Conﬁdence Intervals and Model Comparison 
 ##Rewriting all models with REML= FALSE
-```{r}
+```{r, echo = TRUE}
 #Intercept-only model
 model_0 <- lmer(oto.width ~ (1 | sal.id), data = herring_data, REML= FALSE)
 
@@ -476,9 +508,7 @@ VarCorr(model_11)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
 confint(model_11)
-```
 
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Rearrange data for a plot of coefficients with standard errors
 #Make data frame for plot of coefficients
 confint_fixed_11 <- as.data.frame(confint(model_11, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized", "sal.length_standardized")))
@@ -489,9 +519,18 @@ confint_fixed_11$term <- rownames(confint_fixed_11)
 confint_fixed_11$estimate <- fixef(model_11)
 
 ##Plot confidence intervals for coefficient estimates
-ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
+ggplot(confint_fixed_11) + 
+  theme_bw() +
+  geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
+  geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
+  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
+  scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) +
+  xlab("Estimate") +
+  ylab("") + 
+  ggtitle("Coefficient Estimates for Model 11") +
+    scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) +
+  theme(axis.text = element_text(size = 10, colour = "black"))
 ```
-  
 ##Summarizing Model 6
 ```{r}
 #Call coeﬃcient estimates for fixed effects
@@ -502,9 +541,7 @@ VarCorr(model_6)
 
 #Calculate conﬁdence intervals for coeﬃcient estimate
 confint(model_6)
-```
 
-```{r, fig.width = 10, fig.height = 5, echo = FALSE}
 #Rearrange data for a plot of coefficients with standard errors
 #Make data frame for plot of coefficients
 confint_fixed_6 <- as.data.frame(confint(model_6, parm = c("(Intercept)", "coll.doy_standardized", "long_standardized")))
@@ -515,14 +552,22 @@ confint_fixed_6$term <- rownames(confint_fixed_6)
 confint_fixed_6$estimate <- fixef(model_6)
 
 ##Plot confidence intervals for coefficent estimates
-ggplot(confint_fixed_6) + theme_bw() +  geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
-  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) + xlab("Estimate") + ylab("") + ggtitle("Coefficient Estimates for Model 6") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
+ggplot(confint_fixed_6) + 
+  theme_bw() +
+  geom_point(aes(y = term, x = estimate), colour = "midnightblue") +
+  geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +
+  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) +
+  scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude")) +
+  xlab("Estimate") +
+  ylab("") + 
+  ggtitle("Coefficient Estimates for Model 6") +
+    scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) +
+  theme(axis.text = element_text(size = 10, colour = "black"))
 ```
-  
 #Section 8: Plotting a Model with the Data
 ##Visualizing Model 11
-```{r, fig.width = 8, fig.height = 10, echo = FALSE}
-#Create data frame for plot of Model 11 predictions with longitude on the x axis
+```{r, echo = TRUE}
+#Create data frame for plot of model 11 predictions with longitude on the x axis
 oto.width_vs_long_data_11 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
 #Add standardized long data to data frame
@@ -535,10 +580,16 @@ oto.width_vs_long_data_11$fit_11_pop <- predict(model_11, newdata = oto.width_vs
 herring_data$fit_11_sal.id <- predict(model_11)
 
 #Plot the model vs. longitude
-model_11_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_11_pop), data = oto.width_vs_long_data_11) + geom_point(aes(long, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+model_11_long <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, oto.width), shape = 19, size = 1) +
+  geom_line(aes(long, fit_11_pop), data = oto.width_vs_long_data_11) + 
+  geom_point(aes(long, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") +
+  xlab("Longitude [°]") +
+  ylab("Otolith width [mm]")
 
-#Create data frame for plot of Model 11 predictions with coll.doy on the x axis
-oto.width_vs_coll.doy_data_11 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized)) 
+#Create data frame for plot of model 11 predictions with coll.doy on the x axis
+oto.width_vs_coll.doy_data_11 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
 #Add standardized coll.doy data to data frame
 oto.width_vs_coll.doy_data_11$coll.doy_standardized <- ((oto.width_vs_coll.doy_data_11$coll.doy - mean(oto.width_vs_coll.doy_data_11$coll.doy))/sd(oto.width_vs_coll.doy_data_11$coll.doy))
@@ -550,9 +601,15 @@ oto.width_vs_coll.doy_data_11$fit_11_pop <- predict(model_11, newdata = oto.widt
 herring_data$fit_11_sal.id <- predict(model_11)
 
 #Plot the model vs.coll.doy
-model_11_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +  geom_line(aes(coll.doy, fit_11_pop), data = oto.width_vs_coll.doy_data_11) + geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Collection day of year") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+model_11_coll.doy <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +
+  geom_line(aes(coll.doy, fit_11_pop), data = oto.width_vs_coll.doy_data_11) + 
+  geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") +
+   xlab("Collection day of year") +
+  ylab("Otolith width [mm]")
 
-#Create data frame for plot of Model 11 predictions with sal.length on the x axis
+#Create data frame for plot of model 11 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_11 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
 
 #Add standardized sal.length data to data frame
@@ -562,15 +619,20 @@ oto.width_vs_sal.length_data_11$sal.length_standardized <- ((oto.width_vs_sal.le
 oto.width_vs_sal.length_data_11$fit_11_pop <- predict(model_11, newdata = oto.width_vs_sal.length_data_11, re.form = ~0)
 
 #Plot the model vs. sal.length
-model_11_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 19, size = 1) +  geom_line(aes(sal.length, fit_11_pop), data = oto.width_vs_sal.length_data_11) + geom_point(aes(sal.length, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Salmon length [cm]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+model_11_sal.length <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(sal.length, oto.width), shape = 19, size = 1) +
+  geom_line(aes(sal.length, fit_11_pop), data = oto.width_vs_sal.length_data_11) + 
+  geom_point(aes(sal.length, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") +
+  xlab("Salmon length [cm]") +
+  ylab("Otolith width [mm]")
 
-grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 3)
+grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 2)
 ```
 
 ##Visualizing Model 6
-
-```{r, fig.width = 8, fig.height = 8, echo = FALSE}
-#Create data frame for plot of Model 6 predictions with longitude on the x axis
+```{r, echo = TRUE}
+#Create data frame for plot of model 6 predictions with longitude on the x axis
 oto.width_vs_long_data_6 <- data.frame(long = seq(-125.29, -123.16, 0.001), coll.doy_standardized = median(herring_data$coll.doy_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
 #Add standardized long data to data frame
@@ -583,9 +645,15 @@ oto.width_vs_long_data_6$fit_6_pop <- predict(model_6, newdata = oto.width_vs_lo
 herring_data$fit_6_sal.id <- predict(model_6)
 
 #Plot the model vs. longitude
-model_6_long <- ggplot(herring_data) +  theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_6_pop), data = oto.width_vs_long_data_6) + geom_point(aes(long, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+model_6_long <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(long, oto.width), shape = 19, size = 1) +
+  geom_line(aes(long, fit_6_pop), data = oto.width_vs_long_data_6) + 
+  geom_point(aes(long, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") +
+  xlab("Longitude [°]") +
+  ylab("Otolith width [mm]")
 
-#Create data frame for plot of Model 6 predictions with coll.doy on the x axis
+#Create data frame for plot of model 6 predictions with coll.doy on the x axis
 oto.width_vs_coll.doy_data_6 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized))
 
 #Add standardized coll.doy data to data frame
@@ -598,9 +666,15 @@ oto.width_vs_coll.doy_data_6$fit_6_pop <- predict(model_6, newdata = oto.width_v
 herring_data$fit_6_sal.id <- predict(model_6)
 
 #Plot the model vs.coll.doy
-model_6_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) + geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral") + xlab("Collection day of year") +  ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+model_6_coll.doy <- ggplot(herring_data) +
+  theme_minimal() + 
+  geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +
+  geom_line(aes(coll.doy, fit_6_pop), data = oto.width_vs_coll.doy_data_6) + 
+  geom_point(aes(coll.doy, fit_6_sal.id, group = sal.id), shape = 3, color = "lightcoral")+
+   xlab("Collection day of year") +
+  ylab("Otolith width [mm]")
 
-#Create data frame for plot of Model 6 predictions with sal.length on the x axis
+#Create data frame for plot of model 6 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_6 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
 
 grid.arrange(model_6_long, model_6_coll.doy, nrow = 2)
@@ -608,16 +682,16 @@ grid.arrange(model_6_long, model_6_coll.doy, nrow = 2)
 
 #Section 9: Discussion (400 words)
 ##A)
-Model 11 and 6 does not fit the data well and violates linear model assumptions. Both models overpredict otolith width between longitude -124.0 to -125.0. Both models overpredict between 0 to 50 days and underpredict 125 to 175 days. Model 11 overpredicts for salmon between 40 cm to 60 cm.
+The model does not fit the data well in addition to violating linear model assumptions for both model 11 and 6. Model 11 versus longitude overpredicts between -124.0 to -125.0 and may underpredict between -123.5 to -124.0. Otolith width versus collection day of year overpredicts between day 0 to 50 and underpredicts between day 125 to 175. Otolith width versus salmon length overpredicts between 40 cm to 60 cm. The same patterns are observed for model 6 versus longitude and collection day.
 
 ##B)
-Model 11 coefficient plot shows that salmon length has a small positive relationship with otolith width, but the confidence interval overlaps with 0 and is not a useful predictor unlike longitude and day of year that doesn’t overlap with 0 and has a small, negative relationship with otolith width. Similar patterns are observed for Model 6. The results support our hypothesis for a positive relationship between otolith width versus salmon length and longitude but contradicts positive relationship we hypothesized for collection day. Interestingly, longitude better describes otolith width than latitude so we determine that longitude and collection day of year best describe the variation in herring size consumed by Chinook Salmon in the Salish Sea in 2018.
+Coefficient plot for model 11 shows that salmon length has a small, positive relationship with otolith width but that confidence intervals overlap with 0 meaning it is not as useful a predictor as longitude and day of year which also has a small negative effect but does not overlap with 0. The intercept (?) has a large effect. Similar patterns are observed for model 6, consistent with our hypotheses for a positive relationship between otolith width and salmon length and otolith width and longitude. However, result contradict our hypothesis for a positive relationship between otolith width and collection day. Interestingly, longitude better describes otolith width than latitude in this modelling exercise and therefore, longitude and collection day of year best describe the variation in size of herring consumed by Chinook Salmon in the Salish Sea.
 
 ##C)
-Longitude is not capturing east-west patterns from shallow to deep water, but the spatial size distribution of herring in westerly regions near Comox Valley and easterly regions near San Juan Islands. Modelling capture location as a categorical variable will allow us to look at regional patterns. Otolith width versus collection day may represent two or more age classes of available herring. Modelling age classes separately may suggest the importance of a different set of factors. Alternatively, we could model herring size as a quadratic relationship. Otolith width versus salmon length shows few salmon below 62cm paired with model overprediction, due to gape limitation or size restrictions >62cm for recreational catch. Generating models with and without fish <62cm can determine whether omitting this subset is justified and changes our result.
+Limitations are that longitude may relate to the spatial distribution of larger and smaller groups of herring that occupy different regions within the Salish Sea. Longitude is not capturing east-west patterns from shallow to deep water habitats at a constant latitude, but rather herring caught in more westerly regions near Nanaimo and Denman and Hornby Island and easterly regions near San Juan Islands/Puget Sound. Modelling capture location as a categorical variable instead of a continuous longitude will allow us to look at patterns within different regions. Otolith width versus collection day may represent two or more different age classes and recruitment patterns of herring available to salmon. Modelling different age classes separately may allow us to model herring size better as they aren’t confounded by different size classes that occur together. Alternatively, we could model herring size as a quadratic relationship. Otolith width versus salmon length shows few data points for salmon below 62cm and model overprediction. We suspect this could be either due to gape limitation or an artifact of sampling effort due to size restrictions > 62cm for recreational catch. We may consider sourcing more salmon < 62cm or to run models with and without fish < 62cm to determine whether omitting this subset changes our result.
 
 ##D)
-The longitudinal and day of year pattern may reflect high herring abundance along east coast Vancouver Island and peak spawning near Hornby/Denman Island in mid-March (Therriault et al. 2009). Perhaps a greater contribution of large herring consumed in western regions and small larvae appearing in June are driving these trends. Although salmon length is a poor predictor, the overall trend suggests prey size range increases with salmon size, consistent with findings in other marine predators (Scharf et al. 2000). (385)
+The longitudinal and day of year pattern may be reflecting high herring abundance along east coast Vancouver Island and spawning near Hornby and Denman Island in mid-March (Therriault et al. 2009). Perhaps a greater contribution of large herring consumed in western regions (-125.0) and a smaller size range of juvenile recruits beginning in June is driving these trends. Although, salmon length is less important the overall trend suggests that prey size range increases with body size, consistent with findings of other marine predators (Scharf et al. 2000). However, these conclusions are approximate and requires further investigation.
 
 
 ## References
@@ -645,4 +719,3 @@ Ben Bolker and R Development Core Team (2020). bbmle: Tools for General Maximum 
 
 Baptiste Auguie (2017). gridExtra: Miscellaneous Functions for "Grid" Graphics. R package version 2.3. https://CRAN.R-project.org/package=gridExtra
 
-Zuur, A., et al., 2007. Analysing Ecological Data. Springer: New York.
