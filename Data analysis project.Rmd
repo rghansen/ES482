@@ -260,6 +260,23 @@ oto_vs_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal
 
 grid.arrange(oto_vs_long, oto_vs_coll.doy, oto_vs_sal.length, nrow = 2)
 ```
+```{r}
+#Otolith width vs. longitude
+ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 1) + xlab("Longitude [°]") +  ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+ggsave("long.png", width = 20, height = 10, units = "cm")
+
+#Otolith width vs. coll.doy
+ggplot(herring_data) +  theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 1) + xlab("Collection of day") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+ggsave("colldoy.png", width = 20, height = 10, units = "cm")
+
+#Otolith width vs. sal.length
+ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 1) + xlab("Salmon length [cm]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+ggsave("sallength.png", width = 20, height = 10, units = "cm")
+
+#Otolith width vs. latitude
+ggplot(herring_data) + theme_minimal() + geom_point(aes(lat, oto.width), shape = 1) + xlab("Latitude [°]") +  ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+ggsave("lat.png", width = 20, height = 10, units = "cm")
+```
 
 ### Plotting residuals for Model 11 and Model 6 (when predictions exclude random intercepts)
 ```{r}
@@ -443,6 +460,7 @@ confint_fixed_11$estimate <- fixef(model_11)
 confint_11 <- ggplot(confint_fixed_11) + theme_bw() + geom_point(aes(y = term, x = estimate), colour = "midnightblue") + geom_vline(xintercept = 0, linetype = "dotted", colour = "red") +  geom_errorbarh(aes(y = term, xmin = `2.5 %`, xmax = `97.5 %`), colour = "midnightblue", height = 0.3) + scale_y_discrete(labels = c("Intercept", "Collection \nDay of Year", "Longitude", "Salmon length")) + xlab("Estimate") +  ylab("") +  ggtitle("Coefficient Estimates for Model 11") + scale_x_continuous(breaks = seq(-0.5, 1.5, 0.25)) + theme(axis.text = element_text(size = 14, colour = "black"), plot.title = element_text(size = 16))
 
 confint_11
+ggsave("model_11_confint.png", width = 25, height = 12.5, units = "cm")
 ```
 
 ```{r include=FALSE}
@@ -487,6 +505,7 @@ herring_data$fit_11_sal.id <- predict(model_11)
 
 #Plot the model vs. longitude
 model_11_long <- ggplot(herring_data) + theme_minimal() + geom_point(aes(long, oto.width), shape = 19, size = 1) +  geom_line(aes(long, fit_11_pop), data = oto.width_vs_long_data_11) + geom_point(aes(long, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Longitude [°]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+ggsave("model_11_long.png", width = 16, height = 8, units = "cm")
 
 #Create data frame for plot of Model 11 predictions with coll.doy on the x axis
 oto.width_vs_coll.doy_data_11 <- data.frame(coll.doy = seq(1, 365, 1), long_standardized = median(herring_data$long_standardized), sal.length_standardized = median(herring_data$sal.length_standardized)) 
@@ -502,6 +521,7 @@ herring_data$fit_11_sal.id <- predict(model_11)
 
 #Plot the model vs.coll.doy
 model_11_coll.doy <- ggplot(herring_data) + theme_minimal() + geom_point(aes(coll.doy, oto.width), shape = 19, size = 1) +  geom_line(aes(coll.doy, fit_11_pop), data = oto.width_vs_coll.doy_data_11) + geom_point(aes(coll.doy, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Collection day of year") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+ggsave("model_11_coll.doy.png", width = 16, height = 8, units = "cm")
 
 #Create data frame for plot of Model 11 predictions with sal.length on the x axis
 oto.width_vs_sal.length_data_11 <- data.frame(sal.length = seq(45, 96, 0.5), long_standardized = median(herring_data$long_standardized), coll.doy_standardized = median(herring_data$coll.doy_standardized))
@@ -514,6 +534,7 @@ oto.width_vs_sal.length_data_11$fit_11_pop <- predict(model_11, newdata = oto.wi
 
 #Plot the model vs. sal.length
 model_11_sal.length <- ggplot(herring_data) + theme_minimal() + geom_point(aes(sal.length, oto.width), shape = 19, size = 1) +  geom_line(aes(sal.length, fit_11_pop), data = oto.width_vs_sal.length_data_11) + geom_point(aes(sal.length, fit_11_sal.id, group = sal.id), shape = 3, colour = "lightcoral") + xlab("Salmon length [cm]") + ylab("Otolith width [mm]") + scale_y_continuous(breaks = seq(0, 3, 0.5))
+ggsave("model_11_sal.length.png",  width = 16, height = 8, units = "cm")
 
 grid.arrange(model_11_long, model_11_coll.doy, model_11_sal.length, nrow = 3)
 ```
